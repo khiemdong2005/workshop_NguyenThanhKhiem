@@ -23,7 +23,7 @@ pre: "<b> 1.3. </b>"
 
 | Day | Task | Start Date | Completion Date | Reference Material |
 |---|---|---|---|---|
-| 2 | - Become familiar with the worklog format and project rules.<br>- Create a learning plan for the week.<br>- Learn **Amazon S3 Fundamentals**. | 09/28/2026 | 09/28/2026 |  |
+| 2 | - Become familiar with the worklog format and project rules.<br>- Create a learning plan for the week.<br>- Learn **Amazon S3 Fundamentals**. | 09/28/2026 | 09/28/2026 |  https://cloudjourney.awsstudygroup.com/ |
 | 3 | - Participate in a cloud-related community activity.<br>- Connect and interact with members of the First Cloud AI Journey community. | 09/29/2026 | 09/29/2026 |  |
 | 4 | - Learn how to get started with **AWS CloudShell**.<br>- Practice an **Amazon S3 lab**. | 09/30/2026 | 09/30/2026 | https://cloudjourney.awsstudygroup.com/ |
 | 5 | - Learn the basic concepts of **Amazon Relational Database Service (Amazon RDS)**. | 10/01/2026 | 10/01/2026 | https://cloudjourney.awsstudygroup.com/ |

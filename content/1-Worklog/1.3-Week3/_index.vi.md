@@ -23,7 +23,7 @@ pre: "<b> 1.3. </b>"
 
 | Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
 |---|---|---|---|---|
-| 2 | - Làm quen với cách viết worklog và các nội quy của project.<br>- Lên kế hoạch học tập cho tuần.<br>- Học **Amazon S3 Fundamentals**. | 28/09/2026 | 28/09/2026 |  |
+| 2 | - Làm quen với cách viết worklog và các nội quy của project.<br>- Lên kế hoạch học tập cho tuần.<br>- Học **Amazon S3 Fundamentals**. | 28/09/2026 | 28/09/2026 | https://cloudjourney.awsstudygroup.com/ |
 | 3 | - Tham gia một hoạt động liên quan đến cloud trong cộng đồng.<br>- Kết nối và trao đổi với các thành viên trong cộng đồng First Cloud AI Journey. | 29/09/2026 | 29/09/2026 |  |
 | 4 | - Tìm hiểu cách bắt đầu với **AWS CloudShell**.<br>- Thực hành **Amazon S3 lab**. | 30/09/2026 | 30/09/2026 | https://cloudjourney.awsstudygroup.com/ |
 | 5 | - Tìm hiểu các khái niệm cơ bản về **Amazon Relational Database Service (Amazon RDS)**. | 01/10/2026 | 01/10/2026 | https://cloudjourney.awsstudygroup.com/ |
