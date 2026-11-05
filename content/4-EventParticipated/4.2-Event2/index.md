@@ -1,5 +1,5 @@
 ---
-title: "AWS Cloud and AI Day Hanoi"
+title: "Event 2 - AWS Cloud and AI Day Hanoi"
 date: 2026-09-29
 weight: 2
 chapter: false
@@ -14,23 +14,27 @@ pre: "<b> 4.2 </b>"
 
 **Date:** September 29, 2026
 
-**Location:** Hanoi, Vietnam
+**Main event location:** Hanoi, Vietnam
 
-**My Role:** Attendee
+**My participation location:** Ho Chi Minh City, at a viewing party.
+
+**My Role:** Viewing party attendee in Ho Chi Minh City.
 
 ---
 
 ## Overview
 
+I joined a viewing party in Ho Chi Minh City to follow the sessions from AWS Cloud and AI Day Hanoi. The main event took place in Hanoi; this report describes my experience watching the sessions together with others in Ho Chi Minh City.
+
 AWS Cloud and AI Day Hanoi is an event focusing on cloud computing, artificial intelligence, software development, and modern technology solutions. The event provided opportunities to learn about how organizations apply AWS technologies and AI solutions to build scalable, secure, and efficient systems.
 
-During the event, I attended different technical sessions related to cloud architecture, AI development, AI agents, software engineering practices, security, and operational management.
+During the viewing party, I watched different technical sessions related to cloud architecture, AI development, AI agents, software engineering practices, security, and operational management.
 
 ---
 
 ## Event Activities
 
-During the event, I participated in several technical presentations and discussions covering different topics:
+Through the viewing party, I followed several technical presentations and discussions covering different topics:
 
 ### 1. Cloud Architecture and Scalability
 
@@ -80,7 +84,7 @@ The presentations showed how cloud platforms can support organizations in develo
 
 ## Key Takeaways and Learning Outcomes
 
-After participating in AWS Cloud and AI Day Hanoi, I gained several valuable insights:
+After joining the AWS Cloud and AI Day Hanoi viewing party in Ho Chi Minh City, I gained several valuable insights:
 
 - Improved my understanding of cloud computing concepts and scalable system architecture.
 - Learned about current trends in AI development, especially AI agents and AI-native applications.
@@ -92,7 +96,7 @@ After participating in AWS Cloud and AI Day Hanoi, I gained several valuable ins
 
 ## Reflection
 
-Participating in AWS Cloud and AI Day Hanoi helped me connect theoretical knowledge with practical applications in the technology industry.
+Joining the AWS Cloud and AI Day Hanoi viewing party in Ho Chi Minh City helped me connect theoretical knowledge with practical applications in the technology industry.
 
 The event not only provided technical knowledge but also changed my perspective on designing applications, modernizing systems, and improving collaboration between technology teams.
 
@@ -101,6 +105,8 @@ Through this experience, I realized the importance of continuously learning new 
 ---
 
 ## Event Photos
+
+Photos from the viewing party in Ho Chi Minh City. The attendee badge carries the name of the main event: AWS Cloud and AI Day Hanoi.
 
 ![AWS Cloud and AI Day Hanoi - Photo 1](images/4.2.1.jpg)
 

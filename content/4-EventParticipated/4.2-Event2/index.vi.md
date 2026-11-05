@@ -1,5 +1,5 @@
 ---
-title: "AWS Cloud and AI Day Hanoi"
+title: "Event 2 - AWS Cloud and AI Day Hanoi"
 date: 2026-09-29
 weight: 2
 chapter: false
@@ -14,25 +14,29 @@ pre: "<b> 4.2 </b>"
 
 **Thời gian tổ chức:** 29/09/2026
 
-**Địa điểm:** Hà Nội, Việt Nam
+**Địa điểm sự kiện chính:** Hà Nội, Việt Nam
 
-**Vai trò của tôi:** Người tham dự (Attendee)
+**Địa điểm tôi tham gia:** TP. Hồ Chí Minh, theo hình thức xem chung (viewing party).
+
+**Vai trò của tôi:** Người tham dự viewing party tại TP. Hồ Chí Minh.
 
 ---
 
 ## Tổng quan về sự kiện
 
+Tôi tham gia buổi viewing party tại TP. Hồ Chí Minh để theo dõi các phiên chia sẻ của AWS Cloud and AI Day Hanoi. Sự kiện chính được tổ chức tại Hà Nội; trải nghiệm được ghi lại trong bài là từ buổi xem chung tại TP. Hồ Chí Minh.
+
 AWS Cloud and AI Day Hanoi là sự kiện tập trung vào các chủ đề liên quan đến điện toán đám mây, trí tuệ nhân tạo, phát triển phần mềm và các giải pháp công nghệ hiện đại.
 
 Sự kiện mang đến cơ hội tìm hiểu cách các doanh nghiệp ứng dụng công nghệ AWS và AI để xây dựng các hệ thống có khả năng mở rộng, đảm bảo tính bảo mật và vận hành hiệu quả.
 
-Trong quá trình tham gia, tôi đã được lắng nghe nhiều phiên trình bày kỹ thuật về kiến trúc cloud, AI Agent, phát triển phần mềm với sự hỗ trợ của AI, bảo mật hệ thống và quản lý vận hành.
+Trong buổi viewing party, tôi đã theo dõi nhiều phiên trình bày kỹ thuật về kiến trúc cloud, AI Agent, phát triển phần mềm với sự hỗ trợ của AI, bảo mật hệ thống và quản lý vận hành.
 
 ---
 
 ## Nội dung và hoạt động chính trong sự kiện
 
-Trong sự kiện, tôi đã tham gia các phiên chia sẻ kỹ thuật với nhiều chủ đề khác nhau:
+Qua buổi viewing party, tôi đã theo dõi các phiên chia sẻ kỹ thuật với nhiều chủ đề khác nhau:
 
 ---
 
@@ -88,7 +92,7 @@ Các bài trình bày giúp tôi hiểu rõ hơn cách các nền tảng cloud c
 
 # Kết quả và giá trị đạt được
 
-Sau khi tham gia AWS Cloud and AI Day Hanoi, tôi đã đạt được một số kiến thức và kinh nghiệm quan trọng:
+Sau khi tham gia viewing party của AWS Cloud and AI Day Hanoi tại TP. Hồ Chí Minh, tôi đã đạt được một số kiến thức và kinh nghiệm quan trọng:
 
 - Hiểu rõ hơn về kiến trúc cloud, đặc biệt là khả năng mở rộng và vận hành hệ thống lớn.
 - Nắm bắt được các xu hướng mới trong lĩnh vực AI như AI Agent và AI-native application.
@@ -100,7 +104,7 @@ Sau khi tham gia AWS Cloud and AI Day Hanoi, tôi đã đạt được một s�
 
 # Cảm nhận cá nhân
 
-Việc tham gia AWS Cloud and AI Day Hanoi giúp tôi có cơ hội kết nối kiến thức đã học với các ứng dụng thực tế trong ngành công nghệ.
+Việc tham gia viewing party của AWS Cloud and AI Day Hanoi tại TP. Hồ Chí Minh giúp tôi có cơ hội kết nối kiến thức đã học với các ứng dụng thực tế trong ngành công nghệ.
 
 Sự kiện không chỉ cung cấp kiến thức kỹ thuật mà còn giúp tôi thay đổi cách nhìn về việc thiết kế ứng dụng, hiện đại hóa hệ thống và cách các đội nhóm công nghệ phối hợp với nhau trong quá trình phát triển sản phẩm.
 
@@ -109,6 +113,8 @@ Thông qua sự kiện này, tôi nhận thấy rằng việc liên tục cập 
 ---
 
 # Hình ảnh tham gia sự kiện
+
+Một số hình ảnh tại buổi viewing party ở TP. Hồ Chí Minh. Thẻ tham dự mang tên sự kiện chính: AWS Cloud and AI Day Hanoi.
 
 ![AWS Cloud and AI Day Hanoi - Hình ảnh 1](images/4.2.1.jpg)
 
