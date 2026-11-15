@@ -1,31 +1,46 @@
 ---
-title: "Blog 1"
-date: 2024-01-01
+title: "Amazon Comprehend Medical – extracting data from clinical text"
 weight: 1
 chapter: false
 pre: " <b> 3.1. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# SESSION POLICIES IN AMAZON EKS POD IDENTITY
+# Amazon Comprehend Medical: Extracting data from clinical text
 
-Amazon EKS Pod Identity has recently added the session policies feature, allowing you to narrow IAM permissions flexibly and precisely for each pod without needing to create many separate IAM roles. This is an important step forward that helps apply the principle of least privilege more effectively in large-scale Kubernetes environments.
+Clinical information often appears in unstructured notes, discharge summaries, test results, and patient records. In “Patient reports headache and fever. The doctor prescribed Ibuprofen 200 mg every 6 hours,” an application must distinguish symptoms, medication, dosage, and frequency before storing structured data.
 
-Key points to know:
+Amazon Comprehend Medical is an AWS natural language processing service for clinical text. Its pretrained models detect medical entities and return confidence scores, so developers can build a basic extraction workflow without training their own model.
 
-* A session policy is an inline IAM policy specified when creating or updating a Pod Identity association.
-* Effective permissions = intersection between the IAM role permissions and the session policy → the session policy can only narrow permissions, not expand them.
-* Helps avoid over-permissioning when reusing a single IAM role for multiple workloads with different needs.
-* Supports both same-account and cross-account (via IAM role chaining).
-* Significantly reduces the number of IAM roles that need to be managed, helping avoid hitting IAM quota limits in large clusters.
-* Easily configured through the AWS Management Console, AWS CLI, or AWS SDK when creating an association between a Kubernetes ServiceAccount and an IAM role.
+## Main capabilities
 
-This feature is especially useful when you have many applications running on the same IAM role but need different permission restrictions (for example: one pod only reads a specific S3 bucket, another pod only calls certain APIs).
+- **Entity detection:** `DetectEntitiesV2` identifies conditions, medications, anatomy, procedures, and related attributes such as dosage or frequency.
+- **PHI detection:** `DetectPHI` identifies protected health information such as names, ages, and dates. The application must still implement its own de-identification and data protection workflow.
+- **Clinical context:** Traits such as `NEGATION` help distinguish “Patient denies fever” from a positive symptom.
+- **Ontology linking:** `InferICD10CM`, `InferRxNorm`, and `InferSNOMEDCT` suggest standardized codes. Suggested codes need review before use in a medical record.
 
-...Image...
+## Processing workflow
 
-...Link...
+1. Receive clinical text and determine how sensitive data will be protected.
+2. Call the appropriate API for entity detection, PHI detection, or ontology linking.
+3. Read entity offsets, attributes, traits, and confidence scores from the response.
+4. Have low-confidence or clinically significant results reviewed before storing them.
 
-...Guide...
+The service offers synchronous processing for individual requests and asynchronous processing for document collections in Amazon S3. It can be accessed through the AWS CLI and SDKs.
+
+## Use cases and integrations
+
+Structured clinical data can support record search, case management, clinical research, and medical coding review. For example, medication names and dosages can be extracted into a list for human verification; an extracted result is not itself a prescription.
+
+An application can use Amazon Transcribe Medical first when the input is speech, or Amazon Textract when the input is a scanned document. These are separate integration steps built by the application.
+
+## Limitations and cost
+
+Amazon Comprehend Medical detects entities in **US English** clinical text; it does not directly support Vietnamese. Confidence scores do not replace clinical judgment. AWS states that results used in patient care must be reviewed for accuracy and sound medical judgment by trained professionals.
+
+Clinical text may contain PHI, so access control, encryption, storage, and organizational compliance must be planned. The service's HIPAA eligibility does not make an entire application compliant automatically. API costs vary by task and usage, so check current AWS pricing before deployment.
+
+## References
+
+- [AWS – What is Amazon Comprehend Medical?](https://docs.aws.amazon.com/comprehend-medical/latest/dev/comprehendmedical-welcome.html)
+- [AWS – How Amazon Comprehend Medical works](https://docs.aws.amazon.com/comprehend-medical/latest/dev/comprehendmedical-howitworks.html)
+- [AWS – Amazon Comprehend Medical pricing](https://aws.amazon.com/comprehend/medical/pricing/)
