@@ -1,59 +1,32 @@
 ---
 title: "Worklog Tuần 8"
-date: 2024-01-01
-weight: 1
+date: 2026-11-02
+weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
 
+### Mục tiêu tuần 8
 
-### Mục tiêu tuần 8:
+- Phát triển các chức năng chính của MediMind AI từ phần giao diện và khung Backend đã chuẩn bị ở tuần 7.
+- Hoàn thiện luồng tiếp nhận triệu chứng, xử lý đơn thuốc và kết quả xét nghiệm, đồng thời gắn dữ liệu với hồ sơ người dùng.
+- Cải thiện trải nghiệm chat, hồ sơ bệnh án và tìm kiếm cơ sở y tế.
 
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+### Công việc đã thực hiện
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Thời gian | Công việc | Nguồn đối chiếu |
+| --- | --- | --- |
+| 02/11/2026 | Điều chỉnh giao diện sang tông sáng, sử dụng biểu tượng y tế phù hợp hơn và cải thiện phần hồ sơ bệnh án cho người đã đăng nhập. | Mã nguồn và lịch sử commit MediMind AI |
+| 03/11/2026 | Triển khai luồng đọc đơn thuốc và kết quả xét nghiệm; bổ sung dữ liệu ngày sinh, giới tính từ kết quả trích xuất để hiển thị tuổi bệnh nhân chính xác hơn. | Mã nguồn và lịch sử commit MediMind AI |
+| 04/11/2026 | Hoàn thiện luồng tiếp nhận thông tin ban đầu và chat nổi; đồng bộ thông tin giữa chatbot và hồ sơ, xử lý lỗi phủ định triệu chứng và lưu phiên làm việc. Thiết kế lại trang chủ, hồ sơ cá nhân và phần cơ sở y tế. | Mã nguồn và lịch sử commit MediMind AI |
+| 05/11/2026 | Lưu đơn thuốc và kết quả xét nghiệm vào hồ sơ người dùng; bổ sung lịch sử và phần tóm tắt để người dùng xem lại. | Mã nguồn và lịch sử commit MediMind AI |
+| 06/11/2026 | Thiết kế lại trang chatbot theo giao diện sáng, chỉnh độ tương phản và thay các biểu tượng mang tính minh họa AI bằng biểu tượng y tế dễ hiểu hơn. | Mã nguồn và lịch sử commit MediMind AI |
+| 07/11/2026 | Cải thiện trang tìm kiếm cơ sở y tế và bản đồ tương tác, điều chỉnh thanh tìm kiếm, trạng thái bật/tắt bản đồ và bố cục các tab. | Mã nguồn và lịch sử commit MediMind AI |
+| 08/11/2026 | Đồng bộ phiên tư vấn với luồng tiếp nhận; chỉ lưu bản tóm tắt lâm sàng khi người dùng xác nhận. Sửa mẫu email OTP và cải thiện quy trình chat, xem lại nội dung tư vấn. | Mã nguồn và lịch sử commit MediMind AI |
 
+### Kết quả đạt được
 
-### Kết quả đạt được tuần 8:
-
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+- MediMind AI đã có luồng tiếp nhận triệu chứng, chat và xử lý tài liệu y tế kết nối với hồ sơ người dùng.
+- Đơn thuốc, kết quả xét nghiệm, lịch sử và bản tóm tắt có thể được lưu và xem lại trong hồ sơ.
+- Giao diện chat, trang chủ, hồ sơ và phần tìm kiếm cơ sở y tế được chỉnh sửa để dễ đọc và dễ thao tác hơn.
+- Luồng lưu bản tóm tắt lâm sàng được điều chỉnh để cần sự xác nhận của người dùng.
