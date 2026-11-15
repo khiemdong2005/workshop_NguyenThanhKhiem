@@ -50,3 +50,7 @@ Amazon Comprehend Medical giúp chuyển văn bản lâm sàng tự do thành c�
 - [AWS – What is Amazon Comprehend Medical?](https://docs.aws.amazon.com/comprehend-medical/latest/dev/comprehendmedical-welcome.html)
 - [AWS – How Amazon Comprehend Medical works](https://docs.aws.amazon.com/comprehend-medical/latest/dev/comprehendmedical-howitworks.html)
 - [AWS – Amazon Comprehend Medical pricing](https://aws.amazon.com/comprehend/medical/pricing/)
+
+## Ảnh bài đăng
+
+![Bài đăng Amazon Comprehend Medical trên AWS Study Group VN](/images/3-BlogsPosted/comprehend-medical-post.png)

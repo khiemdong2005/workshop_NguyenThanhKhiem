@@ -44,3 +44,7 @@ Audio and transcripts may contain sensitive health data. Access and storage need
 - [AWS – Transcribing a medical dictation](https://docs.aws.amazon.com/transcribe/latest/dg/transcribe-medical-dictation.html)
 - [AWS – Medical custom vocabularies](https://docs.aws.amazon.com/transcribe/latest/dg/vocabulary-med.html)
 - [AWS – Amazon Transcribe pricing](https://aws.amazon.com/transcribe/pricing/)
+
+## Published post
+
+![Amazon Transcribe Medical post in AWS Study Group VN](/images/3-BlogsPosted/transcribe-medical-post.png)

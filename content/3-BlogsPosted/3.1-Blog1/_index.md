@@ -44,3 +44,7 @@ Clinical text may contain PHI, so access control, encryption, storage, and organ
 - [AWS – What is Amazon Comprehend Medical?](https://docs.aws.amazon.com/comprehend-medical/latest/dev/comprehendmedical-welcome.html)
 - [AWS – How Amazon Comprehend Medical works](https://docs.aws.amazon.com/comprehend-medical/latest/dev/comprehendmedical-howitworks.html)
 - [AWS – Amazon Comprehend Medical pricing](https://aws.amazon.com/comprehend/medical/pricing/)
+
+## Published post
+
+![Amazon Comprehend Medical post in AWS Study Group VN](/images/3-BlogsPosted/comprehend-medical-post.png)

@@ -51,3 +51,7 @@ Costs depend on evaluator-model tokens and associated services. Knowledge Base o
 - [AWS – Evaluate RAG sources](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-kb.html)
 - [AWS – Evaluator prompts](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-eval-prompt.html)
 - [AWS – Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/)
+
+## Published post
+
+![Amazon Bedrock Evaluations post in AWS Study Group VN](/images/3-BlogsPosted/bedrock-evaluations-post.png)
