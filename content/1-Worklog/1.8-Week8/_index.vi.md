@@ -8,28 +8,29 @@ pre: " <b> 1.8. </b> "
 
 ### Mục tiêu tuần 8:
 
-- Tiếp tục hoàn thiện giao diện và các chức năng đã chuẩn bị từ tuần 7.
-- Tìm hiểu cách tiếp nhận triệu chứng, lưu nội dung trao đổi theo từng phiên và hiển thị lại thông tin cho người dùng.
-- Thực hành đọc đơn thuốc, kết quả xét nghiệm từ ảnh và đưa thông tin vào hồ sơ cá nhân.
-- Rà soát cách trình bày trang chat, hồ sơ và danh sách cơ sở y tế để người dùng dễ theo dõi hơn.
+- Tiếp tục xây dựng Front-end và Back-end từ phần khung đã chuẩn bị ở tuần 7.
+- Tìm hiểu cách một thao tác trên giao diện được gửi đến Back-end, xử lý rồi trả kết quả về Front-end.
+- Thực hành quản lý trạng thái giao diện, phiên làm việc và dữ liệu gắn với tài khoản người dùng.
+- Rà soát bố cục, màu sắc và cách điều hướng để các trang trong ứng dụng thống nhất hơn.
 
 ### Các công việc cần triển khai trong tuần này:
 
 | Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
 | --- | --- | --- | --- | --- |
-| 2 | - Xem lại giao diện đã dựng ở tuần 7 và liệt kê các phần cần chỉnh sửa.<br>- Điều chỉnh màu sắc, biểu tượng và cách hiển thị hồ sơ khi người dùng đăng nhập.<br>- Tìm hiểu cách phân biệt thông tin của người đang sử dụng với dữ liệu minh họa trong giao diện. | 02/11/2026 | 02/11/2026 | [Giao diện dự án](https://github.com/khiemdong2005/chatbot_medical/blob/main/templates/index.html) |
-| 3 | - Tìm hiểu các bước xử lý một ảnh đơn thuốc hoặc phiếu xét nghiệm: nhận ảnh, đọc nội dung và đưa các trường cần thiết ra giao diện.<br>- Thực hành đối chiếu ngày sinh, giới tính và cách tính tuổi từ thông tin đã đọc được.<br>- Kiểm tra những trường hợp dữ liệu thiếu hoặc đọc sai để không hiển thị nhầm trong hồ sơ. | 03/11/2026 | 03/11/2026 | [Luồng OCR](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/ocr_parallel_service.py); [Xử lý đơn thuốc](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/prescription_service.py) |
-| 4 | - Tiếp tục xây dựng phần hỏi thông tin triệu chứng ban đầu và cửa sổ chat nhỏ trên trang.<br>- Tìm hiểu cách giữ nội dung trao đổi theo từng phiên; sửa trường hợp người dùng nói “không có triệu chứng” nhưng chương trình lại ghi nhận là có.<br>- Chỉnh bố cục trang chủ, hồ sơ và trang cơ sở y tế; kiểm tra việc chuyển giữa các tab. | 04/11/2026 | 04/11/2026 | [Xử lý tiếp nhận](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/intake_service.py); [ghi chú chatbot](https://github.com/khiemdong2005/chatbot_medical/blob/main/docs/chatbot-improvements.md) |
-| 5 | - Thực hành lưu đơn thuốc và kết quả xét nghiệm đã xử lý vào hồ sơ của người dùng.<br>- Bổ sung danh sách lịch sử để có thể xem lại tài liệu cũ.<br>- Kiểm tra dữ liệu được gắn với đúng tài khoản khi đăng nhập, tải lại trang hoặc chuyển phiên. | 05/11/2026 | 05/11/2026 | [Mã nguồn ứng dụng](https://github.com/khiemdong2005/chatbot_medical/blob/main/app.py) |
-| 6 | - Xem lại giao diện trang chat và cách sắp xếp khu vực câu hỏi, câu trả lời.<br>- Điều chỉnh màu chữ, khoảng cách và biểu tượng để nội dung dễ đọc trong chế độ sáng và tối.<br>- So sánh cách hiển thị giữa trang chat chính và cửa sổ chat nhỏ. | 06/11/2026 | 06/11/2026 | [Giao diện](https://github.com/khiemdong2005/chatbot_medical/blob/main/templates/index.html); [JavaScript](https://github.com/khiemdong2005/chatbot_medical/blob/main/static/js/app.js) |
-| 7 | - Hoàn thiện phần tìm kiếm cơ sở y tế và xem vị trí trên bản đồ.<br>- Chỉnh thanh tìm kiếm, thẻ thông tin và nút mở bản đồ để thao tác rõ ràng hơn.<br>- Kiểm tra lỗi bố cục khiến nội dung của các tab ảnh hưởng lẫn nhau. | 07/11/2026 | 07/11/2026 | [Giao diện dự án](https://github.com/khiemdong2005/chatbot_medical/blob/main/templates/index.html) |
-| Chủ nhật | - Rà soát lại quá trình trao đổi của người dùng từ bước khai triệu chứng đến lúc xem tóm tắt.<br>- Điều chỉnh để người dùng xem và xác nhận trước khi lưu bản tóm tắt tư vấn.<br>- Sửa mẫu email mã xác thực và một số vấn đề khi xem lại lịch sử chat. | 08/11/2026 | 08/11/2026 | [Ghi chú chatbot](https://github.com/khiemdong2005/chatbot_medical/blob/main/docs/chatbot-improvements.md) |
+| 2 | - Xem lại cấu trúc trang và các thành phần giao diện đã dựng ở tuần 7.<br>- Chỉnh bố cục, màu sắc và biểu tượng ở trang chủ, hồ sơ; kiểm tra giao diện thay đổi như thế nào khi người dùng đăng nhập.<br>- Tìm hiểu cách tách dữ liệu minh họa ra khỏi dữ liệu của tài khoản thật. | 02/11/2026 | 02/11/2026 | [Giao diện HTML](https://github.com/khiemdong2005/chatbot_medical/blob/main/templates/index.html); [JavaScript](https://github.com/khiemdong2005/chatbot_medical/blob/main/static/js/app.js) |
+| 3 | - Tìm hiểu luồng xử lý giữa Front-end và Back-end khi người dùng tải ảnh đơn thuốc hoặc phiếu xét nghiệm.<br>- Kiểm tra cách Back-end đọc dữ liệu, trả các trường cần thiết và cách Front-end nhận, hiển thị kết quả.<br>- Bổ sung việc đối chiếu ngày sinh, giới tính và hiển thị tuổi từ dữ liệu đã đọc. | 03/11/2026 | 03/11/2026 | [Luồng xử lý tài liệu](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/pipeline_orchestrator.py); [OCR](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/ocr_parallel_service.py) |
+| 4 | - Xây dựng phần giao diện nhập thông tin ban đầu và cửa sổ chat nhỏ.<br>- Tìm hiểu cách lưu trạng thái của một phiên trao đổi để dữ liệu không bị mất khi chuyển giữa các màn hình.<br>- Sửa cách ghi nhận câu phủ định và kiểm tra thông tin Front-end gửi lên có khớp với dữ liệu Back-end lưu lại hay không. | 04/11/2026 | 04/11/2026 | [Xử lý phiên tiếp nhận](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/intake_service.py); [JavaScript](https://github.com/khiemdong2005/chatbot_medical/blob/main/static/js/app.js) |
+| 5 | - Tìm hiểu cách tổ chức dữ liệu hồ sơ theo từng tài khoản.<br>- Kết nối kết quả xử lý tài liệu với phần lưu trữ và danh sách lịch sử trên giao diện.<br>- Kiểm tra trường hợp tải lại trang hoặc chuyển tài khoản để tránh hiển thị nhầm dữ liệu. | 05/11/2026 | 05/11/2026 | [Mã nguồn Back-end](https://github.com/khiemdong2005/chatbot_medical/blob/main/app.py); [Xử lý đơn thuốc](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/prescription_service.py) |
+| 6 | - Rà soát cách bố trí tin nhắn, ô nhập và các nút trên trang chat.<br>- Chỉnh khoảng cách, độ tương phản và biểu tượng trong giao diện sáng, tối.<br>- Đối chiếu cách hiển thị giữa trang chat chính và cửa sổ chat nhỏ để người dùng không bị thay đổi cách thao tác. | 06/11/2026 | 06/11/2026 | [Giao diện HTML](https://github.com/khiemdong2005/chatbot_medical/blob/main/templates/index.html); [JavaScript](https://github.com/khiemdong2005/chatbot_medical/blob/main/static/js/app.js) |
+| 7 | - Tiếp tục hoàn thiện giao diện tìm kiếm cơ sở y tế và bản đồ.<br>- Kiểm tra sự kiện khi người dùng chọn một cơ sở, mở bản đồ hoặc chuyển tab.<br>- Sửa các phần tử bị lệch và lỗi bố cục khiến nội dung của tab này ảnh hưởng sang tab khác. | 07/11/2026 | 07/11/2026 | [Giao diện HTML](https://github.com/khiemdong2005/chatbot_medical/blob/main/templates/index.html); [JavaScript](https://github.com/khiemdong2005/chatbot_medical/blob/main/static/js/app.js) |
+| Chủ nhật | - Rà soát lại dữ liệu của phiên tư vấn từ lúc nhập thông tin đến khi xem bản tóm tắt.<br>- Điều chỉnh luồng giao diện và Back-end để chỉ lưu bản tóm tắt sau khi người dùng xác nhận.<br>- Sửa mẫu email mã xác thực và kiểm tra lại phần lịch sử trao đổi. | 08/11/2026 | 08/11/2026 | [Ghi chú về luồng chat](https://github.com/khiemdong2005/chatbot_medical/blob/main/docs/chatbot-improvements.md); [Xử lý phiên](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/intake_service.py) |
 
 ### Kết quả đạt được tuần 8:
 
-- Hiểu rõ hơn cách tổ chức một luồng sử dụng từ lúc người dùng nhập triệu chứng đến khi xem lại nội dung đã trao đổi.
-- Thực hành đọc thông tin từ đơn thuốc và kết quả xét nghiệm, đồng thời biết cần kiểm tra lại các trường dữ liệu trước khi đưa vào hồ sơ.
-- Biết cách lưu tài liệu theo tài khoản và hiển thị lịch sử để người dùng có thể tra cứu lại.
-- Nhận ra việc ghi nhận đúng câu phủ định trong lời khai là cần thiết; nếu bỏ qua từ “không”, thông tin triệu chứng có thể bị hiểu sai.
-- Hoàn thiện thêm giao diện chat, hồ sơ và trang cơ sở y tế. Các phần này đã có cách trình bày thống nhất hơn so với tuần trước.
-- Tìm hiểu thêm về quyền kiểm soát thông tin cá nhân: bản tóm tắt tư vấn cần được người dùng xem và xác nhận trước khi lưu.
+- Hiểu rõ hơn vai trò của Front-end và Back-end: Front-end tiếp nhận thao tác, gửi dữ liệu và hiển thị kết quả; Back-end kiểm tra, xử lý và lưu thông tin.
+- Thực hành kết nối một chức năng từ giao diện tới phần xử lý phía sau, đặc biệt là luồng tải ảnh và hiển thị dữ liệu đã đọc.
+- Biết cách theo dõi trạng thái đăng nhập, phiên trao đổi và dữ liệu của từng người dùng khi chuyển trang hoặc tải lại.
+- Tìm hiểu thêm cách tổ chức dữ liệu hồ sơ và lịch sử để thông tin được gắn với đúng tài khoản.
+- Cải thiện khả năng sử dụng của giao diện qua việc chỉnh bố cục chat, màu chữ, biểu tượng, điều hướng tab và bản đồ.
+- Nhận thấy việc kiểm tra dữ liệu ở cả hai phía là cần thiết: dữ liệu đọc từ ảnh có thể thiếu, còn thông tin người dùng nhập có thể bị hiểu sai nếu không xử lý đúng câu phủ định.
+- Hoàn thành bước xác nhận của người dùng trước khi lưu bản tóm tắt tư vấn.
