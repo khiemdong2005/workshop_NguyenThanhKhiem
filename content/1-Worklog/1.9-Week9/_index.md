@@ -1,57 +1,30 @@
 ---
 title: "Week 9 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-11-09
+weight: 9
 chapter: false
 pre: " <b> 1.9. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 9 objectives
 
-### Week 9 Objectives:
+- Extend MediMind AI with nutrition support and habit tracking.
+- Improve the quality of medical chatbot answers and reference retrieval.
+- Review the medical facility search experience and UI consistency.
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Work completed
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Date | Work | Evidence |
+| --- | --- | --- |
+| 10/11/2026 | Built Nutrition Studio with meal suggestions, AI recipe generation, and habit tracking; integrated the UI and supporting services into the application. | MediMind AI source code and commit history |
+| 11/11/2026 | Added nutrition rules for users with multiple health conditions, imported a recipe catalog for offline lookup, and refined the Nutrition Studio interface. | MediMind AI source code and commit history |
+| 12/11/2026 | Evaluated chatbot answer quality, strengthened safety checks, expanded cross-language document retrieval, and aligned the medical facility UI with the rest of the application. | MediMind AI source code and commit history |
+| 13/11/2026 | Unified the medical facility page's theme and layout, restored Google Maps, and improved the facility detail drawer. | MediMind AI source code and commit history |
+| 15/11/2026 | Improved the RAG retrieval engine to reduce irrelevant results as the corpus grew; expanded the curated medical documents and reorganized parts of the backend architecture. | MediMind AI source code and commit history |
 
+### Results
 
-### Week 9 Achievements:
-
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+- Nutrition Studio includes a UI, meal recommendation rules, a recipe catalog, and habit tracking.
+- The chatbot gained answer-quality evaluation, additional safety checks, and cross-language document retrieval.
+- The medical facility interface was aligned with the application and its interactive map was restored.
+- The RAG corpus was expanded while retrieval behavior and backend structure were improved.
