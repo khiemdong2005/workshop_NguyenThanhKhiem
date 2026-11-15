@@ -8,28 +8,27 @@ pre: " <b> 1.9. </b> "
 
 ### Mục tiêu tuần 9:
 
-- Mở rộng MediMind AI từ chức năng tư vấn ban đầu sang hỗ trợ lựa chọn món ăn và theo dõi thói quen, đồng thời xác định rõ giới hạn của gợi ý dinh dưỡng trong một ứng dụng sức khỏe.
-- Tìm hiểu cách kết hợp dữ liệu công thức món ăn có nguồn gốc với quy tắc lọc và mô hình ngôn ngữ, tránh để mô hình tự tạo nguyên liệu hoặc khẳng định lợi ích y khoa chưa được kiểm chứng.
-- Đánh giá chất lượng câu trả lời của chatbot, chú ý đến sự phù hợp của nguồn trích dẫn, các tình huống cần cảnh báo an toàn và câu hỏi tiếng Việt khi tài liệu chủ yếu bằng tiếng Anh.
-- Cải thiện khả năng tìm kiếm cơ sở y tế và cách trình bày thông tin trên giao diện.
-- Nghiên cứu vấn đề suy giảm độ liên quan của kết quả truy xuất khi kho tài liệu RAG được mở rộng; tổ chức lại dữ liệu và các thành phần Backend để thuận tiện kiểm thử.
+- Tìm hiểu cách tổ chức dữ liệu món ăn và sử dụng dữ liệu đó để xây dựng phần gợi ý dinh dưỡng.
+- Thực hành xây dựng các điều kiện lọc khi người dùng có nhiều nhu cầu sức khỏe hoặc cần tránh một số nguyên liệu.
+- Tìm hiểu cách đánh giá câu trả lời của chatbot và cách tìm tài liệu phù hợp với câu hỏi tiếng Việt.
+- Tiếp tục cải thiện trang cơ sở y tế và rà soát kho tài liệu dùng cho phần hỏi đáp.
 
-### Các công việc đã thực hiện trong tuần này:
+### Các công việc cần triển khai trong tuần này:
 
 | Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
 | --- | --- | --- | --- | --- |
-| 3 | - Thiết kế và triển khai **Nutrition Studio** với luồng xem gợi ý món ăn, tạo nội dung công thức có hỗ trợ AI và ghi nhận thói quen sử dụng.<br>- Phân chia phần giao diện, quy tắc lọc món ăn và dịch vụ xử lý ở Backend; xác định dữ liệu nào do ứng dụng kiểm soát và dữ liệu nào chỉ là giải thích từ mô hình.<br>- Viết các ca kiểm thử cơ bản cho quy tắc dinh dưỡng và luồng tương tác. | 10/11/2026 | 10/11/2026 | Mã nguồn Nutrition Studio và tài liệu gợi ý dinh dưỡng của dự án |
-| 4 | - Mở rộng quy tắc gợi ý cho trường hợp người dùng nêu đồng thời nhiều tình trạng sức khỏe hoặc yêu cầu tránh một số thành phần.<br>- Nhập và làm sạch dữ liệu công thức món ăn để tạo danh mục tra cứu cục bộ; bổ sung phương án hiển thị kết quả đã lọc khi dịch vụ AI không sẵn sàng.<br>- Rà soát tên món, nguyên liệu và nguồn dữ liệu để tránh trình bày nội dung do mô hình sinh ra như một công thức đã được xác minh. | 11/11/2026 | 11/11/2026 | Tài liệu Nutrition recommendations, dữ liệu công thức và mã nguồn dự án |
-| 5 | - Thiết lập các tình huống đánh giá câu trả lời chatbot, kiểm tra việc sử dụng nguồn tài liệu và các trường hợp cần phản hồi an toàn thay vì đưa ra kết luận y khoa chắc chắn.<br>- Thử nghiệm mở rộng truy vấn giữa tiếng Việt và tiếng Anh nhằm cải thiện khả năng tìm tài liệu liên quan; phân biệt kết quả thử nghiệm với chất lượng đã được kiểm định trong thực tế.<br>- Đồng bộ cách trình bày phần cơ sở y tế với các trang khác của ứng dụng. | 12/11/2026 | 12/11/2026 | Tài liệu cải thiện chatbot, bộ đánh giá và mã nguồn giao diện |
-| 6 | - Rà soát giao diện tìm kiếm cơ sở y tế ở các chế độ màu, sửa sự không nhất quán của màu chữ và thành phần hiển thị.<br>- Khôi phục bản đồ Google Maps và cải thiện khung thông tin chi tiết khi chọn một cơ sở trong danh sách.<br>- Kiểm tra mối liên hệ giữa danh sách, vị trí bản đồ và nội dung chi tiết để giảm thao tác lặp cho người dùng. | 13/11/2026 | 13/11/2026 | Mã nguồn trang cơ sở y tế và bản thiết kế UI |
-| Chủ nhật | - Phân tích hiện tượng kết quả truy xuất kém liên quan khi bổ sung nhiều tài liệu vào kho tri thức RAG; rà soát cách tuyển chọn, phân loại và tìm kiếm tài liệu.<br>- Bổ sung tập tài liệu y tế đã tuyển chọn, điều chỉnh luồng truy xuất và xây dựng các phép đánh giá để so sánh kết quả trên bộ câu hỏi phát triển.<br>- Tổ chức lại một phần cấu trúc Backend và cấu hình để các thành phần xử lý có trách nhiệm rõ ràng hơn. | 15/11/2026 | 15/11/2026 | Mã nguồn RAG, tài liệu đánh giá truy xuất và dữ liệu tuyển chọn |
+| 3 | - Tìm hiểu những thông tin cần có khi gợi ý món ăn: tên món, nguyên liệu, cách chế biến và yêu cầu của người dùng.<br>- Bắt đầu xây dựng trang gợi ý món ăn và phần ghi nhận thói quen ăn uống.<br>- Phân chia công việc giữa phần dữ liệu, quy tắc lựa chọn món và giao diện hiển thị. | 10/11/2026 | 10/11/2026 | [Tài liệu dinh dưỡng](https://github.com/khiemdong2005/chatbot_medical/blob/main/docs/nutrition-recommendations.md); [mã nguồn](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/nutrition_service.py) |
+| 4 | - Tìm hiểu cách xử lý khi một người dùng đưa ra nhiều tình trạng sức khỏe cùng lúc hoặc cần tránh một nguyên liệu cụ thể.<br>- Thu thập, làm sạch và sắp xếp dữ liệu công thức món ăn để có thể tra cứu trong ứng dụng.<br>- Kiểm tra trường hợp không gọi được dịch vụ AI và hiển thị các món đã qua bước lọc thay cho kết quả từ AI. | 11/11/2026 | 11/11/2026 | [Tài liệu dinh dưỡng](https://github.com/khiemdong2005/chatbot_medical/blob/main/docs/nutrition-recommendations.md); [danh mục món ăn](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/recipe_catalog.py) |
+| 5 | - Tìm hiểu cách đánh giá câu trả lời: nội dung có liên quan đến câu hỏi hay không, nguồn dẫn có đúng với tài liệu tìm được hay không và lời khuyên có phù hợp không.<br>- Thử cách tìm tài liệu tiếng Anh cho câu hỏi tiếng Việt; ghi nhận trường hợp tìm đúng chủ đề và trường hợp kết quả chưa liên quan.<br>- Tiếp tục chỉnh giao diện trang cơ sở y tế. | 12/11/2026 | 12/11/2026 | [Ghi chú chatbot](https://github.com/khiemdong2005/chatbot_medical/blob/main/docs/chatbot-improvements.md); [mã nguồn RAG](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/rag_service.py) |
+| 6 | - Kiểm tra trang cơ sở y tế ở chế độ sáng và tối, chỉnh những chỗ màu chữ hoặc thẻ thông tin khó đọc.<br>- Khôi phục bản đồ và chỉnh khung thông tin chi tiết khi chọn một cơ sở.<br>- Xem lại cách chuyển từ danh sách kết quả sang vị trí trên bản đồ. | 13/11/2026 | 13/11/2026 | [Giao diện dự án](https://github.com/khiemdong2005/chatbot_medical/blob/main/templates/index.html) |
+| Chủ nhật | - Rà soát các tài liệu dùng để trả lời câu hỏi sức khỏe; tìm hiểu vì sao khi thêm nhiều tài liệu, một số câu hỏi lại nhận kết quả chưa đúng trọng tâm.<br>- Phân loại và bổ sung tài liệu phù hợp, kiểm tra lại cách tìm kiếm bằng các câu hỏi mẫu.<br>- Sắp xếp lại một số phần của Backend để việc kiểm tra và bổ sung tài liệu về sau thuận tiện hơn. | 15/11/2026 | 15/11/2026 | [Mã nguồn truy xuất tài liệu](https://github.com/khiemdong2005/chatbot_medical/blob/main/core/rag_service.py) |
 
 ### Kết quả đạt được tuần 9:
 
-- Xây dựng được Nutrition Studio gồm giao diện, danh mục công thức, quy tắc lọc và chức năng theo dõi thói quen. Tôi hiểu thêm về cách tách **dữ liệu gốc**, **quy tắc kiểm soát** và **phần diễn giải của AI** trong cùng một luồng gợi ý.
-- Bổ sung dữ liệu món ăn có thể tra cứu cục bộ và phương án dự phòng khi dịch vụ AI không phản hồi. Kết quả dự phòng cần được ghi rõ là danh sách đã lọc, không được mô tả như kết quả xếp hạng bởi AI.
-- Bước đầu xây dựng cách đánh giá chatbot theo tình huống, kiểm tra nguồn trích dẫn và hành vi an toàn. Các phép kiểm thử kỹ thuật giúp phát hiện lỗi triển khai nhưng chưa đủ để chứng nhận độ chính xác lâm sàng.
-- Thực hành tìm kiếm tài liệu giữa tiếng Việt và tiếng Anh; nhận thấy truy vấn đa ngôn ngữ cần được đo trên bộ dữ liệu độc lập để tránh đánh giá quá lạc quan.
-- Cải thiện tính nhất quán của trang cơ sở y tế, khôi phục bản đồ và hoàn thiện khung thông tin chi tiết để người dùng dễ đối chiếu địa điểm với kết quả tìm kiếm.
-- Nhận diện bài toán **retrieval dilution**: khi số lượng tài liệu tăng, các đoạn ít liên quan có thể lấn át nguồn cần thiết. Việc tuyển chọn dữ liệu, kiểm soát phiên bản kho tài liệu và đánh giá theo câu hỏi mẫu là các bước quan trọng trước khi mở rộng RAG.
-- Các gợi ý dinh dưỡng và câu trả lời của chatbot chỉ hỗ trợ tham khảo ban đầu; hệ thống chưa tạo kế hoạch ăn uống cá nhân được chuyên gia thẩm định và không thay thế tư vấn của bác sĩ hoặc chuyên gia dinh dưỡng.
+- Hiểu thêm cách chuẩn bị dữ liệu món ăn trước khi sử dụng trong một chức năng gợi ý: cần có nguồn, nguyên liệu rõ ràng và cách xử lý các trường hợp không phù hợp.
+- Bước đầu xây dựng được trang gợi ý món ăn, danh mục công thức và phần theo dõi thói quen.
+- Biết cách kết hợp điều kiện lọc với dữ liệu có sẵn để xử lý yêu cầu tránh nguyên liệu hoặc nhiều nhu cầu cùng lúc.
+- Tập đánh giá câu trả lời của chatbot dựa trên câu hỏi, nội dung phản hồi và nguồn tài liệu đi kèm, thay vì chỉ kiểm tra chatbot có trả lời hay không.
+- Nhận thấy câu hỏi tiếng Việt có thể khó tìm đúng tài liệu khi phần lớn nguồn viết bằng tiếng Anh; cần thử nhiều câu hỏi để xem cách tìm kiếm có thực sự phù hợp.
+- Hoàn thiện thêm trang cơ sở y tế và bản đồ để việc xem danh sách, vị trí và thông tin chi tiết thuận tiện hơn.
+- Hiểu rằng mở rộng kho tài liệu không đồng nghĩa với tìm kiếm tốt hơn; cần chọn lọc tài liệu và kiểm tra kết quả sau mỗi lần bổ sung.
