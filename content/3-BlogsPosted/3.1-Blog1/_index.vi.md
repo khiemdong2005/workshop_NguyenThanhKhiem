@@ -53,4 +53,4 @@ Amazon Comprehend Medical giúp chuyển văn bản lâm sàng tự do thành c�
 
 ## Ảnh bài đăng
 
-![Bài đăng Amazon Comprehend Medical trên AWS Study Group VN](/images/3-BlogsPosted/comprehend-medical-post.png)
+![Bài đăng Amazon Comprehend Medical trên AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/comprehend-medical-post.png)

@@ -55,4 +55,4 @@ Amazon Transcribe Medical tính phí theo thời lượng âm thanh được phi
 
 ## Ảnh bài đăng
 
-![Bài đăng Amazon Transcribe Medical trên AWS Study Group VN](/images/3-BlogsPosted/transcribe-medical-post.png)
+![Bài đăng Amazon Transcribe Medical trên AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/transcribe-medical-post.png)

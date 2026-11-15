@@ -47,4 +47,4 @@ Clinical text may contain PHI, so access control, encryption, storage, and organ
 
 ## Published post
 
-![Amazon Comprehend Medical post in AWS Study Group VN](/images/3-BlogsPosted/comprehend-medical-post.png)
+![Amazon Comprehend Medical post in AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/comprehend-medical-post.png)

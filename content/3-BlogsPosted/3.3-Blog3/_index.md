@@ -54,4 +54,4 @@ Costs depend on evaluator-model tokens and associated services. Knowledge Base o
 
 ## Published post
 
-![Amazon Bedrock Evaluations post in AWS Study Group VN](/images/3-BlogsPosted/bedrock-evaluations-post.png)
+![Amazon Bedrock Evaluations post in AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/bedrock-evaluations-post.png)

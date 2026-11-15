@@ -73,4 +73,4 @@ Chi phí phụ thuộc vào mô hình giám khảo, lượng token xử lý và 
 
 ## Ảnh bài đăng
 
-![Bài đăng Amazon Bedrock Evaluations trên AWS Study Group VN](/images/3-BlogsPosted/bedrock-evaluations-post.png)
+![Bài đăng Amazon Bedrock Evaluations trên AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/bedrock-evaluations-post.png)
