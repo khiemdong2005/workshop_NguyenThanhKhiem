@@ -10,13 +10,13 @@ pre: " <b> 5. </b> "
 
 #### Tổng quan
 
-**MediMind Clinical AI** là nền tảng trợ lý y tế lâm sàng đa phương thức khép kín, hỗ trợ sàng lọc triệu chứng ban đầu, đối soát đơn thuốc/phiếu xét nghiệm và tư vấn dinh dưỡng cá nhân hóa cho người bệnh và bác sĩ tại Việt Nam. Trong bài workshop thực hành này, bạn sẽ đóng gói ứng dụng Python/Docker (`app.py` và `core/main_fastapi.py`), khởi tạo hạ tầng **AWS VPC 3 tầng mạng (`10.0.0.0/16`)** tuân thủ chuẩn bảo mật **HIPAA** tại khu vực **`ap-southeast-1` (Singapore)**, và triển khai hoàn chỉnh hệ thống với **Hybrid RAG (BM25 + ChromaDB + Cross-Encoder Reranker)**, **Double Guardrails** và **Pipeline OCR**.
+**MediMind Clinical AI** là nền tảng trợ lý y tế lâm sàng đa phương thức khép kín, hỗ trợ sàng lọc triệu chứng ban đầu, đối soát đơn thuốc/phiếu xét nghiệm, nhắc lịch uống thuốc và tư vấn dinh dưỡng cá nhân hóa cho người bệnh và bác sĩ tại Việt Nam. Trong bài workshop thực hành này, bạn sẽ đóng gói ứng dụng Python/Docker (`app.py` và `core/main_fastapi.py`), khởi tạo hạ tầng **AWS VPC 3 tầng mạng (`10.0.0.0/16`)** áp dụng các biện pháp kiểm soát bảo mật theo định hướng **HIPAA** (*HIPAA-aligned*) tại khu vực **`ap-southeast-1` (Singapore)**, và triển khai hoàn chỉnh hệ thống với **Hybrid RAG (BM25 + ChromaDB + Cross-Encoder Reranker)**, **Double Guardrails** và **Pipeline OCR Đối soát**.
 
 {{% notice info %}}
-**Kết quả & Chỉ số Trọng tâm của Workshop**
-- **An toàn Lâm sàng:** Đạt **100% Emergency Recall** (`emergency_recall_min = 1.0`), **100% Negation Accuracy** (xử lý bẫy phủ định) và **0.0%** tỷ lệ lời khuyên nguy hiểm trên 83 tệp kiểm thử tự động `pytest` cùng 4 bộ dữ liệu đánh giá (308 mẫu).
-- **Tri thức Y khoa Chuẩn hóa:** Hybrid RAG lập chỉ mục trên **364 tài liệu y khoa chuẩn** (*Bộ Y Tế, kcb.vn, MedlinePlus NIH*), **2.462 món ăn & đồ uống Việt Nam (ViFoodRec)** với cơ chế lọc dị ứng tất định (*Fail-Closed*), và mạng lưới **2.144 cơ sở y tế** (1.505 tại TP.HCM và 639 tại Hà Nội).
-- **Tối ưu Chi phí:** Chỉ **$16.26/tháng** ($195.12/năm) ở môi trường Dev/PoC Workshop nhờ tận dụng AWS Free Tier + OpenRouter `:free` models, và **$104.60/tháng** (**$0.00418/phiên tư vấn**) ở quy mô Production 10.000 người dùng/tháng.
+**Kết quả & Phạm vi Trọng tâm của Workshop**
+- **An toàn Lâm sàng:** Cơ chế **Double Guardrails** (`core/triage.py`) xử lý câu phủ định và từ khóa không dấu, kích hoạt cảnh báo Cấp cứu 115 và chặn tự kê đơn kháng sinh, được kiểm chứng qua **95 tệp kiểm thử tự động `pytest`**.
+- **Tri thức Y khoa Chuẩn hóa:** Hybrid RAG lập chỉ mục trên **364 tài liệu y khoa chuẩn** (*Bộ Y Tế, kcb.vn, MedlinePlus NIH*), **4.962 công thức món Việt chạy trực tiếp** (**2.462 ViFoodRec** + **2.500 Món Ngon Mỗi Ngày**, cùng **34 món tuyển chọn**) với cơ chế lọc dị ứng tất định (*Fail-Closed*) + khảo sát **BMR/TDEE**, và danh mục **2.144 cơ sở y tế** (1.505 tại TP.HCM và 639 tại Hà Nội).
+- **Tối ưu Chi phí:** Khoảng **16,86 USD/tháng** (~202,32 USD/năm) ở môi trường Dev/PoC Workshop (Single-AZ tận dụng AWS Free Tier + Groq API Dual-Key), và **~220,95 – 233,45 USD/tháng** (~0,0088 – 0,0093 USD/phiên) ở kiến trúc Production Multi-AZ 10.000 người dùng/tháng.
 {{% /notice %}}
 
 #### Mục tiêu Thực hành Workshop
@@ -26,7 +26,7 @@ Sau khi hoàn thành bài workshop này, bạn sẽ nắm vững quy trình:
 2. Khởi tạo **Amazon RDS for PostgreSQL**, **Amazon S3** (với Lifecycle Policy) và **AWS Secrets Manager** để nạp khóa bí mật ở thời điểm chạy thông qua **EC2 IAM Role** theo nguyên tắc đặc quyền tối thiểu.
 3. Đóng gói Docker Image bảo mật (non-root `appuser`, `python:3.11-slim`), đẩy lên **Amazon ECR**, gắn ổ đĩa **Amazon EBS (`gp3`)** lưu trữ bền vững chỉ mục **ChromaDB** và nạp 364 tài liệu y khoa.
 4. Công bố ứng dụng an toàn qua **Amazon Route 53**, **AWS WAF**, **Amazon CloudFront**, **AWS Certificate Manager (TLS 1.3)** và **Application Load Balancer (ALB)**.
-5. Kiểm chứng sản phẩm trực tiếp qua 5 kịch bản lâm sàng (cờ đỏ 115, bẫy phủ định, OCR 8 bước, dinh dưỡng ViFoodRec, tóm tắt 30s & đặt lịch), giám sát bằng **Prometheus/Grafana + CloudWatch**, và dọn dẹp triệt để tài nguyên AWS.
+5. Kiểm chứng sản phẩm trực tiếp qua 5 kịch bản lâm sàng (cờ đỏ 115, bẫy phủ định, OCR đối soát, dinh dưỡng BMR/TDEE + ViFoodRec/Món Ngon Mỗi Ngày, tóm tắt 30s & đặt lịch – thông báo), giám sát bằng **Prometheus/Grafana + CloudWatch**, và dọn dẹp triệt để tài nguyên AWS.
 
 #### Nội dung
 
