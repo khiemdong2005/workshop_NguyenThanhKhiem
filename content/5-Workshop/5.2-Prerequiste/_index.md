@@ -76,11 +76,11 @@ chatbot_medical/
 │   ├── triage.py              # Double Guardrails, emergency bypass & negation handling
 │   ├── pipeline_orchestrator.py # 8-step OCR & clinical interpretation pipeline
 │   ├── rag_service.py         # Hybrid BM25 + ChromaDB + BGE Reranker service
-│   ├── nutrition_service.py   # ViFoodRec deterministic Fail-Closed Allergy Filtering
+│   ├── nutrition_service.py   # Deterministic Fail-Closed Allergy Filtering on 2,500 Mon Ngon Moi Ngay recipes
 │   ├── circuit_breaker.py     # 3-state AI Circuit Breaker (CLOSED / OPEN / HALF_OPEN)
 │   ├── storage_service.py     # Magic-byte & anti-Zip/Decompression Bomb validation
-│   └── models.py              # 6 SQLAlchemy ORM tables
-├── data/                      # 364 RAG documents, 2,462 ViFoodRec recipes, 2,144 facilities
+│   └── models.py              # 7 SQLAlchemy ORM tables
+├── data/                      # 364 RAG documents, 2,500 Mon Ngon Moi Ngay recipes, 2,144 facilities
 ├── evaluation/                # quality_gates.json & 4 quantitative benchmark datasets
 ├── monitoring/                # Prometheus, Grafana & Wazuh alert rules
 ├── tests/                     # 83 automated pytest test files

@@ -15,7 +15,7 @@ pre: " <b> 5. </b> "
 {{% notice info %}}
 **Kết quả & Phạm vi Trọng tâm của Workshop**
 - **An toàn Lâm sàng:** Cơ chế **Double Guardrails** (`core/triage.py`) xử lý câu phủ định và từ khóa không dấu, kích hoạt cảnh báo Cấp cứu 115 và chặn tự kê đơn kháng sinh, được kiểm chứng qua **95 tệp kiểm thử tự động `pytest`**.
-- **Tri thức Y khoa Chuẩn hóa:** Hybrid RAG lập chỉ mục trên **364 tài liệu y khoa chuẩn** từ *MedlinePlus NIH* (kết hợp quy trình phân tầng/cấp cứu tham chiếu *Bộ Y Tế – kcb.vn*), **4.962 công thức món Việt chạy trực tiếp** (**2.462 ViFoodRec** + **2.500 Món Ngon Mỗi Ngày**, cùng **34 món tuyển chọn**) với cơ chế lọc dị ứng tất định (*Fail-Closed*) + khảo sát **BMR/TDEE**, và danh mục **2.144 cơ sở y tế** (1.505 tại TP.HCM và 639 tại Hà Nội).
+- **Tri thức Y khoa Chuẩn hóa:** Hybrid RAG lập chỉ mục trên **364 tài liệu y khoa chuẩn** từ *MedlinePlus NIH* (kết hợp quy trình phân tầng/cấp cứu tham chiếu *Bộ Y Tế – kcb.vn*), **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)** với cơ chế lọc dị ứng tất định (*Fail-Closed*) + khảo sát **BMR/TDEE**, và danh mục **2.144 cơ sở y tế** (1.505 tại TP.HCM và 639 tại Hà Nội).
 - **Tối ưu Chi phí:** Khoảng **16,86 USD/tháng** (~202,32 USD/năm) ở môi trường Dev/PoC Workshop (Single-AZ tận dụng AWS Free Tier + Groq API Dual-Key), và **~220,95 – 233,45 USD/tháng** (~0,0088 – 0,0093 USD/phiên) ở kiến trúc Production Multi-AZ 10.000 người dùng/tháng.
 {{% /notice %}}
 
@@ -26,7 +26,7 @@ Sau khi hoàn thành bài workshop này, bạn sẽ nắm vững quy trình:
 2. Khởi tạo **Amazon RDS for PostgreSQL**, **Amazon S3** (với Lifecycle Policy) và **AWS Secrets Manager** để nạp khóa bí mật ở thời điểm chạy thông qua **EC2 IAM Role** theo nguyên tắc đặc quyền tối thiểu.
 3. Đóng gói Docker Image bảo mật (non-root `appuser`, `python:3.11-slim`), đẩy lên **Amazon ECR**, gắn ổ đĩa **Amazon EBS (`gp3`)** lưu trữ bền vững chỉ mục **ChromaDB** và nạp 364 tài liệu y khoa.
 4. Công bố ứng dụng an toàn qua **Amazon Route 53**, **AWS WAF**, **Amazon CloudFront**, **AWS Certificate Manager (TLS 1.3)** và **Application Load Balancer (ALB)**.
-5. Kiểm chứng sản phẩm trực tiếp qua 5 kịch bản lâm sàng (cờ đỏ 115, bẫy phủ định, OCR đối soát, dinh dưỡng BMR/TDEE + ViFoodRec/Món Ngon Mỗi Ngày, tóm tắt 30s & đặt lịch – thông báo), giám sát bằng **Prometheus/Grafana + CloudWatch**, và dọn dẹp triệt để tài nguyên AWS.
+5. Kiểm chứng sản phẩm trực tiếp qua 5 kịch bản lâm sàng (cờ đỏ 115, bẫy phủ định, OCR đối soát, dinh dưỡng BMR/TDEE + 2.500 món Món Ngon Mỗi Ngày, tóm tắt 30s & đặt lịch – thông báo), giám sát bằng **Prometheus/Grafana + CloudWatch**, và dọn dẹp triệt để tài nguyên AWS.
 
 #### Nội dung
 

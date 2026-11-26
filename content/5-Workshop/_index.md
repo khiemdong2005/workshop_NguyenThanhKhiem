@@ -15,7 +15,7 @@ pre: " <b> 5. </b> "
 {{% notice info %}}
 **Key Workshop Scope & Outcomes**
 - **Clinical Safety:** **Double Guardrails** (`core/triage.py`) handle unaccented Vietnamese and negation phrases, trigger Emergency 115 guidance on red flags, and block unauthorized antibiotic prescribing, covered by **95 automated `pytest` test files**.
-- **Grounded Medical Knowledge:** Hybrid RAG indexed over **364 standardized medical documents** from *MedlinePlus NIH* (paired with clinical triage reference guidelines from *Vietnam Ministry of Health – kcb.vn*), **4,962 live Vietnamese recipes** (**2,462 ViFoodRec** + **2,500 Mon Ngon Moi Ngay**, plus **34 curated options**) with Fail-Closed Allergy Filtering and **BMR/TDEE** surveys, and **2,144 healthcare facilities** (1,505 in HCMC and 639 in Hanoi).
+- **Grounded Medical Knowledge:** Hybrid RAG indexed over **364 standardized medical documents** from *MedlinePlus NIH* (paired with clinical triage reference guidelines from *Vietnam Ministry of Health – kcb.vn*), **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)** with Fail-Closed Allergy Filtering and **BMR/TDEE** surveys, and **2,144 healthcare facilities** (1,505 in HCMC and 639 in Hanoi).
 - **Cost Efficiency:** **~16.86 USD/month** (~202.32 USD/year) in Dev/PoC Workshop mode (Single-AZ with AWS Free Tier + Groq Dual-Key API), and **~220.95 – 233.45 USD/month** (**~0.0088 – 0.0093 USD per consultation session**) in Multi-AZ Production at 10,000-user scale.
 {{% /notice %}}
 
@@ -26,7 +26,7 @@ By completing this workshop, you will learn how to:
 2. Provision **Amazon RDS for PostgreSQL**, **Amazon S3** with Lifecycle policies, and **AWS Secrets Manager** for least-privilege runtime secret injection via an **EC2 IAM Role**.
 3. Build a hardened non-root Docker image (`python:3.11-slim`), push it to **Amazon ECR**, attach an encrypted **Amazon EBS (`gp3`)** volume for persistent **ChromaDB** vector storage, and ingest 364 medical documents.
 4. Expose the application securely through **Amazon Route 53**, **AWS WAF**, **Amazon CloudFront**, **AWS Certificate Manager (TLS 1.3)**, and an **Application Load Balancer (ALB)**.
-5. Validate end-to-end clinical triage, negation handling, parallel OCR reconciliation, nutrition filtering (BMR/TDEE + ViFoodRec/Mon Ngon Moi Ngay), Circuit Breaker resilience, and **Prometheus/Grafana + CloudWatch** observability, then cleanly tear down all AWS resources.
+5. Validate end-to-end clinical triage, negation handling, parallel OCR reconciliation, nutrition filtering (BMR/TDEE + 2,500 Mon Ngon Moi Ngay), Circuit Breaker resilience, and **Prometheus/Grafana + CloudWatch** observability, then cleanly tear down all AWS resources.
 
 #### Content
 

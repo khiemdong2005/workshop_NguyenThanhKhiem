@@ -51,7 +51,7 @@ Tải ảnh đơn thuốc hoặc phiếu xét nghiệm sinh hóa máu qua giao d
 #### Bước 4: Tư vấn Dinh dưỡng Lâm sàng (`POST /api/nutrition/analyze`)
 
 Nhập tình trạng bệnh lý và dị ứng (VD: *"Đau dạ dày, không cay, dị ứng hải sản"*):
-- `core/nutrition_rules.py` thực thi lọc dị ứng tất định **Fail-Closed** trên **2.462 công thức ViFoodRec** (2.367 món ăn + 95 đồ uống).
+- `core/nutrition_rules.py` thực thi lọc dị ứng tất định **Fail-Closed** trên **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)**.
 - `core/nutrition_ai.py` chọn tối đa **6 món an toàn** với tên món, nguyên liệu và lượng `kcal` khóa chặt theo danh mục gốc.
 
 #### Bước 5: Tóm tắt Tiền khám 30 Giây & Đặt lịch 2.144 Cơ sở Y tế (`Luồng 9`)

@@ -38,7 +38,7 @@ In the **AWS WAF & Shield Console**, select **Global (CloudFront)** scope (`us-e
 1. Request a **Global ACM Certificate in `us-east-1`** (mandatory for CloudFront custom domains).
 2. Create a **CloudFront Distribution** pointing to `medimind-alb` DNS as the Origin (`HTTPS only`, TLSv1.2+):
    - **Web Application Firewall (WAF):** Attach `medimind-edge-waf`.
-   - **Cache Behavior 1 (`/static/*`):** `CachingOptimized` (serves CSS, JS, and ViFoodRec/UI images from edge within the **1 TB/month Always-Free** tier).
+   - **Cache Behavior 1 (`/static/*`):** `CachingOptimized` (serves CSS, JS, and recipe/UI images from edge within the **1 TB/month Always-Free** tier).
    - **Cache Behavior 2 (`/api/*` and `/auth/*`):** `CachingDisabled` + `AllViewer` origin request policy so clinical triage, OCR uploads, and OAuth callbacks bypass edge caching and preserve cookies/headers.
    - **Default (`*`):** `CachingDisabled` + `AllViewer` for dynamic SPA HTML rendering.
 3. In **Amazon Route 53**, open your Hosted Zone and create an **Alias `A` record** for `medimind.yourdomain.com` pointing to the CloudFront distribution domain (`dxxxxxxxxxxxx.cloudfront.net`).

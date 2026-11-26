@@ -51,7 +51,7 @@ Upload a prescription or biochemistry lab photo via the Web SPA or `POST /api/pr
 #### Step 4: Clinical Nutrition Studio (`POST /api/nutrition/analyze`)
 
 Submit a clinical condition and allergy constraint (e.g., *"Đau dạ dày, không cay, dị ứng hải sản"*):
-- `core/nutrition_rules.py` executes deterministic **Fail-Closed Allergy Filtering** across **2,462 ViFoodRec recipes** (2,367 dishes + 95 drinks).
+- `core/nutrition_rules.py` executes deterministic **Fail-Closed Allergy Filtering** across **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)**.
 - `core/nutrition_ai.py` ranks up to **6 safe dishes** while strictly locking dish names, ingredients, and `kcal` values to the verified catalog.
 
 #### Step 5: 30-Second Pre-Consultation Summary & Facility Booking (`Flow 9`)

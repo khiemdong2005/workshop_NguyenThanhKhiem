@@ -76,11 +76,11 @@ chatbot_medical/
 │   ├── triage.py              # Double Guardrails, cờ đỏ cấp cứu & xử lý bẫy phủ định
 │   ├── pipeline_orchestrator.py # Pipeline OCR & diễn giải lâm sàng 8 bước
 │   ├── rag_service.py         # Dịch vụ Hybrid RAG (BM25 + ChromaDB + BGE Reranker)
-│   ├── nutrition_service.py   # Lọc dị ứng tất định Fail-Closed trên ViFoodRec
+│   ├── nutrition_service.py   # Lọc dị ứng tất định Fail-Closed trên 2.500 món Món Ngon Mỗi Ngày
 │   ├── circuit_breaker.py     # Bộ ngắt mạch AI 3 trạng thái (CLOSED / OPEN / HALF_OPEN)
 │   ├── storage_service.py     # Kiểm tra Magic Bytes & chống Zip/Decompression Bomb
-│   └── models.py              # 6 bảng dữ liệu SQLAlchemy ORM
-├── data/                      # 364 tài liệu RAG, 2.462 món ViFoodRec, 2.144 cơ sở y tế
+│   └── models.py              # 7 bảng dữ liệu SQLAlchemy ORM
+├── data/                      # 364 tài liệu RAG, 2.500 món Món Ngon Mỗi Ngày, 2.144 cơ sở y tế
 ├── evaluation/                # quality_gates.json & 4 bộ dữ liệu benchmark định lượng
 ├── monitoring/                # Cấu hình Prometheus, Grafana & luật cảnh báo Wazuh
 ├── tests/                     # 83 tệp kiểm thử tự động pytest
