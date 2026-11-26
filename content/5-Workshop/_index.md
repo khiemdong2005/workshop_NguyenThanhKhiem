@@ -15,7 +15,7 @@ pre: " <b> 5. </b> "
 {{% notice info %}}
 **Key Workshop Scope & Outcomes**
 - **Clinical Safety:** **Double Guardrails** (`core/triage.py`) handle unaccented Vietnamese and negation phrases, trigger Emergency 115 guidance on red flags, and block unauthorized antibiotic prescribing, covered by **95 automated `pytest` test files**.
-- **Grounded Medical Knowledge:** Hybrid RAG indexed over **364 standardized medical documents** (*Vietnam Ministry of Health, kcb.vn, MedlinePlus NIH*), **4,962 live Vietnamese recipes** (**2,462 ViFoodRec** + **2,500 Mon Ngon Moi Ngay**, plus **34 curated options**) with Fail-Closed Allergy Filtering and **BMR/TDEE** surveys, and **2,144 healthcare facilities** (1,505 in HCMC and 639 in Hanoi).
+- **Grounded Medical Knowledge:** Hybrid RAG indexed over **364 standardized medical documents** from *MedlinePlus NIH* (paired with clinical triage reference guidelines from *Vietnam Ministry of Health – kcb.vn*), **4,962 live Vietnamese recipes** (**2,462 ViFoodRec** + **2,500 Mon Ngon Moi Ngay**, plus **34 curated options**) with Fail-Closed Allergy Filtering and **BMR/TDEE** surveys, and **2,144 healthcare facilities** (1,505 in HCMC and 639 in Hanoi).
 - **Cost Efficiency:** **~16.86 USD/month** (~202.32 USD/year) in Dev/PoC Workshop mode (Single-AZ with AWS Free Tier + Groq Dual-Key API), and **~220.95 – 233.45 USD/month** (**~0.0088 – 0.0093 USD per consultation session**) in Multi-AZ Production at 10,000-user scale.
 {{% /notice %}}
 

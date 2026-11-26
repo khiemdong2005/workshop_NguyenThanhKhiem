@@ -8,7 +8,7 @@ pre: " <b> 5.1. </b> "
 
 #### Problem Statement
 
-Frontline public hospitals in Vietnam routinely operate at **150% – 200% capacity**, resulting in 2–4 hour patient wait times and forcing physicians to start consultations without structured pre-visit medical histories. Meanwhile, unverified general-purpose AI chatbots create severe clinical risks:
+Many frontline public hospitals in Vietnam routinely operate over capacity, resulting in multi-hour patient wait times and forcing physicians to start consultations without structured pre-visit medical histories. Meanwhile, unverified general-purpose AI chatbots create severe clinical risks:
 - **Missed Emergency Golden Hours & Negation Traps:** Simple keyword matchers fail to detect subtle red-flag emergencies or trigger false alarms when patients type *"I have no shortness of breath"* (*"tôi không khó thở"*).
 - **Handwritten Prescription & Dosage Errors:** Blurry or abbreviated prescriptions lead to missed schedules, unsafe antibiotic self-medication, and drug/allergy interactions.
 - **Medical & Nutritional Hallucinations:** Unconstrained LLMs invent medical citations, fabricate calorie counts, or recommend dishes containing patient allergens.
@@ -20,8 +20,8 @@ To solve these bottlenecks end-to-end, the codebase implements five tightly inte
 | Module | Core Implementation Files | Key Capabilities & Data Scope |
 | :--- | :--- | :--- |
 | **1. Clinical Triage & Double Guardrails** | `core/triage.py`, `core/intake_service.py`, `core/chat_service.py` | 3-tier risk stratification (**Green – Yellow – Red**), accent-free Vietnamese & negation pre-check, immediate **Emergency 115** bypass, post-check blocking unauthorized antibiotic prescribing. |
-| **2. Parallel OCR Verification Pipeline** | `core/pipeline_orchestrator.py`, `core/ocr/ocr_parallel_service.py`, `core/ocr/groq_schema_service.py`, `core/ocr/reconciliation_service.py` | Runs **EasyOCR** and **Vision LLM** (`qwen/qwen3.8-27b` via Groq Dual-Key Failover) in parallel, reconciles field-by-field (`needs_review=True` on field or schedule/quantity mismatch), validates rules, and links reminders via `/api/notifications` after user confirmation. |
-| **3. Grounded Hybrid Medical RAG** | `core/rag_service.py`, `core/reranker_service.py`, `ingest.py` | Hybrid retrieval combining **BM25** lexical search, **ChromaDB** vector search over **364 standardized clinical documents** (*MoH, kcb.vn, MedlinePlus NIH*), bilingual query expansion, and `BAAI/bge-reranker-v2-m3` reranking. |
+| **2. Multimodal OCR Verification Pipeline** | `core/pipeline_orchestrator.py`, `core/ocr/ocr_parallel_service.py`, `core/ocr/groq_schema_service.py`, `core/ocr/reconciliation_service.py` | Uses **Vision LLM** (`qwen/qwen3.8-27b` via Groq Dual-Key Failover, with an optional local **EasyOCR** branch), reconciles field-by-field (`needs_review=True` on field or schedule/quantity mismatch), validates rules, and links reminders via `/api/notifications` after user confirmation. |
+| **3. Grounded Hybrid Medical RAG** | `core/rag_service.py`, `core/reranker_service.py`, `ingest.py` | Hybrid retrieval combining in-house Python **BM25** lexical search, **ChromaDB** vector search over **364 standardized clinical documents** from *MedlinePlus NIH* (paired with triage reference guidelines from *Vietnam MoH – kcb.vn*), bilingual query expansion, and `BAAI/bge-reranker-v2-m3` reranking. |
 | **4. Clinical Nutrition Studio** | `core/nutrition/nutrition_meal_planner.py`, `core/nutrition/nutrition_rules.py`, `core/nutrition/monngonmoingay_catalog.py`, `core/nutrition/recipe_catalog.py` | **BMR/TDEE** surveys and deterministic multi-condition + 12-allergen *Fail-Closed* filtering across **4,962 live Vietnamese recipes** (**2,462 ViFoodRec** + **2,500 Mon Ngon Moi Ngay**, plus 34 curated options). |
 | **5. 30-Second Summary & Booking** | `core/facilities_service.py`, `core/appointment_service.py`, `core/shared/notification_service.py` | Generates structured **Pre-Consultation Summaries**, supports in-app booking across **2,144 healthcare facilities** (1,505 HCMC + 639 Hanoi), sends confirmation emails to the user's inbox, and persists server-backed alerts. |
 
@@ -42,7 +42,7 @@ To solve these bottlenecks end-to-end, the codebase implements five tightly inte
    - **`7b. Send OTP`:** Sends 6-digit verification codes and appointment confirmation emails via **Gmail SMTP** (`smtp.gmail.com:587`) and **SpeedSMS**.
    - **`7c. LLM / Vision AI`:** Calls **Groq Dual-Key Failover** (`core/ai/llm_provider.py`, `qwen/qwen3.8-27b`) using workload-isolated API keys for clinical chat, verification, OCR extraction, and nutrition ranking.
 8. **Flow `8. Google OAuth Consent`:** The user browser interacts directly with Google's OAuth 2.0 consent screen before redirecting back to the application callback.
-9. **Flow `9. Google Maps API`:** The browser renders interactive facility maps and directions across **2,144 clinics** via the **Google Maps Platform API**.
+9. **Flow `9. Healthcare Facility Map`:** The browser renders interactive facility maps and directions across **2,144 clinics** via **Leaflet / OpenStreetMap** (with optional **Google Maps Platform API** support).
 
 #### AWS Services & External Integrations Inventory
 
@@ -53,7 +53,7 @@ To solve these bottlenecks end-to-end, the codebase implements five tightly inte
 | **Compute & Storage** | **Amazon EC2, Amazon EBS (`gp3`), Amazon ECR, Amazon S3** | Runs Docker container on port `8000`, persists ChromaDB & uploads on EBS, stores private images in ECR, archives encrypted backups in S3. |
 | **Database** | **Amazon RDS for PostgreSQL (`db.t4g.micro`)** | Managed relational database (`:5432`) isolated in `Private Database Subnet` replacing local SQLite for production concurrency. |
 | **Security & Ops** | **AWS Secrets Manager, Amazon CloudWatch, AWS IAM, AWS Budgets** | Runtime secret injection via `EC2 IAM Role`, PII-redacted centralized logging, and 20 USD Dev budget alerts. |
-| **External APIs** | **Groq API (Dual-Key), Google OAuth, Gmail SMTP, SpeedSMS, Google Maps** | Vision/Chat AI inference, multi-channel authentication/OTP, and 2,144-facility geolocation. |
+| **External APIs** | **Groq API (Dual-Key), Google OAuth, Gmail SMTP, SpeedSMS, Leaflet / OpenStreetMap (optional Google Maps)** | Vision/Chat AI inference, multi-channel authentication/OTP, and 2,144-facility geolocation. |
 
 #### Cost Summary (`ap-southeast-1`)
 

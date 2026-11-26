@@ -8,7 +8,7 @@ pre: " <b> 5.1. </b> "
 
 #### Vấn đề Thực tiễn
 
-Các bệnh viện tuyến đầu tại Việt Nam thường xuyên hoạt động ở mức **150% – 200% công suất**, khiến người bệnh phải chờ đợi 2–4 giờ và bác sĩ thiếu bản tóm tắt bệnh sử có cấu trúc trước khi thăm khám. Đồng thời, việc tra cứu qua các chatbot AI phổ thông tiềm ẩn nhiều rủi ro lâm sàng nghiêm trọng:
+Nhiều bệnh viện tuyến cuối tại Việt Nam thường xuyên quá tải công suất, khiến thời gian chờ khám kéo dài nhiều giờ và bác sĩ thiếu bản tóm tắt bệnh sử có cấu trúc trước khi thăm khám. Đồng thời, việc tra cứu qua các chatbot AI phổ thông tiềm ẩn nhiều rủi ro lâm sàng nghiêm trọng:
 - **Bỏ sót "Giờ vàng" Cấp cứu & Bẫy phủ định:** Các bộ lọc từ khóa đơn giản dễ bỏ sót triệu chứng nguy kịch hoặc báo động giả khi người dùng nhập câu phủ định như *"tôi không khó thở"*.
 - **Sai sót từ Đơn thuốc Viết tay & Tự dùng Kháng sinh:** Ảnh đơn thuốc mờ hoặc viết tắt dẫn đến nhầm liều, uống sai thời điểm trước/sau ăn hoặc tương tác dị ứng thuốc.
 - **Ảo giác Tri thức Y khoa & Dị ứng Dinh dưỡng:** AI không kiểm soát có thể tự bịa nguồn trích dẫn y văn, bịa lượng calo hoặc gợi ý món ăn chứa thành phần gây dị ứng cho người bệnh.
@@ -20,8 +20,8 @@ Các bệnh viện tuyến đầu tại Việt Nam thường xuyên hoạt độ
 | Phân hệ | Tệp Mã nguồn Chính | Năng lực & Quy mô Dữ liệu Thực tế |
 | :--- | :--- | :--- |
 | **1. Sàng lọc Lâm sàng & Double Guardrails** | `core/triage.py`, `core/intake_service.py`, `core/chat_service.py` | Phân tầng 3 mức nguy cơ (**Xanh – Vàng – Đỏ**), xử lý tiếng Việt không dấu & câu phủ định, kích hoạt khẩn **Cấp cứu 115**, hậu kiểm chặn tự kê đơn kháng sinh. |
-| **2. Pipeline OCR Đối soát Song song** | `core/pipeline_orchestrator.py`, `core/ocr/ocr_parallel_service.py`, `core/ocr/groq_schema_service.py`, `core/ocr/reconciliation_service.py` | Chạy song song **EasyOCR** và **Vision LLM** (`qwen/qwen3.8-27b` qua Groq Dual-Key Failover), đối chiếu từng trường (`needs_review=True` khi sai lệch dữ liệu hoặc lệch cữ/số lượng thuốc), chuẩn hóa theo luật và nhắc uống thuốc qua `/api/notifications` sau khi người dùng xác nhận. |
-| **3. Hybrid Medical RAG Có căn cứ** | `core/rag_service.py`, `core/reranker_service.py`, `ingest.py` | Kết hợp tìm kiếm từ khóa **BM25**, vector **ChromaDB** trên **364 tài liệu y khoa chuẩn** (*Bộ Y Tế, kcb.vn, MedlinePlus NIH*), mở rộng truy vấn song ngữ Việt–Anh và tái xếp hạng `BAAI/bge-reranker-v2-m3`. |
+| **2. Pipeline OCR Đối soát** | `core/pipeline_orchestrator.py`, `core/ocr/ocr_parallel_service.py`, `core/ocr/groq_schema_service.py`, `core/ocr/reconciliation_service.py` | Sử dụng **Vision LLM** (`qwen/qwen3.8-27b` qua Groq Dual-Key Failover, kèm nhánh cục bộ tùy chọn **EasyOCR**), đối chiếu từng trường (`needs_review=True` khi sai lệch dữ liệu hoặc lệch cữ/số lượng thuốc), chuẩn hóa theo luật và nhắc uống thuốc qua `/api/notifications` sau khi người dùng xác nhận. |
+| **3. Hybrid Medical RAG Có căn cứ** | `core/rag_service.py`, `core/reranker_service.py`, `ingest.py` | Kết hợp tìm kiếm từ khóa **BM25** tự cài đặt cục bộ, vector **ChromaDB** trên **364 tài liệu y khoa chuẩn** từ *MedlinePlus NIH* (kết hợp quy trình phân tầng tham chiếu *Bộ Y Tế – kcb.vn*), mở rộng truy vấn song ngữ Việt–Anh và tái xếp hạng `BAAI/bge-reranker-v2-m3`. |
 | **4. Tư vấn Dinh dưỡng Lâm sàng** | `core/nutrition/nutrition_meal_planner.py`, `core/nutrition/nutrition_rules.py`, `core/nutrition/monngonmoingay_catalog.py`, `core/nutrition/recipe_catalog.py` | Khảo sát **BMR/TDEE**, lọc đa bệnh nền & 12 nhóm dị ứng tất định (*Fail-Closed*) trên **4.962 công thức món Việt chạy trực tiếp** (**2.462 ViFoodRec** + **2.500 Món Ngon Mỗi Ngày**, cùng 34 món tuyển chọn). |
 | **5. Tóm tắt Tiền khám 30s & Đặt lịch** | `core/facilities_service.py`, `core/appointment_service.py`, `core/shared/notification_service.py` | Xuất **Bản tóm tắt Tiền khám**, hỗ trợ đặt lịch trong app theo danh mục **2.144 cơ sở y tế** (1.505 TP.HCM + 639 Hà Nội), gửi email xác nhận về hộp thư người dùng và lưu thông báo trên server. |
 
@@ -42,7 +42,7 @@ Các bệnh viện tuyến đầu tại Việt Nam thường xuyên hoạt độ
    - **`7b. Send OTP`:** Gửi mã OTP 6 chữ số và email xác nhận đặt lịch qua **Gmail SMTP** (`smtp.gmail.com:587`) cùng cổng SMS nội địa **SpeedSMS**.
    - **`7c. LLM / Vision AI`:** Gọi API suy luận tới **Groq Dual-Key Failover** (`core/ai/llm_provider.py`, mô hình `qwen/qwen3.8-27b`) với các khóa API tách biệt theo tác vụ Chat, OCR và Dinh dưỡng.
 8. **Luồng `8. Google OAuth Consent`:** Trình duyệt người dùng tương tác trực tiếp với màn hình cấp quyền của **Google OAuth 2.0** trước khi điều hướng về callback hệ thống.
-9. **Luồng `9. Google Maps API`:** Trình duyệt tải bản đồ và chỉ đường tới **2.144 cơ sở khám chữa bệnh** thông qua **Google Maps Platform API**.
+9. **Luồng `9. Bản đồ Cơ sở Y tế`:** Trình duyệt tải bản đồ và chỉ đường tới **2.144 cơ sở khám chữa bệnh** bằng **Leaflet / OpenStreetMap** (hỗ trợ tùy chọn **Google Maps Platform API**).
 
 #### Danh mục Dịch vụ AWS & Tích hợp Ngoài
 
@@ -53,7 +53,7 @@ Các bệnh viện tuyến đầu tại Việt Nam thường xuyên hoạt độ
 | **Tính toán & Lưu trữ** | **Amazon EC2, Amazon EBS (`gp3`), Amazon ECR, Amazon S3** | Chạy Docker container cổng `8000`, lưu bền vững ChromaDB & tệp tải lên trên EBS, lưu image riêng tư ở ECR, sao lưu dài hạn lên S3. |
 | **Cơ sở dữ liệu** | **Amazon RDS for PostgreSQL (`db.t4g.micro`)** | CSDL quan hệ quản lý tập trung (`:5432`) trong `Private Database Subnet`, thay thế SQLite cục bộ cho môi trường Production. |
 | **Bảo mật & Vận hành** | **AWS Secrets Manager, Amazon CloudWatch, AWS IAM, AWS Budgets** | Nạp bí mật động qua `EC2 IAM Role`, thu thập log đã che PII, cảnh báo ngân sách ngưỡng 20 USD. |
-| **Dịch vụ Ngoài** | **Groq API (Dual-Key), Google OAuth, Gmail SMTP, SpeedSMS, Google Maps** | Suy luận Vision/Chat AI, xác thực đa kênh/OTP và định vị bản đồ 2.144 cơ sở y tế. |
+| **Dịch vụ Ngoài** | **Groq API (Dual-Key), Google OAuth, Gmail SMTP, SpeedSMS, Leaflet / OpenStreetMap (tùy chọn Google Maps)** | Suy luận Vision/Chat AI, xác thực đa kênh/OTP và định vị bản đồ 2.144 cơ sở y tế. |
 
 #### Tổng hợp Dự toán Chi phí (`ap-southeast-1`)
 
