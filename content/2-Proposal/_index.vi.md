@@ -25,7 +25,7 @@ Giải pháp hướng tới rút ngắn thời gian khai thác bệnh sử ban �
 ### 3. Kiến trúc giải pháp  
 Nền tảng áp dụng kiến trúc **AWS 3-Tier Multi-AZ VPC (`10.0.0.0/16`)** trải trên 2 Availability Zones (`ap-southeast-1a`, `ap-southeast-1b`) tại khu vực `ap-southeast-1` nhằm cô lập hoàn toàn tầng tính toán và cơ sở dữ liệu khỏi truy cập Internet trực tiếp. Lưu lượng người dùng đi qua **Route 53**, **AWS WAF** và **Amazon CloudFront** tới **Application Load Balancer (ALB)** tại `Public Subnet`, sau đó định tuyến nội bộ qua cổng `8000` vào container trên **Amazon EC2** thuộc **Auto Scaling Group** nằm trong `Private App Subnet 1 & 2`. Thư mục tệp tải lên (`./uploads`) được chia sẻ qua **Amazon EFS** gắn cho các EC2 và sao lưu sang **Amazon S3** thông qua **S3 Gateway Endpoint** (còn chỉ mục **ChromaDB `./medical_vectordb`** dạng chỉ đọc được đóng gói trong Docker image hoặc đồng bộ từ S3 xuống EBS cục bộ của từng EC2 để tránh lỗi khóa file SQLite qua NFS), trong khi 7 bảng dữ liệu giao dịch lưu tại **Amazon RDS PostgreSQL (Primary & Standby với Sync Replication)** (`SQL :5432`) trong `Private Database Subnet 1 & 2`. Mọi kết nối chiều ra tới **Groq API**, **Google OAuth 2.0** và **Gmail SMTP / SpeedSMS** đều đi qua **NAT Gateway 1 & 2**.  
 
-![Kiến trúc giải pháp MediMind Clinical AI trên AWS](/images/2-Proposal/architecture.jpg)
+![Kiến trúc giải pháp MediMind Clinical AI trên AWS](/images/2-Proposal/architecture.png)
 
 
 *Dịch vụ AWS sử dụng*  

@@ -25,7 +25,7 @@ The solution aims to shorten initial medical history intake to ~30 seconds, mini
 ### 3. Solution Architecture  
 The platform adopts an **AWS 3-Tier Multi-AZ VPC (`10.0.0.0/16`)** architecture spanning two Availability Zones (`ap-southeast-1a` and `ap-southeast-1b`) in `ap-southeast-1` to completely isolate compute and database layers from direct public Internet access. Incoming user traffic routes through **Amazon Route 53**, **AWS WAF**, and **Amazon CloudFront** to an **Application Load Balancer (ALB)** in the `Public Subnet`, forwarding internal requests on port `8000` to Docker containers on **Amazon EC2** instances within an **Auto Scaling Group** inside `Private App Subnet 1 & 2`. Uploaded files (`./uploads`) are shared across EC2 instances via **Amazon EFS** with backups to **Amazon S3** over an **S3 Gateway Endpoint** (while the read-only **ChromaDB index `./medical_vectordb`** is baked into the Docker image or synced from S3 to each EC2's local EBS volume to prevent SQLite-over-NFS file locking), and seven transactional tables reside in **Amazon RDS for PostgreSQL (Primary & Standby with Sync Replication)** (`SQL :5432`) inside `Private Database Subnet 1 & 2`. All outbound requests to **Groq API**, **Google OAuth 2.0**, and **Gmail SMTP / SpeedSMS** traverse **NAT Gateway 1 & 2**.  
 
-![MediMind Clinical AI AWS Multi-AZ Architecture](/images/2-Proposal/architecture.jpg)
+![MediMind Clinical AI AWS Multi-AZ Architecture](/images/2-Proposal/architecture.png)
 
 
 *AWS Services Used*  
