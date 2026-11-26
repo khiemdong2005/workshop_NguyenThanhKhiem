@@ -119,7 +119,7 @@ curl -s http://localhost:8000/ready
 
 # curl -s http://localhost:8000/health & /ready
 {"status":"ok"}
-{"status":"ready"}
+{"status":"ready","rag":"ready","gemini":"ready","circuit_breaker":"CLOSED"}
 ```
 
 Thiết lập lịch đồng bộ hằng ngày bản snapshot ChromaDB và tệp tải lên sang bucket **Amazon S3** đã mã hóa (`Backup / Archive`):

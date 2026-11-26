@@ -119,7 +119,7 @@ curl -s http://localhost:8000/ready
 
 # curl -s http://localhost:8000/health & /ready
 {"status":"ok"}
-{"status":"ready"}
+{"status":"ready","rag":"ready","gemini":"ready","circuit_breaker":"CLOSED"}
 ```
 
 Configure a daily cron job to sync ChromaDB snapshots and medical uploads to your encrypted **Amazon S3** bucket (`Backup / Archive`):

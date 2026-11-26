@@ -72,15 +72,21 @@ Chính sách dưới đây là **Lab Provisioning Policy** rút gọn để ngư
         "cloudwatch:*",
         "ssm:*",
         "budgets:*",
+        "kms:DescribeKey",
+        "kms:ListKeys",
+        "kms:ListAliases",
+        "kms:CreateGrant",
         "iam:CreateRole",
         "iam:DeleteRole",
         "iam:GetRole",
+        "iam:ListRoles",
         "iam:PassRole",
         "iam:AttachRolePolicy",
         "iam:DetachRolePolicy",
         "iam:PutRolePolicy",
         "iam:DeleteRolePolicy",
         "iam:CreateInstanceProfile",
+        "iam:GetInstanceProfile",
         "iam:DeleteInstanceProfile",
         "iam:AddRoleToInstanceProfile",
         "iam:RemoveRoleFromInstanceProfile",
@@ -165,7 +171,7 @@ curl -f http://localhost:8000/ready
 
 # curl -f http://localhost:8000/health & /ready
 {"status":"ok"}
-{"status":"ready"}
+{"status":"ready","rag":"ready","gemini":"ready","circuit_breaker":"CLOSED"}
 ```
 
 {{% notice tip %}}
