@@ -112,4 +112,4 @@ Costs were estimated using AWS On-Demand pricing in the **Singapore (`ap-southea
 Deliver a production-ready multimodal clinical AI platform backed by **95 automated test files (`pytest`)** covering symptom triage (negation handling and emergency red flags), multimodal prescription OCR verification (Vision LLM with optional local EasyOCR branch), Hybrid RAG retrieval across 364 standardized clinical documents, deterministic allergy/condition nutrition filtering, and appointment scheduling with medication reminders plus Circuit Breaker failover during external AI outages.  
 
 *Long-Term Value*  
-Establish a secure, cost-efficient AWS Multi-AZ reference architecture (**~0.0088 – 0.0093 USD per session** at 10,000-user scale) that can be reused and scaled across outpatient clinics and primary healthcare facilities to reduce triage congestion and improve medication safety.
+Establish a secure, low-cost AWS reference architecture (**~0.0041 USD (~105 VND) per consultation session** at 10,000-user scale) that can be reused and scaled across outpatient clinics and primary healthcare facilities to reduce triage congestion and improve medication safety.

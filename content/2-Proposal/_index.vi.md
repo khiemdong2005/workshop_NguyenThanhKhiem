@@ -112,4 +112,4 @@ Chi phí được ước tính theo đơn giá On-Demand tại khu vực **Singa
 Hoàn thiện nền tảng trợ lý y tế đa phương thức kèm bộ **95 tệp kiểm thử tự động (`pytest`)** bao phủ sàng lọc triệu chứng (xử lý phủ định và cờ đỏ cấp cứu), đối soát đơn thuốc OCR (Vision LLM kết hợp nhánh tùy chọn EasyOCR), truy xuất tri thức Hybrid RAG trên 364 tài liệu chuẩn hóa, lọc dị ứng/bệnh lý dinh dưỡng tất định và quy trình đặt lịch – nhắc uống thuốc với cơ chế dự phòng Circuit Breaker khi dịch vụ AI ngoài gián đoạn.  
 
 *Giá trị dài hạn*  
-Cung cấp kiến trúc tham chiếu chuẩn AWS bảo mật cao và tối ưu chi phí (**~225 – 240 VNĐ/phiên tư vấn** ở hạ tầng Production Multi-AZ cho quy mô 10.000 người dùng), có thể tái sử dụng và mở rộng cho các phòng khám, bệnh viện tuyến cơ sở nhằm giảm tải khâu sàng lọc tiếp đón và nâng cao an toàn sử dụng thuốc cho cộng đồng.
+Cung cấp kiến trúc tham chiếu chuẩn AWS bảo mật cao và chi phí thấp (**~105 VNĐ/phiên tư vấn** ở quy mô 10.000 người dùng), có thể tái sử dụng và mở rộng cho các phòng khám, bệnh viện tuyến cơ sở nhằm giảm tải khâu sàng lọc tiếp đón và nâng cao an toàn sử dụng thuốc cho cộng đồng.
