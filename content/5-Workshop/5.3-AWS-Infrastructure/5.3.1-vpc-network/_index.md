@@ -8,7 +8,9 @@ pre: " <b> 5.3.1 </b> "
 
 #### Step 1: Create VPC & Six Subnets Across Two Availability Zones
 
-1. Open the **Amazon VPC Console** in `ap-southeast-1` (Singapore) and create a VPC named `medimind-vpc` with CIDR block **`10.0.0.0/16`**, enabling both **DNS resolution** and **DNS hostnames**:
+1. Open the **Amazon VPC Console** in `ap-southeast-1` (Singapore) -> go to **Your VPCs** -> **Create VPC**:
+   - Select **VPC only**, set **Name tag:** `medimind-vpc`, **IPv4 CIDR block:** `10.0.0.0/16` -> click **Create VPC**.
+   - Open **Actions -> Edit VPC settings** -> enable both **Enable DNS resolution** and **Enable DNS hostnames** -> **Save** (or via CLI):
 
 ```bash
 export AWS_REGION=ap-southeast-1
@@ -21,7 +23,7 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-support '{"Value":tru
 aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":true}'
 ```
 
-2. Create **6 subnets** spanning `ap-southeast-1a` and `ap-southeast-1b`:
+2. Go to **VPC -> Subnets -> Create subnet**, select `medimind-vpc`, and create **6 subnets** spanning `ap-southeast-1a` and `ap-southeast-1b`:
 
 | Subnet Name | Availability Zone | CIDR Block | Tier Role |
 | :--- | :--- | :--- | :--- |
@@ -34,9 +36,11 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 
 #### Step 2: Internet Gateway, NAT Gateway & Route Tables
 
-1. Create and attach **`medimind-igw`** to `medimind-vpc`.
-2. Allocate an **Elastic IP** and launch **`medimind-nat-gw`** inside `medimind-public-a` so the private EC2 instance can pull ECR images and reach Groq API (and Gemini fallback), Google OAuth, Gmail SMTP, and SpeedSMS without receiving inbound Internet traffic.
-3. Configure three explicit Route Tables:
+1. **Internet Gateway:** Go to **VPC -> Internet gateways -> Create internet gateway** -> Name `medimind-igw` -> **Actions -> Attach to VPC** (`medimind-vpc`).
+2. **NAT Gateway:** Go to **VPC -> NAT gateways -> Create NAT gateway**:
+   - **Name:** `medimind-nat-gw` | **Subnet:** `medimind-public-a` | **Connectivity type:** `Public` -> click **Allocate Elastic IP** -> **Create NAT gateway**.
+   - This lets private EC2 instances pull ECR images and call Groq API (and Gemini fallback), Google OAuth, Gmail SMTP, and SpeedSMS without accepting any inbound Internet connections.
+3. **Route Tables:** Go to **VPC -> Route tables -> Create route table** to create 3 route tables; under each table open the **Subnet associations -> Edit subnet associations** tab and the **Routes -> Edit routes** tab for `0.0.0.0/0`:
 
 | Route Table | Associated Subnets | Destination `0.0.0.0/0` Target | Local Target |
 | :--- | :--- | :--- | :--- |
@@ -50,7 +54,7 @@ Because **Amazon RDS** requires subnets in at least two Availability Zones for a
 
 #### Step 3: Configure Chained Security Groups
 
-Apply strict **Security Group Chaining** so each tier only trusts the Security Group ID of the tier directly above it:
+Go to **VPC -> Security Groups -> Create security group** (select `medimind-vpc`), create the 3 Security Groups below, and configure their **Inbound rules** and **Outbound rules** tabs so each tier only trusts the Security Group ID of the tier above it:
 
 | Security Group | Inbound Rules (Protocol / Port / Source) | Outbound Rules |
 | :--- | :--- | :--- |
@@ -60,7 +64,7 @@ Apply strict **Security Group Chaining** so each tier only trusts the Security G
 
 #### Step 4: Create the `medimind-ec2-role` IAM Role & Instance Profile
 
-Create an IAM Role for EC2 (`medimind-ec2-role`) with trusted entity `ec2.amazonaws.com` and attach:
+Open **IAM Console -> Roles -> Create role** -> **Trusted entity type:** `AWS service`, **Use case:** `EC2` -> name it **`medimind-ec2-role`** (Console auto-creates the matching Instance Profile; afterward open **Permissions -> Add permissions -> Create inline policy -> JSON tab** to attach the third policy) with **strict Least Privilege**:
 1. Managed policy **`AmazonSSMManagedInstanceCore`** (enables browser/CLI shell access via **Session Manager** with zero open SSH ports).
 2. Managed policy **`AmazonEC2ContainerRegistryReadOnly`** (allows pulling private images from Amazon ECR).
 3. Inline policy **`MediMindRuntimeAccess`** granting least-privilege access to Secrets Manager (`medimind/*`), the S3 backup bucket, and CloudWatch Logs:

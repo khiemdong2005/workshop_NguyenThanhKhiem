@@ -18,15 +18,24 @@ To avoid dangling Elastic Network Interfaces (ENIs) or unexpected AWS charges af
 4. **Amazon EC2 & Amazon EBS:** Terminate `medimind-app-server` and verify both the root volume and the 20 GB ChromaDB `gp3` EBS volume are deleted (or detach and delete if `DeleteOnTermination` was disabled).
 5. **NAT Gateway & Elastic IP:** Delete `medimind-nat-gw`, wait for its status to become `Deleted`, and **explicitly release the associated Elastic IP (EIP)**.
 6. **Amazon RDS PostgreSQL & DB Subnet Group:** Delete `medimind-pg-db` (skip final snapshot for workshop labs), wait until deletion completes, then delete `medimind-db-subnet-group`.
-7. **Amazon S3 & Amazon ECR:** Empty and delete the S3 backup bucket (`medimind-clinical-backup-<account-id>`, including object versions if Versioning was enabled) and force-delete the ECR repository:
+7. **Amazon S3 & Amazon ECR:** Because **S3 Versioning** was enabled in Section 5.3.2, `aws s3 rm --recursive` only writes *Delete Markers* and leaves old object versions intact (causing `BucketNotEmpty` on `aws s3 rb`). In the S3 Console click **Empty** and type *`permanently delete`*, or purge all `Versions` and `DeleteMarkers` via CLI before deleting the bucket and ECR repository:
 
 ```bash
 export AWS_REGION=ap-southeast-1
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+export BACKUP_BUCKET="medimind-clinical-backup-${ACCOUNT_ID}"
 
-# Empty versioned S3 bucket & delete it
-aws s3 rm s3://medimind-clinical-backup-${ACCOUNT_ID} --recursive
-aws s3 rb s3://medimind-clinical-backup-${ACCOUNT_ID} --force
+# Purge all S3 Object Versions and DeleteMarkers before removing the bucket
+python3 - << 'EOF'
+import os, json, subprocess
+b = os.environ["BACKUP_BUCKET"]
+data = json.loads(subprocess.check_output(["aws", "s3api", "list-object-versions", "--bucket", b]))
+objs = [{"Key": x["Key"], "VersionId": x["VersionId"]} for k in ("Versions", "DeleteMarkers") for x in data.get(k, [])]
+for i in range(0, len(objs), 1000):
+    subprocess.check_call(["aws", "s3api", "delete-objects", "--bucket", b, "--delete", json.dumps({"Objects": objs[i:i+1000]})])
+EOF
+
+aws s3 rb s3://${BACKUP_BUCKET} --region $AWS_REGION
 
 # Delete ECR repository and all stored image layers
 aws ecr delete-repository --repository-name medimind-clinical-ai --force --region $AWS_REGION

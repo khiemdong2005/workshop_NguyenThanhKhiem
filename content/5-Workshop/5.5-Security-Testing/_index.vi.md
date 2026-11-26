@@ -41,6 +41,8 @@ Chạy toàn bộ **95 tệp kiểm thử tự động (`tests/test_*.py`)** và
 pytest -q
 ```
 
+**Expected Output:** Toàn bộ 95 tệp kiểm thử tự động chạy hoàn tất với `0 failed` (Exit Code `0`).
+
 | Nhóm Kiểm định | Chỉ tiêu (`evaluation/quality_gates.json`) | Ngưỡng Bắt buộc |
 | :--- | :--- | :---: |
 | **An toàn Lâm sàng** | `emergency_recall_min` | **100%** (`1.0`) |
@@ -68,4 +70,32 @@ docker compose -f monitoring/docker-compose.observability.yml up -d
    - `EmergencyTriageSpike` (số ca triage cờ đỏ cấp cứu tăng đột biến)
    - `HighMemoryLoad` (`medimind_system_memory_load_percent > 90%`)
    - `SecurityAttackSpike` (tấn công brute-force / fuzzing / tải tệp độc hại `> 5` sự kiện/phút)
-3. **AWS CloudWatch & AWS Budgets:** Theo dõi log ứng dụng đã ẩn danh PII tại `/medimind/clinical-api` và cài đặt cảnh báo ngân sách **AWS Budgets** ở ngưỡng **$20.00/tháng** cho môi trường Dev/PoC.
+3. **AWS CloudWatch & AWS Budgets:** Theo dõi log ứng dụng đã ẩn danh PII tại `/medimind/clinical-api`, kiểm tra Metrics/Alarm và cài đặt cảnh báo ngân sách **AWS Budgets** ở ngưỡng **$20.00/tháng** cho môi trường Dev/PoC:
+
+```bash
+export AWS_REGION=ap-southeast-1
+export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+# 1. Xem log ứng dụng (xác nhận số điện thoại/email/API key đã được che [REDACTED])
+aws logs tail /medimind/clinical-api --since 30m --region $AWS_REGION
+
+# 2. Kiểm tra CloudWatch Metrics (CPU EC2) & trạng thái Alarm
+aws cloudwatch describe-alarms --region $AWS_REGION --query 'MetricAlarms[*].[AlarmName,StateValue]' --output table
+
+# 3. Kiểm tra cấu hình AWS Budgets ngưỡng 20 USD
+aws budgets describe-budgets --account-id $ACCOUNT_ID --query 'Budgets[*].[BudgetName,BudgetLimit.Amount,CalculatedSpend.ActualSpend.Amount]' --output table
+```
+
+**Expected Output:**
+
+```text
+# aws logs tail (đã che PII)
+2026-11-26T12:20:01 INFO request completed path=/api/chat phone=[REDACTED] status=200
+
+# aws cloudwatch describe-alarms & budgets
+-----------------------------------------------
+|                DescribeAlarms               |
++------------------------------------+--------+
+|  medimind-ec2-high-cpu             |  OK    |
++------------------------------------+--------+
+```

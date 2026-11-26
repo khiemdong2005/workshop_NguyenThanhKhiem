@@ -33,6 +33,25 @@ curl -s -X POST https://medimind.yourdomain.com/api/chat \
 - **Expected Case 1 Output:** `risk_level: "red"`, immediate **Emergency 115** guidance without delaying for multi-turn intake.
 - **Expected Case 2 Output:** Negation parser recognizes *"không khó thở, không đau ngực"* (zero false emergency alarm), recommends ENT (*Tai Mũi Họng*), and attaches verified citations retrieved from the **364 ChromaDB clinical documents** (*MoH / kcb.vn / MedlinePlus NIH*).
 
+**Expected Output (Sample Cases 1 & 2):**
+
+```json
+// Case 1 (Red Flag Emergency)
+{
+  "risk_level": "red",
+  "emergency": true,
+  "recommended_action": "Gọi Cấp cứu 115 ngay lập tức"
+}
+
+// Case 2 (Negation Safe & Grounded RAG)
+{
+  "risk_level": "green",
+  "emergency": false,
+  "department": "Tai Mũi Họng",
+  "sources_count": 3
+}
+```
+
 #### Step 3: 8-Step Parallel OCR Cross-Verification (`POST /api/prescription/scan`)
 
 Upload a prescription or biochemistry lab photo via the Web SPA or `POST /api/prescription/scan` / `POST /api/upload-lab` and verify the 8-step orchestrator (`core/pipeline_orchestrator.py`):
@@ -63,3 +82,5 @@ Submit a **BMR/TDEE** survey with clinical conditions and allergy constraints (e
 curl -s "https://medimind.yourdomain.com/api/facilities?city=TP.HCM&limit=5" | jq .
 curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?city=Ha%20Noi" | jq '.[0:3]'
 ```
+
+**Expected Output:** HTTP `200` JSON payload returning clinic/hospital metadata (facility name, address, and `lat`/`lng` coordinates rendered on Leaflet/OpenStreetMap).

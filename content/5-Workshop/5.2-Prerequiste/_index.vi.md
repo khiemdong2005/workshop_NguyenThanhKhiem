@@ -18,9 +18,37 @@ Trước khi khởi tạo hạ tầng AWS hoặc build Docker image, bạn cần
   - **Groq API Key** (khuyến nghị 2 khóa dự phòng Dual-Key Failover `GROQ_API_KEY`, `GROQ_API_KEY_2` và khóa tách theo tác vụ cho mô hình `qwen/qwen3.8-27b` trên Free Tier) và/hoặc **Google Gemini API Key** (`GEMINI_API_KEY`, tùy chọn dự phòng).
   - *(Tùy chọn cho đăng nhập & bản đồ nâng cao)* Google OAuth 2.0 Client ID/Secret, Gmail SMTP App Password, SpeedSMS Auth Token và Google Maps Platform API Key (mặc định dùng Leaflet / OpenStreetMap).
 
+#### Xác thực Tài khoản AWS CLI & Kiểm tra Region `ap-southeast-1`
+
+Trước khi tạo tài nguyên, hãy chọn đúng khu vực **Asia Pacific (Singapore) `ap-southeast-1`** trên thanh góc phải AWS Management Console và xác thực danh tính AWS CLI trên terminal:
+
+```bash
+export AWS_REGION=ap-southeast-1
+aws configure set region ap-southeast-1
+aws sts get-caller-identity
+aws configure get region
+```
+
+**Expected Output:**
+
+```json
+{
+    "UserId": "AIDAXXXXXXXXXXXXXXXXX",
+    "Account": "123456789012",
+    "Arn": "arn:aws:iam::123456789012:user/workshop-deployer"
+}
+```
+```text
+ap-southeast-1
+```
+
 #### Chính sách Quyền IAM cho Triển khai Workshop
 
-Gắn chính sách IAM đặc quyền tối thiểu sau vào tài khoản/nhóm triển khai Workshop:
+Gắn chính sách IAM sau vào tài khoản/nhóm triển khai Workshop:
+
+{{% notice note %}}
+Chính sách dưới đây là **Lab Provisioning Policy** rút gọn để người học thuận tiện khởi tạo toàn bộ hạ tầng bài lab (VPC, EC2, RDS, ALB, CloudFront, WAF, ECR, S3, Secrets Manager, IAM Role). Khi ứng dụng chạy thực tế ở bước **5.3.1**, máy chủ EC2 chỉ sử dụng IAM Role **`medimind-ec2-role`** với quyền **strict Least Privilege** (chỉ đọc `secret:medimind/*`, ghi/đọc bucket sao lưu `medimind-clinical-backup-*` và đẩy log `/medimind/*`).
+{{% /notice %}}
 
 ```json
 {
@@ -127,6 +155,17 @@ docker compose run --rm medical-api python ingest.py
 # 3. Kiểm tra liveness và readiness probe
 curl -f http://localhost:8000/health
 curl -f http://localhost:8000/ready
+```
+
+**Expected Output:**
+
+```text
+# docker compose run --rm medical-api python ingest.py
+[+] Vector index built: 364 medical documents stored at /app/medical_vectordb
+
+# curl -f http://localhost:8000/health & /ready
+{"status":"ok"}
+{"status":"ready"}
 ```
 
 {{% notice tip %}}

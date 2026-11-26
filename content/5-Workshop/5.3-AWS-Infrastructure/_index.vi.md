@@ -18,11 +18,12 @@ pre: " <b> 5.3. </b> "
 
 {{< mermaid >}}
 graph LR
-    USER["Người dùng & Biên (CloudFront / WAF)"] --> IGW["Internet Gateway"]
-    IGW --> ALB["Public Subnet: ALB (HTTPS :443)"]
-    IGW --> NAT["Public Subnet: NAT Gateway"]
+    USER["Người dùng & Biên (CloudFront / WAF)"] -->|"HTTPS :443"| IGW["Internet Gateway"]
+    IGW -->|"Ingress"| ALB["Public Subnet: ALB (HTTPS :443)"]
     ALB -->|"HTTP :8000"| EC2["Private App Subnet: EC2 + EBS (ChromaDB)"]
-    EC2 -->|"Outbound AI / OAuth / OTP"| NAT
+    EC2 -->|"Outbound AI / OAuth / OTP"| NAT["Public Subnet: NAT Gateway"]
+    NAT -->|"Egress qua EIP"| IGW
+    IGW -->|"HTTPS :443 / SMTP :587"| EXT["External: Groq API, Google OAuth, Gmail SMTP, SpeedSMS"]
     EC2 -->|"SQL :5432"| RDS["Private DB Subnet: RDS PostgreSQL"]
     EC2 -->|"IAM Role"| AWS["ECR, S3 Backup, Secrets Manager, CloudWatch"]
 {{< /mermaid >}}

@@ -8,7 +8,9 @@ pre: " <b> 5.3.1 </b> "
 
 #### Bước 1: Tạo VPC & 6 Subnet qua 2 Availability Zones
 
-1. Mở **Amazon VPC Console** tại khu vực `ap-southeast-1` (Singapore), tạo VPC tên `medimind-vpc` với dải địa chỉ **`10.0.0.0/16`**, bật đồng thời **DNS resolution** và **DNS hostnames**:
+1. Mở **Amazon VPC Console** tại khu vực `ap-southeast-1` (Singapore) -> chọn **Your VPCs** -> **Create VPC**:
+   - Chọn **Resources to create:** `VPC only` | **Name tag:** `medimind-vpc` | **IPv4 CIDR block:** `10.0.0.0/16` -> nhấn **Create VPC**.
+   - Vào lại **Actions** -> **Edit VPC settings** -> tích chọn đồng thời **Enable DNS resolution** và **Enable DNS hostnames** -> **Save** (hoặc chạy CLI):
 
 ```bash
 export AWS_REGION=ap-southeast-1
@@ -21,7 +23,7 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-support '{"Value":tru
 aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":true}'
 ```
 
-2. Tạo **6 Subnet** trải đều trên 2 vùng sẵn sàng `ap-southeast-1a` và `ap-southeast-1b`:
+2. Vào **Subnets** -> **Create subnet** -> chọn VPC `medimind-vpc` và tạo lần lượt **6 Subnet** trải đều trên 2 vùng sẵn sàng `ap-southeast-1a` và `ap-southeast-1b`:
 
 | Tên Subnet | Availability Zone | Dải CIDR | Vai trò trong Kiến trúc |
 | :--- | :--- | :--- | :--- |
@@ -34,9 +36,11 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 
 #### Bước 2: Khởi tạo Internet Gateway, NAT Gateway & Route Tables
 
-1. Tạo và gắn **`medimind-igw`** vào `medimind-vpc`.
-2. Cấp phát 1 **Elastic IP** và tạo **`medimind-nat-gw`** trong `medimind-public-a` để EC2 ở mạng riêng có thể kéo ECR Image và gọi API ra Groq API (và Gemini fallback), Google OAuth, Gmail SMTP và SpeedSMS nhưng vẫn chặn 100% kết nối chiều vào từ Internet.
-3. Tạo và gắn 3 Route Table riêng biệt:
+1. **Internet Gateway:** Vào **VPC -> Internet gateways -> Create internet gateway** -> đặt tên `medimind-igw` -> **Create** -> chọn **Actions -> Attach to VPC** -> gắn vào `medimind-vpc`.
+2. **NAT Gateway:** Vào **VPC -> NAT gateways -> Create NAT gateway**:
+   - **Name:** `medimind-nat-gw` | **Subnet:** chọn `medimind-public-a` | **Connectivity type:** `Public` -> nhấn **Allocate Elastic IP** -> **Create NAT gateway**.
+   - Nhờ `medimind-nat-gw`, EC2 ở mạng riêng có thể kéo ECR Image và gọi API ra Groq API (và Gemini fallback), Google OAuth, Gmail SMTP và SpeedSMS nhưng vẫn chặn 100% kết nối chiều vào từ Internet.
+3. **Route Tables:** Vào **VPC -> Route tables -> Create route table** tạo 3 bảng định tuyến; ở mỗi bảng vào tab **Subnet associations -> Edit subnet associations** để gắn các Subnet tương ứng và vào tab **Routes -> Edit routes** để thêm tuyến `0.0.0.0/0`:
 
 | Route Table | Subnet Liên kết | Tuyến `0.0.0.0/0` | Tuyến Nội bộ |
 | :--- | :--- | :--- | :--- |
@@ -50,7 +54,7 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 
 #### Bước 3: Thiết lập Security Group Lồng nhau (Chained Security Groups)
 
-Áp dụng nguyên tắc mỗi tầng chỉ tin cậy Security Group ID của tầng đứng ngay trước nó:
+Vào **VPC -> Security Groups -> Create security group** (chọn VPC `medimind-vpc`), tạo lần lượt 3 Security Group và thiết lập các tab **Inbound rules** / **Outbound rules** theo nguyên tắc mỗi tầng chỉ tin cậy Security Group ID của tầng đứng ngay trước nó:
 
 | Security Group | Luật Inbound (Giao thức / Cổng / Nguồn) | Luật Outbound |
 | :--- | :--- | :--- |
@@ -60,7 +64,7 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 
 #### Bước 4: Tạo IAM Role `medimind-ec2-role` & Instance Profile
 
-Tạo IAM Role cho EC2 (`medimind-ec2-role`, Trusted entity `ec2.amazonaws.com`) và gắn các quyền tối thiểu:
+Mở **IAM Console -> Roles -> Create role** -> chọn **Trusted entity type:** `AWS service`, **Use case:** `EC2` -> đặt tên **`medimind-ec2-role`** và gắn các quyền **strict Least Privilege** sau (AWS Console tự động tạo Instance Profile trùng tên; sau khi tạo Role, vào tab **Permissions -> Add permissions -> Create inline policy -> tab JSON** để dán policy thứ 3):
 1. Managed policy **`AmazonSSMManagedInstanceCore`** (truy cập shell EC2 qua **Session Manager** không cần mở cổng 22 hay tạo SSH key).
 2. Managed policy **`AmazonEC2ContainerRegistryReadOnly`** (kéo Docker Image từ Amazon ECR).
 3. Inline policy **`MediMindRuntimeAccess`** cấp quyền đọc Secrets Manager (`medimind/*`), ghi/đọc S3 backup bucket và đẩy log lên CloudWatch:

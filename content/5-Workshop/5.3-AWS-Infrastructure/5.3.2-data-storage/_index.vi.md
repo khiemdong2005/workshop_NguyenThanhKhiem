@@ -10,14 +10,13 @@ pre: " <b> 5.3.2 </b> "
 
 Trong khi môi trường phát triển cục bộ dùng SQLite (`sqlite:///./instance/medimind.db`), môi trường Production sử dụng **Amazon RDS for PostgreSQL** thông qua biến `DATABASE_URL` và driver `psycopg2-binary` để đảm bảo toàn vẹn giao dịch ACID và chịu tải đồng thời cao.
 
-1. Trên **RDS Console**, tạo **DB Subnet Group** tên `medimind-db-subnet-group` trong `medimind-vpc` gồm 2 subnet `medimind-private-db-a` (`10.0.21.0/24`) và `medimind-private-db-b` (`10.0.22.0/24`).
-2. Khởi tạo DB instance thuộc gói Free Tier với cấu hình:
-   - **Engine:** PostgreSQL 16.x
-   - **DB Instance Identifier:** `medimind-pg-db`
-   - **Instance Class:** `db.t4g.micro` (2 vCPU, 1 GB RAM — miễn phí 750 giờ/tháng trong 12 tháng đầu)
-   - **Storage:** 20 GB `gp3` SSD bật **Storage Encryption (AWS KMS)**
-   - **Connectivity:** VPC `medimind-vpc`, DB Subnet Group `medimind-db-subnet-group`, **Public access: No**, Security Group: `sg-medimind-rds` (`TCP 5432`)
-   - **Initial Database Name:** `medimind` | Master Username: `medimind_admin`
+1. Trên **RDS Console** (`ap-southeast-1`), vào mục **Subnet groups -> Create DB subnet group**: đặt tên `medimind-db-subnet-group`, chọn **VPC** `medimind-vpc`, chọn AZ `ap-southeast-1a` & `ap-southeast-1b`, thêm 2 subnet `medimind-private-db-a` (`10.0.21.0/24`) và `medimind-private-db-b` (`10.0.22.0/24`) rồi nhấn **Create**.
+2. Vào **Databases -> Create database** -> chọn **Standard create** -> **Engine type:** `PostgreSQL` (`16.x`), **Templates:** `Free tier` và điền các trường sau:
+   - **DB instance identifier:** `medimind-pg-db` | **Master username:** `medimind_admin` (nhập/tạo mật khẩu quản trị)
+   - **Instance configuration:** Chọn `Burstable classes` -> `db.t4g.micro` (2 vCPU, 1 GB RAM — miễn phí 750 giờ/tháng trong 12 tháng đầu)
+   - **Storage:** `20 GiB` `General Purpose SSD (gp3)`; mở mục **Additional storage configuration** -> bật **Enable storage encryption (AWS KMS)**
+   - **Connectivity:** `Don't connect to an EC2 compute resource`, **VPC:** `medimind-vpc`, **DB subnet group:** `medimind-db-subnet-group`, **Public access:** `No`, **Existing VPC security groups:** `sg-medimind-rds` (`TCP 5432`)
+   - **Additional configuration:** **Initial database name:** `medimind` -> nhấn **Create database**. Sau khi trạng thái chuyển thành `Available`, vào tab **Connectivity & security** để sao chép **Endpoint** (`<RDS_ENDPOINT>`).
 
 Khi ứng dụng khởi động trên EC2 (`create_app()`), SQLAlchemy (`core/models.py`) sẽ tự động khởi tạo và migrate 7 bảng dữ liệu quan hệ:
 

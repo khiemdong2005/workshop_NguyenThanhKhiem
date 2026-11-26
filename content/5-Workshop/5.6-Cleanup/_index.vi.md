@@ -18,15 +18,24 @@ Chúc mừng bạn đã hoàn thành bài workshop **Xây dựng & Triển khai 
 4. **Amazon EC2 & Amazon EBS:** Terminate `medimind-app-server` và kiểm tra chắc chắn cả ổ hệ thống lẫn ổ đĩa dữ liệu **20 GB `gp3` EBS** của ChromaDB đều đã bị xóa.
 5. **NAT Gateway & Elastic IP:** Xóa `medimind-nat-gw`, chờ trạng thái chuyển sang `Deleted`, sau đó **giải phóng (Release) địa chỉ Elastic IP** đi kèm.
 6. **Amazon RDS PostgreSQL & DB Subnet Group:** Xóa `medimind-pg-db` (chọn bỏ qua final snapshot đối với môi trường thực hành), chờ xóa hoàn tất rồi xóa `medimind-db-subnet-group`.
-7. **Amazon S3 & Amazon ECR:** Làm rỗng và xóa bucket sao lưu S3 (`medimind-clinical-backup-<account-id>`, bao gồm các phiên bản cũ nếu bật Versioning) và xóa kho ECR:
+7. **Amazon S3 & Amazon ECR:** Do bước 5.3.2 đã bật **S3 Versioning**, lệnh `aws s3 rm --recursive` chỉ tạo *Delete Markers* chứ chưa xóa hẳn các phiên bản cũ (nếu xóa bucket ngay sẽ gặp lỗi `BucketNotEmpty`). Trên Console hãy mở bucket -> nhấn **Empty** và gõ *`permanently delete`*, hoặc chạy CLI xóa sạch Versions & DeleteMarkers rồi mới xóa bucket và ECR:
 
 ```bash
 export AWS_REGION=ap-southeast-1
 export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+export BACKUP_BUCKET="medimind-clinical-backup-${ACCOUNT_ID}"
 
-# Làm rỗng và xóa S3 bucket sao lưu
-aws s3 rm s3://medimind-clinical-backup-${ACCOUNT_ID} --recursive
-aws s3 rb s3://medimind-clinical-backup-${ACCOUNT_ID} --force
+# Xóa toàn bộ Object Versions & DeleteMarkers do S3 Versioning sinh ra
+python3 - << 'EOF'
+import os, json, subprocess
+b = os.environ["BACKUP_BUCKET"]
+data = json.loads(subprocess.check_output(["aws", "s3api", "list-object-versions", "--bucket", b]))
+objs = [{"Key": x["Key"], "VersionId": x["VersionId"]} for k in ("Versions", "DeleteMarkers") for x in data.get(k, [])]
+for i in range(0, len(objs), 1000):
+    subprocess.check_call(["aws", "s3api", "delete-objects", "--bucket", b, "--delete", json.dumps({"Objects": objs[i:i+1000]})])
+EOF
+
+aws s3 rb s3://${BACKUP_BUCKET} --region $AWS_REGION
 
 # Xóa ECR repository và toàn bộ Docker image layers
 aws ecr delete-repository --repository-name medimind-clinical-ai --force --region $AWS_REGION

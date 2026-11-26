@@ -44,6 +44,15 @@ docker push ${ECR_URI}/medimind-clinical-ai:v1.0.0
 docker push ${ECR_URI}/medimind-clinical-ai:latest
 ```
 
+**Expected Output:**
+
+```text
+Login Succeeded
+...
+v1.0.0: digest: sha256:8c2f... size: 2841
+latest: digest: sha256:8c2f... size: 2841
+```
+
 #### Bước 3: Kiểm tra Báo cáo Quét Lỗ hổng Bảo mật
 
 ```bash
@@ -53,6 +62,16 @@ aws ecr describe-image-scan-findings \
   --region $AWS_REGION \
   --query 'imageScanFindings.findingSeverityCounts'
 ```
+
+**Expected Output:**
+
+```json
+{
+    "MEDIUM": 2,
+    "LOW": 5
+}
+```
+*(hoặc `{}` nếu không phát hiện CVE; đảm bảo `CRITICAL` = `0` trước khi triển khai).*
 
 {{% notice warning %}}
 Trước khi chạy `docker build`, hãy kiểm tra lại tệp `.dockerignore` đã liệt kê đầy đủ `.env`, `instance/`, `medical_vectordb/` và `uploads/`. Vì `Dockerfile` dùng `COPY --chown=appuser:appuser . .`, nếu thiếu các dòng này trong `.dockerignore`, CSDL SQLite cục bộ, chỉ mục ChromaDB hoặc ảnh bệnh nhân tải lên máy cá nhân sẽ bị đóng gói thẳng vào Docker Image đẩy lên ECR (vừa phình image vượt 500 MB Free Tier, vừa gây lộ dữ liệu cục bộ).

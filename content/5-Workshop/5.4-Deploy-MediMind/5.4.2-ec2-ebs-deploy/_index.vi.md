@@ -111,6 +111,17 @@ curl -s http://localhost:8000/health
 curl -s http://localhost:8000/ready
 ```
 
+**Expected Output:**
+
+```text
+# ls -lh /mnt/medimind-data/medical_vectordb/active_collection.json
+-rw-r--r-- 1 appuser appuser 142 Nov 26 12:15 /mnt/medimind-data/medical_vectordb/active_collection.json
+
+# curl -s http://localhost:8000/health & /ready
+{"status":"ok"}
+{"status":"ready"}
+```
+
 Thiết lập lịch đồng bộ hằng ngày bản snapshot ChromaDB và tệp tải lên sang bucket **Amazon S3** đã mã hóa (`Backup / Archive`):
 
 ```bash

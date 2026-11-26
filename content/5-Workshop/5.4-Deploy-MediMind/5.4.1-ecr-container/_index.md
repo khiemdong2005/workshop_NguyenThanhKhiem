@@ -44,6 +44,15 @@ docker push ${ECR_URI}/medimind-clinical-ai:v1.0.0
 docker push ${ECR_URI}/medimind-clinical-ai:latest
 ```
 
+**Expected Output:**
+
+```text
+Login Succeeded
+...
+v1.0.0: digest: sha256:8c2f... size: 2841
+latest: digest: sha256:8c2f... size: 2841
+```
+
 #### Step 3: Verify Vulnerability Scan Results
 
 ```bash
@@ -53,6 +62,16 @@ aws ecr describe-image-scan-findings \
   --region $AWS_REGION \
   --query 'imageScanFindings.findingSeverityCounts'
 ```
+
+**Expected Output:**
+
+```json
+{
+    "MEDIUM": 2,
+    "LOW": 5
+}
+```
+*(or `{}` when zero CVEs are reported; confirm zero `CRITICAL` findings before deploying).*
 
 {{% notice warning %}}
 Before running `docker build`, verify that `.dockerignore` explicitly excludes `.env`, `instance/`, `medical_vectordb/`, and `uploads/`. Because `Dockerfile` executes `COPY --chown=appuser:appuser . .`, omitting those directories will bake local SQLite databases, ChromaDB vectors, or local user uploads into the ECR image (both bloating the image beyond the 500 MB Free Tier limit and risking local data exposure).

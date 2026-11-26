@@ -41,6 +41,8 @@ Run the full automated test suite (**95 test files** under `tests/test_*.py`) an
 pytest -q
 ```
 
+**Expected Output:** All 95 test files execute cleanly with `0 failed` (Exit Code `0`).
+
 | Evaluation Category | Metric (`evaluation/quality_gates.json`) | Required Threshold |
 | :--- | :--- | :---: |
 | **Clinical Safety** | `emergency_recall_min` | **100%** (`1.0`) |
@@ -68,4 +70,32 @@ docker compose -f monitoring/docker-compose.observability.yml up -d
    - `EmergencyTriageSpike` (surge in emergency red-flag triage events)
    - `HighMemoryLoad` (`medimind_system_memory_load_percent > 90%`)
    - `SecurityAttackSpike` (brute-force/fuzzing/malicious upload spike `> 5` events/min)
-3. **AWS CloudWatch & AWS Budgets:** Inspect PII-redacted application logs in `/medimind/clinical-api` and configure an **AWS Budgets** billing alarm at **$20.00/month** for the Dev/PoC environment.
+3. **AWS CloudWatch & AWS Budgets:** Inspect PII-redacted application logs in `/medimind/clinical-api`, check Metrics/Alarms, and configure an **AWS Budgets** billing alarm at **$20.00/month** for the Dev/PoC environment:
+
+```bash
+export AWS_REGION=ap-southeast-1
+export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+# 1. Tail application logs (verify phone/email/API keys are redacted)
+aws logs tail /medimind/clinical-api --since 30m --region $AWS_REGION
+
+# 2. Check CloudWatch Metric Alarms status
+aws cloudwatch describe-alarms --region $AWS_REGION --query 'MetricAlarms[*].[AlarmName,StateValue]' --output table
+
+# 3. Verify AWS Budgets 20 USD threshold
+aws budgets describe-budgets --account-id $ACCOUNT_ID --query 'Budgets[*].[BudgetName,BudgetLimit.Amount,CalculatedSpend.ActualSpend.Amount]' --output table
+```
+
+**Expected Output:**
+
+```text
+# aws logs tail (PII redacted)
+2026-11-26T12:20:01 INFO request completed path=/api/chat phone=[REDACTED] status=200
+
+# aws cloudwatch describe-alarms & budgets
+-----------------------------------------------
+|                DescribeAlarms               |
++------------------------------------+--------+
+|  medimind-ec2-high-cpu             |  OK    |
++------------------------------------+--------+
+```

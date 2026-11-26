@@ -18,9 +18,37 @@ Before provisioning AWS resources or building the container image, ensure you ha
   - **Groq API Key** (recommended Dual-Key Failover `GROQ_API_KEY`, `GROQ_API_KEY_2` plus workload-specific keys for `qwen/qwen3.8-27b` on Groq Free Tier) and/or **Google Gemini API Key** (`GEMINI_API_KEY`, optional fallback).
   - *(Optional for full auth/maps)* Google OAuth 2.0 Client ID/Secret, Gmail SMTP App Password, SpeedSMS Auth Token, and Google Maps Platform API Key (Leaflet / OpenStreetMap is active by default).
 
+#### Verify AWS CLI Identity & Select Region `ap-southeast-1`
+
+Before provisioning resources, ensure **Asia Pacific (Singapore) `ap-southeast-1`** is selected in the top-right AWS Management Console region selector and verify your active AWS CLI credentials:
+
+```bash
+export AWS_REGION=ap-southeast-1
+aws configure set region ap-southeast-1
+aws sts get-caller-identity
+aws configure get region
+```
+
+**Expected Output:**
+
+```json
+{
+    "UserId": "AIDAXXXXXXXXXXXXXXXXX",
+    "Account": "123456789012",
+    "Arn": "arn:aws:iam::123456789012:user/workshop-deployer"
+}
+```
+```text
+ap-southeast-1
+```
+
 #### IAM Permissions Policy for Workshop Deployment
 
-Attach the following least-privilege IAM policy to the workshop deployment user or group (avoiding unrestricted `AdministratorAccess` where not required):
+Attach the following IAM policy to the workshop deployment user or group:
+
+{{% notice note %}}
+This is a streamlined **Lab Provisioning Policy** for learners deploying the workshop infrastructure end-to-end (VPC, EC2, RDS, ALB, CloudFront, WAF, ECR, S3, Secrets Manager, and IAM Roles). The runtime EC2 instance profile **`medimind-ec2-role`** created in **Section 5.3.1** enforces **strict Least Privilege** scoped strictly to `secret:medimind/*`, the backup S3 bucket `medimind-clinical-backup-*`, and `/medimind/*` CloudWatch log groups.
+{{% /notice %}}
 
 ```json
 {
@@ -127,6 +155,17 @@ docker compose run --rm medical-api python ingest.py
 # 3. Verify health, readiness, and API documentation endpoints
 curl -f http://localhost:8000/health
 curl -f http://localhost:8000/ready
+```
+
+**Expected Output:**
+
+```text
+# docker compose run --rm medical-api python ingest.py
+[+] Vector index built: 364 medical documents stored at /app/medical_vectordb
+
+# curl -f http://localhost:8000/health & /ready
+{"status":"ok"}
+{"status":"ready"}
 ```
 
 {{% notice tip %}}

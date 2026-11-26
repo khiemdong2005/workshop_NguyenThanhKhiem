@@ -10,14 +10,13 @@ pre: " <b> 5.3.2 </b> "
 
 While local development defaults to SQLite (`sqlite:///./instance/medimind.db`), production deployment replaces SQLite with **Amazon RDS for PostgreSQL** via `DATABASE_URL` and `psycopg2-binary` to guarantee ACID transactions and concurrent worker safety.
 
-1. In the **RDS Console**, create a **DB Subnet Group** named `medimind-db-subnet-group` inside `medimind-vpc` containing `medimind-private-db-a` (`10.0.21.0/24`) and `medimind-private-db-b` (`10.0.22.0/24`).
-2. Launch the PostgreSQL database instance with Free-Tier-eligible settings:
-   - **Engine:** PostgreSQL 16.x
-   - **DB Instance Identifier:** `medimind-pg-db`
-   - **Instance Class:** `db.t4g.micro` (2 vCPU, 1 GB RAM — covered by 750h Free Tier)
-   - **Storage:** 20 GB `gp3` SSD with **Storage Encryption (AWS KMS)** enabled
-   - **Connectivity:** VPC `medimind-vpc`, DB Subnet Group `medimind-db-subnet-group`, **Public access: No**, VPC Security Group: `sg-medimind-rds` (`TCP 5432`)
-   - **Initial Database Name:** `medimind` | Master Username: `medimind_admin`
+1. In the **RDS Console** (`ap-southeast-1`), go to **Subnet groups -> Create DB subnet group**: name it `medimind-db-subnet-group`, select **VPC** `medimind-vpc`, choose AZs `ap-southeast-1a` & `ap-southeast-1b`, add `medimind-private-db-a` (`10.0.21.0/24`) and `medimind-private-db-b` (`10.0.22.0/24`), and click **Create**.
+2. Go to **Databases -> Create database** -> select **Standard create** -> **Engine type:** `PostgreSQL` (`16.x`), **Templates:** `Free tier`, and configure:
+   - **DB instance identifier:** `medimind-pg-db` | **Master username:** `medimind_admin` (set a strong password)
+   - **Instance configuration:** `Burstable classes` -> `db.t4g.micro` (2 vCPU, 1 GB RAM — covered by 750h Free Tier)
+   - **Storage:** `20 GiB` `General Purpose SSD (gp3)`; expand **Additional storage configuration** and ensure **Enable storage encryption (AWS KMS)** is checked
+   - **Connectivity:** `Don't connect to an EC2 compute resource`, **VPC:** `medimind-vpc`, **DB subnet group:** `medimind-db-subnet-group`, **Public access:** `No`, **Existing VPC security groups:** `sg-medimind-rds` (`TCP 5432`)
+   - **Additional configuration:** **Initial database name:** `medimind` -> click **Create database**. Once status becomes `Available`, copy the **Endpoint** (`<RDS_ENDPOINT>`) from the **Connectivity & security** tab.
 
 When the Flask/SQLAlchemy startup routine (`create_app()`) runs on EC2, `core/models.py` initializes and migrates the 7 relational tables:
 

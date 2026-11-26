@@ -33,6 +33,25 @@ curl -s -X POST https://medimind.yourdomain.com/api/chat \
 - **Kết quả Ca 1:** `risk_level: "red"`, kích hoạt hướng dẫn **Gọi Cấp cứu 115** ngay lập tức, bỏ qua luồng hỏi bệnh thông thường.
 - **Kết quả Ca 2:** Bộ phân tích phủ định nhận diện đúng cụm *"không khó thở, không đau ngực"* (không báo nhầm cấp cứu), định tuyến chuyên khoa **Tai Mũi Họng** và đính kèm nguồn trích dẫn thực tế từ **364 tài liệu ChromaDB** (*Bộ Y Tế / kcb.vn / MedlinePlus NIH*).
 
+**Expected Output (mẫu Ca 1 & Ca 2):**
+
+```json
+// Ca 1 (Cờ đỏ Cấp cứu)
+{
+  "risk_level": "red",
+  "emergency": true,
+  "recommended_action": "Gọi Cấp cứu 115 ngay lập tức"
+}
+
+// Ca 2 (Chống bẫy phủ định & Grounded RAG)
+{
+  "risk_level": "green",
+  "emergency": false,
+  "department": "Tai Mũi Họng",
+  "sources_count": 3
+}
+```
+
 #### Bước 3: Pipeline OCR Đối soát Song song 8 Bước (`POST /api/prescription/scan`)
 
 Tải ảnh đơn thuốc hoặc phiếu xét nghiệm sinh hóa máu qua giao diện Web SPA hoặc `POST /api/prescription/scan` / `POST /api/upload-lab` để kiểm chứng pipeline (`core/pipeline_orchestrator.py`):
@@ -63,3 +82,5 @@ Gửi khảo sát **BMR/TDEE**, tình trạng bệnh lý và dị ứng (VD: *"�
 curl -s "https://medimind.yourdomain.com/api/facilities?city=TP.HCM&limit=5" | jq .
 curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?city=Ha%20Noi" | jq '.[0:3]'
 ```
+
+**Expected Output:** Trả về JSON HTTP `200` danh sách cơ sở y tế (tên bệnh viện/phòng khám, địa chỉ, tọa độ `lat`/`lng` để hiển thị trên bản đồ Leaflet/OpenStreetMap).
