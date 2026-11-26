@@ -1,57 +1,36 @@
 ---
 title: "Week 8 Worklog"
-date: 2024-01-01
-weight: 1
+date: 2026-11-02
+weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
 
+### Week 8 objectives:
 
-### Week 8 Objectives:
+- Continue developing the frontend and backend from the foundation prepared in Week 7.
+- Learn how a user action moves from the interface to the backend and how the result returns to the frontend.
+- Practice managing UI state, consultation sessions, and data associated with user accounts.
+- Study medical speech-to-text as a possible alternative to the current text input flow.
+- Review layout, colors, and navigation to make the pages more consistent.
 
-* Connect and get acquainted with members of First Cloud AI Journey.
-* Understand basic AWS services, how to use the console & CLI.
+### Tasks carried out this week:
 
-### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCAJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Day | Task | Start date | Completion date | Reference material |
+| --- | --- | --- | --- | --- |
+| Monday | - Reviewed the page structure and UI elements built in Week 7.<br>- Adjusted the home and profile layouts, colors, and icons; checked how the interface changes after sign-in.<br>- Learned to separate demonstration data from the signed-in user's records. | 02/11/2026 | 02/11/2026 | Project |
+| Tuesday | - Studied the frontend-to-backend flow when users upload a prescription or laboratory report image.<br>- Checked how the backend reads information, returns the required fields, and how the frontend displays them.<br>- Added checks for date of birth and gender and displayed age from the extracted data. | 03/11/2026 | 03/11/2026 | Project |
+| Wednesday | - Built the initial information form and a small floating chat window.<br>- Studied how to preserve a conversation session when users move between screens.<br>- Corrected the handling of negated statements and compared the data sent by the frontend with the data stored by the backend. | 04/11/2026 | 04/11/2026 | Project |
+| Thursday | - Studied how to organize user records by account.<br>- Connected processed document results with storage and the history list in the interface.<br>- Checked page reload and account switching to avoid displaying another user's data. | 05/11/2026 | 05/11/2026 | Project |
+| Friday | - Reviewed the placement of messages, input fields, and buttons on the chat page.<br>- Adjusted spacing, contrast, and icons in light and dark themes.<br>- Compared the main chat page with the floating chat window to keep interaction consistent.<br>- Studied Amazon Transcribe Medical, including dictation versus clinician-patient conversation and speaker labels in a transcript. | 06/11/2026 | 06/11/2026 | Project; [AWS Transcribe Medical](https://docs.aws.amazon.com/transcribe/latest/dg/how-it-works-med.html); [Speaker diarization](https://docs.aws.amazon.com/transcribe/latest/dg/conversation-diarization-med.html) |
+| Saturday | - Continued improving the medical facility search interface and map.<br>- Checked the events triggered when a user selects a facility, opens the map, or switches tabs.<br>- Fixed misplaced elements and a layout issue that made one tab affect another. | 07/11/2026 | 07/11/2026 | Project |
 
+### Week 8 results:
 
-### Week 8 Achievements:
-
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+- Better understood the roles of frontend and backend: the frontend receives actions, sends data, and displays results; the backend validates, processes, and stores information.
+- Practiced connecting a feature from the interface to backend processing, particularly image upload and display of extracted data.
+- Learned to track sign-in state, consultation sessions, and account-specific data during navigation and reloads.
+- Studied how to organize records and history so information belongs to the correct account.
+- Improved the interface by refining chat layout, text colors, icons, tab navigation, and the map.
+- Learned that data needs checking on both sides: image extraction may miss fields, and a user's statement can be misunderstood if negation is handled incorrectly.
+- Learned that Amazon Transcribe Medical can turn medical speech into text and distinguish speakers. Since its documentation focuses on US English, this was research into a possible voice-input approach, not an integrated feature.

@@ -1,115 +1,114 @@
 ---
 title: "Proposal"
-date: 2024-01-01
+date: 2026-09-14
 weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-In this section, you need to summarize the contents of the workshop that you **plan** to conduct.
+# MediMind Clinical AI  
+## Unified AWS Clinical Assistant, Prescription Cross-Verification & Smart Healthcare Platform  
 
-# IoT Weather Platform for Lab Research
-## A Unified AWS Serverless Solution for Real-Time Weather Monitoring
+### 1. Executive Summary  
+MediMind Clinical AI is designed to support initial symptom triage, prescription/lab-result cross-verification, medication reminders, and personalized clinical nutrition for patients and doctors in Vietnam. The platform combines a **Hybrid RAG architecture (BM25 + ChromaDB Vector + Cross-Encoder Reranker)** indexed over 364 standardized medical documents (*Vietnam Ministry of Health, kcb.vn, MedlinePlus NIH*), **Clinical Triage & Double Guardrails**, and a **Multimodal OCR Verification Pipeline** running EasyOCR in parallel with Vision LLMs (`qwen/qwen3.8-27b` via Groq API Dual-Key Failover). Containerized with Docker and deployed on **Amazon Web Services (AWS)** in the `ap-southeast-1` (Singapore) region, the system leverages a Multi-AZ 3-tier isolated VPC architecture compliant with the **AWS Well-Architected Framework** and **HIPAA** healthcare data security standards.  
 
-### 1. Executive Summary
-The IoT Weather Platform is designed for the ITea Lab team in Ho Chi Minh City to enhance weather data collection and analysis. It supports up to 5 weather stations, with potential scalability to 10-15, utilizing Raspberry Pi edge devices with ESP32 sensors to transmit data via MQTT. The platform leverages AWS Serverless services to deliver real-time monitoring, predictive analytics, and cost efficiency, with access restricted to 5 lab members via Amazon Cognito.
+### 2. Problem Statement  
+*Current Problem*  
+Frontline public hospitals frequently operate at 150% – 200% capacity, resulting in 2 – 4 hour patient wait times and a lack of structured pre-consultation medical histories for doctors. Meanwhile, self-diagnosing through unverified AI tools leads to missed emergency "golden hours." Standard chatbots also struggle with negation traps (triggering false alarms when users type *"no shortness of breath"*) or hallucinating medical citations and allergenic meal recommendations. In addition, single-model OCR tools frequently misread blurry prescriptions and cause dosage errors, patients often forget their medication schedules (before/after meals), and they lack safe nutrition guidance tailored to their clinical conditions, allergies, and local Vietnamese dishes.  
 
-### 2. Problem Statement
-### What’s the Problem?
-Current weather stations require manual data collection, becoming unmanageable with multiple units. There is no centralized system for real-time data or analytics, and third-party platforms are costly and overly complex.
+*Solution*  
+The platform delivers a closed-loop healthcare workflow across five core modules: (1) Multi-turn symptom intake and 3-tier risk stratification (**Green – Yellow – Red**), handling unaccented Vietnamese and negation phrases to trigger immediate **Emergency 115** alerts; (2) A multimodal OCR verification pipeline running EasyOCR and Vision LLMs in parallel, cross-checking fields, flagging discrepancies or schedule/quantity mismatches (`needs_review`), and generating visual medication schedules (*Morning – Noon – Afternoon – Evening; Before/After meals*) linked to a **server-backed in-app notification bell** upon user confirmation; (3) Grounded medical Q&A backed by 364 verified clinical documents; (4) Clinical nutrition recommendations combining **BMR/TDEE surveys**, **12 clinical/goal contexts**, and deterministic **12-allergen** *Fail-Closed Allergy Filtering* across **4,962 live Vietnamese recipes** (**2,462 ViFoodRec** + **2,500 Mon Ngon Moi Ngay**, plus **34 curated fallback options**); and (5) A 30-second Pre-Consultation Summary supporting in-app appointment scheduling across a directory of **2,144 healthcare facilities** (1,505 in HCMC and 639 in Hanoi), sending confirmation emails to the user's inbox and updating booking/cancellation alerts in the in-app notification bell. The workload runs on **Amazon EC2 (Auto Scaling Group) + Amazon EFS** and **Amazon RDS PostgreSQL (Multi-AZ)**, protected at the edge by **AWS WAF**, **CloudFront**, and **ALB**.  
 
-### The Solution
-The platform uses AWS IoT Core to ingest MQTT data, AWS Lambda and API Gateway for processing, Amazon S3 for storage (including a data lake), and AWS Glue Crawlers and ETL jobs to extract, transform, and load data from the S3 data lake to another S3 bucket for analysis. AWS Amplify with Next.js provides the web interface, and Amazon Cognito ensures secure access. Similar to Thingsboard and CoreIoT, users can register new devices and manage connections, though this platform operates on a smaller scale and is designed for private use. Key features include real-time dashboards, trend analysis, and low operational costs.
+*Benefits and Return on Investment (ROI)*  
+The solution reduces initial medical history intake to 30 seconds, minimizes home dosage errors and missed medication doses, and prevents adverse drug/food allergy events via *Human-in-the-Loop* confirmation and server-backed reminder notifications. By packaging the read-only ChromaDB vector index (`medical_vectordb`, ~86 MB) via Docker/S3 onto EC2 local EBS and using **Amazon EFS** for `/uploads` instead of costly managed vector databases, alongside **Groq API Dual-Key Failover** within free tiers during PoC, **Dev/PoC Workshop** infrastructure costs stay at **~$16.86/month** (~$202.32/12 months), while a full **Multi-AZ Production** deployment for 10,000 monthly users costs approximately **$220.95 – $233.45/month** (**~$0.0088 – $0.0093 per consultation session**)—substantially lower than running dedicated GPU clusters and managed vector databases.  
 
-### Benefits and Return on Investment
-The solution establishes a foundational resource for lab members to develop a larger IoT platform, serving as a study resource, and provides a data foundation for AI enthusiasts for model training or analysis. It reduces manual reporting for each station via a centralized platform, simplifying management and maintenance, and improves data reliability. Monthly costs are $0.66 USD per the AWS Pricing Calculator, with a 12-month total of $7.92 USD. All IoT equipment costs are covered by the existing weather station setup, eliminating additional development expenses. The break-even period of 6-12 months is achieved through significant time savings from reduced manual work.
+### 3. Solution Architecture  
+The platform adopts an **AWS 3-Tier Multi-AZ VPC (`10.0.0.0/16`)** architecture spanning two Availability Zones (`ap-southeast-1a` and `ap-southeast-1b`) in `ap-southeast-1` to completely isolate compute and database layers from direct public Internet access. Incoming user traffic routes through **Amazon Route 53**, **AWS WAF**, and **Amazon CloudFront** to an **Application Load Balancer (ALB)** in the `Public Subnet`, forwarding internal requests on port `8000` to Docker containers on **Amazon EC2** instances within an **Auto Scaling Group** inside `Private App Subnet 1 & 2`. Uploaded files (`./uploads`) are shared across EC2 instances via **Amazon EFS** with backups to **Amazon S3** over an **S3 Gateway Endpoint** (while the read-only **ChromaDB index `./medical_vectordb`** is baked into the Docker image or synced from S3 to each EC2's local EBS volume to prevent SQLite-over-NFS file locking), and seven transactional tables reside in **Amazon RDS for PostgreSQL (Primary & Standby with Sync Replication)** (`SQL :5432`) inside `Private Database Subnet 1 & 2`. All outbound requests to **Groq API**, **Google OAuth 2.0**, and **Gmail SMTP / SpeedSMS** traverse **NAT Gateway 1 & 2**.  
 
-### 3. Solution Architecture
-The platform employs a serverless AWS architecture to manage data from 5 Raspberry Pi-based stations, scalable to 15. Data is ingested via AWS IoT Core, stored in an S3 data lake, and processed by AWS Glue Crawlers and ETL jobs to transform and load it into another S3 bucket for analysis. Lambda and API Gateway handle additional processing, while Amplify with Next.js hosts the dashboard, secured by Cognito. The architecture is detailed below:
+<img width="2560" height="1674" alt="architecture" src="https://github.com/user-attachments/assets/cefbdeed-7135-4709-812c-856d00c76c3b" />
 
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
 
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+*AWS Services Used*  
+- *Amazon Route 53 & Amazon CloudFront*: High-availability DNS routing, static asset edge caching (1 TB free/month), and backend origin masking.  
+- *AWS WAF & AWS Certificate Manager (ACM)*: Layer-7 firewall defending against OWASP Top 10 and rate abuse, paired with free SSL/TLS 1.3 certificates (Global `us-east-1` for CloudFront and Regional `ap-southeast-1` for ALB).  
+- *Application Load Balancer (ALB) & NAT Gateway*: Handles TLS termination in the `Public Subnet` and provides secure outbound internet access for `Private App Subnet 1 & 2`.  
+- *Amazon EC2 (Auto Scaling Group) & Amazon EFS*: Hosts the containerized application (`PORT=8000`) with auto-scaling capacity, **Amazon EFS** shared storage for `/uploads`, and local EBS storage for the read-only ChromaDB index (364 documents).  
+- *Amazon RDS for PostgreSQL (Multi-AZ)*: Fully managed relational database isolated in `Private Database Subnet 1 & 2` (`SQL :5432`) with synchronous Primary/Standby replication and automatic failover, storing user, document, prescription, notification, intake, and appointment records.  
+- *Amazon S3, S3 Gateway Endpoint & Amazon ECR*: Stores encrypted backups/archives of medical uploads and RAG snapshots via a private **S3 Gateway Endpoint**, plus private Docker container images in ECR.  
+- *AWS Secrets Manager, CloudWatch, AWS IAM, Cost Explorer & AWS Budgets*: Centralizes runtime API secrets, collects PII-redacted application logs/metrics/alarms, enforces least-privilege access via an `EC2 IAM Role`, and monitors cost alerts.  
 
-### AWS Services Used
-- **AWS IoT Core**: Ingests MQTT data from 5 stations, scalable to 15.
-- **AWS Lambda**: Processes data and triggers Glue jobs (two functions).
-- **Amazon API Gateway**: Facilitates web app communication.
-- **Amazon S3**: Stores raw data in a data lake and processed outputs (two buckets).
-- **AWS Glue**: Crawlers catalog data, and ETL jobs transform and load it.
-- **AWS Amplify**: Hosts the Next.js web interface.
-- **Amazon Cognito**: Secures access for lab users.
+*Component Design*  
+- *Edge & Security Layer*: Route 53, WAF, CloudFront, and ALB filter malicious traffic and enforce end-to-end HTTPS encryption.  
+- *Application & AI Layer (`Private App Subnet`)*: Python backend (`app.py` / `core/main_fastapi.py`) orchestrating Double Guardrails, Hybrid RAG (BM25 + ChromaDB + BGE Reranker), multimodal OCR cross-checking, in-app notification bell (`/api/notifications`) for appointments and medication reminders, deterministic nutrition rule filtering (12 clinical contexts, 12 allergen groups, 10 avoidance rules), and Circuit Breaker fallbacks.  
+- *Data & Storage Layer (`Private Database Subnet` & Storage)*: RDS PostgreSQL (Primary & Standby) manages seven core tables (`users`, `medical_documents`, `prescription_history`, `clinical_consultations`, `intake_sessions`, `medical_appointments`, `user_notifications`); **shared Redis** (Amazon ElastiCache `cache.t4g.micro` or PostgreSQL-backed fallback) handles OTP and rate-limiting state across multi-EC2 deployments; **Amazon EFS** shares `/uploads`; **local EBS** holds read-only ChromaDB indices; **Amazon S3** retains long-term backups.  
+- *External Integrations*: Google OAuth 2.0 login, 6-digit OTP and appointment confirmation emails via Gmail SMTP / SpeedSMS, multi-key AI inference via **Groq Dual-Key Failover**, and interactive facility mapping across 2,144 clinics via Google Maps Platform API.  
 
-### Component Design
-- **Edge Devices**: Raspberry Pi collects and filters sensor data, sending it to IoT Core.
-- **Data Ingestion**: AWS IoT Core receives MQTT messages from the edge devices.
-- **Data Storage**: Raw data is stored in an S3 data lake; processed data is stored in another S3 bucket.
-- **Data Processing**: AWS Glue Crawlers catalog the data, and ETL jobs transform it for analysis.
-- **Web Interface**: AWS Amplify hosts a Next.js app for real-time dashboards and analytics.
-- **User Management**: Amazon Cognito manages user access, allowing up to 5 active accounts.
+### 4. Technical Implementation  
+*Implementation Phases*  
+The project was executed from clinical core engineering to AWS cloud deployment across four phases:  
+1. *Research & Architecture Design*: Standardized medical datasets, designed the AWS 3-Subnet Multi-AZ VPC architecture, 7-table PostgreSQL schema, and REST API specifications (Weeks 1–2).  
+2. *Clinical Core & RAG Development*: Built Double Guardrails with negation handling, indexed 364 medical documents in Hybrid RAG, and engineered the multimodal OCR cross-verification pipeline (Weeks 3–6).  
+3. *Feature Expansion & Web SPA*: Integrated **4,962 live Vietnamese recipes** (**2,462 ViFoodRec** + **2,500 Mon Ngon Moi Ngay**, 34 curated options, 2,474 verified dish photos) with BMR/TDEE surveys, 2,144 healthcare facilities, appointment booking, in-app notifications, OAuth/OTP authentication, and the Web SPA (Weeks 7–8).  
+4. *Containerization, AWS Deployment & Verification*: Packaged Docker images to Amazon ECR, provisioned EC2 (Auto Scaling Group) + EFS + RDS (Multi-AZ) + ALB + WAF + Secrets Manager, and validated 94 automated test files against quality gates (Weeks 9–12).  
 
-### 4. Technical Implementation
-**Implementation Phases**
-This project has two parts—setting up weather edge stations and building the weather platform—each following 4 phases:
-- Build Theory and Draw Architecture: Research Raspberry Pi setup with ESP32 sensors and design the AWS serverless architecture (1 month pre-internship)
-- Calculate Price and Check Practicality: Use AWS Pricing Calculator to estimate costs and adjust if needed (Month 1).
-- Fix Architecture for Cost or Solution Fit: Tweak the design (e.g., optimize Lambda with Next.js) to stay cost-effective and usable (Month 2).
-- Develop, Test, and Deploy: Code the Raspberry Pi setup, AWS services with CDK/SDK, and Next.js app, then test and release to production (Months 2-3).
+*Technical Requirements*  
+- *Backend & AI Pipeline*: Python (`Flask` / `FastAPI` gateway, `SQLAlchemy`), `ChromaDB`, `rank-bm25`, `BAAI/bge-reranker-v2-m3`, `EasyOCR`, `Redis` (OTP/RateLimit), and multi-key **Groq Dual-Key** integration (`GROQ_API_KEY`, `GROQ_API_KEY_2`, `GROQ_CHAT_API_KEY`, `GROQ_OCR_API_KEY`, `GROQ_NUTRITION_API_KEY`) protected by Circuit Breaker and HTTP 429 Retry policies.  
+- *File & Data Hardening*: Magic-byte binary validation, anti-Decompression/Zip Bomb limits (images ≤ 25 MP, PDFs ≤ 30 pages, DOCX compression ratio < 50x), CSRF protection, and automated PII redaction in logs.  
+- *AWS Infrastructure*: VPC `10.0.0.0/16` in `ap-southeast-1`, strict Security Group chaining across ALB (`443`), EC2 (`8000`), and RDS (`5432`), and runtime secret injection via AWS Secrets Manager and EC2 IAM Role.  
 
-**Technical Requirements**
-- Weather Edge Station: Sensors (temperature, humidity, rainfall, wind speed), a microcontroller (ESP32), and a Raspberry Pi as the edge device. Raspberry Pi runs Raspbian, handles Docker for filtering, and sends 1 MB/day per station via MQTT over Wi-Fi.
-- Weather Platform: Practical knowledge of AWS Amplify (hosting Next.js), Lambda (minimal use due to Next.js), AWS Glue (ETL), S3 (two buckets), IoT Core (gateway and rules), and Cognito (5 users). Use AWS CDK/SDK to code interactions (e.g., IoT Core rules to S3). Next.js reduces Lambda workload for the fullstack web app.
+### 5. Roadmap & Milestones  
+- *Pre-Internship (Month 0)*: Assessed frontline hospital triage bottlenecks and curated 364 clinical guidelines (*Vietnam Ministry of Health, MedlinePlus NIH*), **4,962 live Vietnamese recipes** (**2,462 ViFoodRec** + **2,500 Mon Ngon Moi Ngay**; 5,862 total cleaned recipes), and 2,144 medical facilities.  
+- *Internship (Months 1–3 / 12 Weeks)*:  
+  - Month 1 (Weeks 1–4): Designed the AWS 3-Subnet VPC architecture, core Clinical Triage engine, Double Guardrails, and relational database schema.  
+  - Month 2 (Weeks 5–8): Completed Hybrid RAG, multimodal OCR verification pipeline, Clinical Nutrition Studio (BMR/TDEE + multi-condition filtering), facility booking, in-app notifications, and Web SPA interface.  
+  - Month 3 (Weeks 9–12): Pushed Docker images to Amazon ECR, deployed on EC2 + EFS + RDS (Multi-AZ) + ALB + WAF, executed 94 automated test files (`pytest`), and prepared the Workshop Live Demo.  
+- *Post-Deployment*: Expand interoperability with HL7 FHIR health record standards and pilot deployment in satellite outpatient clinics.  
 
-### 5. Timeline & Milestones
-**Project Timeline**
-- Pre-Internship (Month 0): 1 month for planning and old station review.
-- Internship (Months 1-3): 3 months.
-    - Month 1: Study AWS and upgrade hardware.
-    - Month 2: Design and adjust architecture.
-    - Month 3: Implement, test, and launch.
-- Post-Launch: Up to 1 year for research.
+### 6. Budget Estimation  
+Costs were estimated using AWS On-Demand pricing in the **Singapore (`ap-southeast-1`)** region across two scenarios: **Dev/PoC Workshop** (Single-AZ leveraging AWS Free Tier / Free Tier Credits with on-demand ALB/NAT demo hours torn down afterward) and **Multi-AZ Production** (matching the Section 3 architecture for 10,000 monthly active users running 24/7).  
 
-### 6. Budget Estimation
-You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01).  
-Or you can download the [Budget Estimation File](../attachments/budget_estimation.pdf).
+*Infrastructure Costs (Dev / PoC Workshop Environment)*  
+- Amazon EC2 (`t3.micro` / `t3.small`, port 8000): $0.00 – $3.17/month (`t3.micro` covered by 750 hours/month Free Tier with swap/local reranker disabled; `t3.small` 2 GB RAM ~120 demo hours at ~$0.0264/hour).  
+- Amazon EFS / EBS (`/uploads` & `medical_vectordb` ~86 MB within 5 GB EFS Free Tier / Free Tier Credits and 30 GB EBS Free Tier): $0.00/month.  
+- Amazon RDS for PostgreSQL (`db.t4g.micro` Single-AZ, port 5432): $0.00/month (covered by 750 hours + 20 GB Free Tier for the first 12 months).  
+- Application Load Balancer & 1 NAT Gateway (~40 demo/testing hours): ~$3.97/month ($3.37 hourly ALB + NAT GW charges plus ~$0.60 for 3 Public IPv4 addresses on ALB/NAT, as the 750 free IPv4 hours apply to EC2 only).  
+- Amazon S3 (`Backup / Archive` ~2 GB), S3 Gateway Endpoint & Amazon ECR: ~$0.00 – $0.15/month (500 MB/month private ECR Free Tier for 12 months; ~$0.05–$0.15/month if the EasyOCR/OpenCV image exceeds 1–2 GB).  
+- AWS Secrets Manager (3 secret groups): $1.20/month (`$0.40/secret`).  
+- Amazon CloudFront (15 GB), ACM (TLS 1.3), CloudWatch, AWS IAM, Cost Explorer & AWS Budgets: $0.00/month (Always-Free / Free Tier).  
+- Amazon Route 53 (1 Hosted Zone + 50,000 queries): $0.52/month.  
+- AWS WAF (1 Web ACL + 3 Managed Rules, full month): $8.00/month (`$5.00` Web ACL + `$1.00 × 3` rule groups; ~$0.44 if enabled only for 40 demo hours).  
+- External AI & Auth Services (Groq API Dual-Key Free Tier, Gmail SMTP, Google OAuth): $0.00/month.  
 
-### Infrastructure Costs
-- AWS Services:
-    - AWS Lambda: $0.00/month (1,000 requests, 512 MB storage).
-    - S3 Standard: $0.15/month (6 GB, 2,100 requests, 1 GB scanned).
-    - Data Transfer: $0.02/month (1 GB inbound, 1 GB outbound).
-    - AWS Amplify: $0.35/month (256 MB, 500 ms requests).
-    - Amazon API Gateway: $0.01/month (2,000 requests).
-    - AWS Glue ETL Jobs: $0.02/month (2 DPUs).
-    - AWS Glue Crawlers: $0.07/month (1 crawler).
-    - MQTT (IoT Core): $0.08/month (5 devices, 45,000 messages).
+*Total (Dev / PoC Workshop)*: **~$16.86/month** (~$202.32/12 months; delete/stop ALB & NAT Gateway after demos to avoid ~$72/month 24/7 baseline charges).  
 
-Total: $0.7/month, $8.40/12 months
+*Multi-AZ Production Scaling Estimate (10,000 users / 25,000 consultations / 8,000 OCR scans per month, 24/7 — aligned with Section 3 diagram)*  
+- 2 × Amazon EC2 (`t3.small` in Auto Scaling Group, `2 × $0.0264/hr × 730h`): ~$38.54/month.  
+- Amazon EFS Standard (~5 GB for `/uploads`) & 2 × root EBS (`gp3` 20 GB for read-only `medical_vectordb`): ~$5.64/month.  
+- Amazon RDS for PostgreSQL Multi-AZ (`db.t4g.micro` Primary + Standby `~$0.050/hr` + 20 GB `gp3` Multi-AZ): ~$41.10/month.  
+- 1 × ALB + 2 × NAT Gateways (24/7) + 4 Public IPv4 addresses (`$14.60`) + LCU/Data Processing (~20 GB): ~$122.32/month.  
+- Amazon ElastiCache Redis (`cache.t4g.micro` shared OTP/rate-limit state across 2 EC2s): ~$12.50/month *(optional: $0.00 if OTP/rate-limit state is stored on RDS PostgreSQL)*.  
+- AWS WAF (~$8.60) + Secrets Manager ($1.20) + Route 53 (~$0.70) + S3/ECR/CloudWatch (~$2.85) + CloudFront (< 1 TB Always-Free): ~$13.35/month.  
+- *Total Multi-AZ Production AWS Infrastructure*: **~$233.45/month** (with ElastiCache Redis; or **~$220.95/month** using RDS-backed state), equivalent to **~$0.0088 – $0.0093 per consultation session** (excludes Groq pay-as-you-go API upgrades if high traffic exceeds free-tier rate limits).  
 
-- Hardware: $265 one-time (Raspberry Pi 5 and sensors).
+### 7. Risk Assessment  
+*Risk Matrix*  
+- Missed emergency red flags or negation traps (*"no shortness of breath"*): High impact, medium probability.  
+- OCR misinterpretation on blurry or glaring handwritten prescriptions or HTTP 429 rate limits: High impact, medium probability.  
+- Malicious file uploads (Decompression/Zip Bombs) or unauthorized record access (IDOR): High impact, low probability.  
+- External AI provider outages (Groq API) or budget overruns: Medium impact, low probability.  
 
-### 7. Risk Assessment
-#### Risk Matrix
-- Network Outages: Medium impact, medium probability.
-- Sensor Failures: High impact, low probability.
-- Cost Overruns: Medium impact, low probability.
+*Mitigation Strategies*  
+- Clinical & Negation Safety: Double Guardrails (`core/triage.py`) pair deterministic emergency keyword pre-checks (supporting unaccented Vietnamese and negation phrases) with LLM response post-checks to trigger Emergency 115 guidance on red flags and block unauthorized antibiotic prescriptions.  
+- Prescription OCR Verification & Reminders: Parallel EasyOCR + Vision LLM execution with HTTP 429 retry/Dual-Key Failover, automated `needs_review=True` flagging on field or schedule/quantity mismatches, mandatory *Human-in-the-Loop* user confirmation before saving medication schedules, and server-backed in-app reminder notifications.  
+- Security & Cost Control: Strict Private Subnet isolation for EC2 and RDS, magic-byte & size validation (`core/storage_service.py`), PII log redaction, and **AWS Budgets** alerts set at a $20 threshold.  
 
-#### Mitigation Strategies
-- Network: Local storage on Raspberry Pi with Docker.
-- Sensors: Regular checks and spares.
-- Cost: AWS budget alerts and optimization.
+*Contingency Plan*  
+- Trigger the **Circuit Breaker** (`core/circuit_breaker.py`) after 5 consecutive external API failures to fail over seamlessly to the local **Fallback Clinical Engine** and deterministic nutrition filtering without UI downtime.  
+- Rapidly restore ChromaDB indices and relational records from encrypted **Amazon S3** backups and automated **Amazon RDS** snapshots.  
 
-#### Contingency Plans
-- Revert to manual methods if AWS fails.
-- Use CloudFormation for cost-related rollbacks.
+### 8. Expected Results  
+*Technical Improvements*  
+Deliver a production-ready multimodal clinical AI platform backed by **94 automated test files (`pytest`)** covering symptom triage (negation handling and emergency red flags), parallel prescription OCR verification, Hybrid RAG retrieval across 364 standardized clinical documents, deterministic allergy/condition nutrition filtering, and appointment scheduling with medication reminders plus Circuit Breaker failover during external AI outages.  
 
-### 8. Expected Outcomes
-#### Technical Improvements: 
-Real-time data and analytics replace manual processes.  
-Scalable to 10-15 stations.
-#### Long-term Value
-1-year data foundation for AI research.  
-Reusable for future projects.
+*Long-Term Value*  
+Establish a secure, cost-efficient AWS Multi-AZ reference architecture (**~$0.0088 – $0.0093 per session** at 10,000-user scale) that can be reused and scaled across outpatient clinics and primary healthcare facilities to reduce triage congestion and improve medication safety.

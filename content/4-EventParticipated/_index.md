@@ -34,3 +34,15 @@ During my participation in First Cloud AI Journey, I have documented the followi
 - **Date:** October 31, 2026.
 - **Role:** Attendee.
 - **Topics:** AWS learning paths; lessons from building Software Factories; a game project and Serverless architecture; introductions to Lambda Web Functions and AWS SQS.
+
+### [Event 5 — From Prototype to Production](4.5-event5/)
+
+- **Date:** October 14, 2026.
+- **Role:** Attendee.
+- **Topics:** Production AI on AWS, Amazon Bedrock AgentCore, RAG, Strands, and human approval for agent actions.
+
+### [Event 6 — AWS Student Community Day Vietnam 2026](4.6-event6/)
+
+- **Date:** November 21, 2026.
+- **Role:** Attendee.
+- **Topics:** AWS student communities, layered network security, the Prove It competition, and cloud knowledge challenges.

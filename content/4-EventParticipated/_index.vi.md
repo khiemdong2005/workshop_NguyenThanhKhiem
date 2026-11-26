@@ -34,3 +34,15 @@ Trong quá trình tham gia First Cloud AI Journey, tôi đã ghi lại 4 sự ki
 - **Thời gian:** 31/10/2026.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Lộ trình học AWS; kinh nghiệm xây dựng Software Factories; dự án game và kiến trúc Serverless; giới thiệu Lambda Web Functions và AWS SQS.
+
+### [Event 5 — From Prototype to Production](4.5-event5/)
+
+- **Thời gian:** 14/10/2026.
+- **Vai trò:** Người tham dự.
+- **Nội dung:** Vận hành AI trên AWS, Amazon Bedrock AgentCore, RAG, Strands và phê duyệt hành động của agent.
+
+### [Event 6 — AWS Student Community Day Vietnam 2026](4.6-event6/)
+
+- **Thời gian:** 21/11/2026.
+- **Vai trò:** Người tham dự.
+- **Nội dung:** Cộng đồng sinh viên AWS, bảo mật mạng nhiều lớp, kinh nghiệm thi Prove It và thử thách kiến thức cloud.

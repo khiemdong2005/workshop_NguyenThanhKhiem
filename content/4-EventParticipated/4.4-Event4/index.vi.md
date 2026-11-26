@@ -117,3 +117,7 @@ Community Day cũng là dịp để tôi gặp gỡ các thành viên FCAJ và t
 ![Slide Lambda Web Functions: Native HTTP Engine tại sự kiện](/images/4-EventParticipated/4.4-Event4/lambda-web.png)
 
 ![Phần giới thiệu AWS SQS: Asynchronous Systems của Luong Cam Dao](/images/4-EventParticipated/4.4-Event4/sqs.png)
+
+## Một số hình ảnh khi tham gia sự kiện
+
+![Ảnh chụp tại FCAJ Community Day ngày 31/10/2026](images/community-day-photo.png)

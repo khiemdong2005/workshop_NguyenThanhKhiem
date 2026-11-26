@@ -1,59 +1,34 @@
 ---
 title: "Worklog Tuần 9"
-date: 2024-01-01
-weight: 1
+date: 2026-11-09
+weight: 9
 chapter: false
 pre: " <b> 1.9. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
 
 ### Mục tiêu tuần 9:
 
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+- Tìm hiểu cách chia một chức năng mới thành phần giao diện, API, xử lý nghiệp vụ và dữ liệu.
+- Thực hành kiểm tra dữ liệu đầu vào, xử lý trường hợp lỗi và hiển thị trạng thái phù hợp trên Front-end.
+- Tìm hiểu cách tổ chức kho tài liệu và đánh giá kết quả tìm kiếm trong phần Back-end.
+- Tìm hiểu cách Amazon Bedrock Evaluations tách việc đánh giá truy xuất tài liệu và đánh giá câu trả lời của hệ thống RAG.
+- Tiếp tục cải thiện giao diện cơ sở y tế và cách đồng bộ danh sách với bản đồ.
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+| --- | --- | --- | --- | --- |
+| 3 | - Phác thảo giao diện cho phần gợi ý món ăn và theo dõi thói quen.<br>- Tìm hiểu cách chia chức năng thành dữ liệu công thức, quy tắc xử lý ở Back-end, API và phần hiển thị ở Front-end.<br>- Kết nối giao diện với dữ liệu trả về, đồng thời kiểm tra một số trường hợp nhập thông tin chưa đầy đủ. | 10/11/2026 | 10/11/2026 | Dự án |
+| 4 | - Tổ chức lại dữ liệu công thức để có thể tìm kiếm và lọc theo yêu cầu.<br>- Viết các điều kiện xử lý trường hợp có nhiều yêu cầu cùng lúc hoặc cần tránh một thành phần.<br>- Tìm hiểu cách trả kết quả dự phòng từ dữ liệu có sẵn khi dịch vụ bên ngoài không phản hồi, thay vì để giao diện không có kết quả. | 11/11/2026 | 11/11/2026 | Dự án |
+| 5 | - Tìm hiểu cách kiểm tra chất lượng câu trả lời của hệ thống bằng bộ câu hỏi mẫu và nguồn tài liệu đi kèm.<br>- Xem lại các bước tìm kiếm tài liệu trong Back-end: nhận câu hỏi, tìm đoạn liên quan và chuyển kết quả cho phần tạo câu trả lời.<br>- Thử tìm tài liệu tiếng Anh bằng câu hỏi tiếng Việt và ghi nhận những trường hợp kết quả chưa sát nội dung hỏi.<br>- Đọc tài liệu Amazon Bedrock Evaluations để phân biệt đánh giá chỉ truy xuất tài liệu với đánh giá cả truy xuất và tạo câu trả lời; so sánh các tiêu chí này với bộ câu hỏi mẫu đang dùng. | 12/11/2026 | 12/11/2026 | Dự án; [AWS Bedrock RAG Evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-evaluation-metrics.html) |
+| 6 | - Kiểm tra lại giao diện cơ sở y tế ở chế độ sáng và tối.<br>- Chỉnh cách hiển thị danh sách, bản đồ và khung thông tin chi tiết khi người dùng chọn một địa điểm.<br>- Rà soát trạng thái giao diện để bản đồ và danh sách cùng hiển thị đúng cơ sở đang được chọn. | 13/11/2026 | 13/11/2026 | Dự án |
 
 ### Kết quả đạt được tuần 9:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+- Hiểu rõ hơn cách tổ chức một chức năng theo các lớp: giao diện, API, xử lý nghiệp vụ và dữ liệu. Cách chia này giúp xác định lỗi nằm ở phần nào khi kết quả hiển thị chưa đúng.
+- Thực hành kiểm tra dữ liệu đầu vào và chuẩn bị kết quả dự phòng khi một dịch vụ bên ngoài gặp lỗi.
+- Biết cách sắp xếp dữ liệu công thức và áp dụng các điều kiện lọc trước khi trả kết quả cho giao diện.
+- Bước đầu biết cách dùng câu hỏi mẫu để kiểm tra phần tìm kiếm tài liệu và đối chiếu nguồn đi kèm với câu trả lời.
+- Hiểu thêm cách tách hai câu hỏi khi đánh giá RAG: hệ thống có tìm đúng tài liệu không và câu trả lời có dựa đúng vào tài liệu đó không. Tôi chỉ tham khảo phương pháp trong Amazon Bedrock Evaluations, chưa chạy một evaluation job trên AWS.
+- Nhận thấy việc tìm tài liệu cho câu hỏi tiếng Việt cần được kiểm tra riêng khi kho tài liệu có nhiều nội dung tiếng Anh.
+- Cải thiện phần giao diện cơ sở y tế, nhất là cách đồng bộ danh sách kết quả, vị trí trên bản đồ và khung thông tin chi tiết.

@@ -117,3 +117,7 @@ Community Day was also an opportunity to meet FCAJ members and hear practical ex
 ![The Lambda Web Functions: Native HTTP Engine slide at the event](/images/4-EventParticipated/4.4-Event4/lambda-web.png)
 
 ![Luong Cam Dao's AWS SQS: Asynchronous Systems introduction](/images/4-EventParticipated/4.4-Event4/sqs.png)
+
+## Event photos
+
+![Photo taken at FCAJ Community Day on October 31, 2026](images/community-day-photo.png)
