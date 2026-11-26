@@ -101,7 +101,7 @@ Costs were estimated using AWS On-Demand pricing in the **Singapore (`ap-southea
 *Mitigation Strategies*  
 - Clinical & Negation Safety: Double Guardrails (`core/triage.py`) pair deterministic emergency keyword pre-checks (supporting unaccented Vietnamese and negation phrases) with LLM response post-checks to trigger Emergency 115 guidance on red flags and block unauthorized antibiotic prescriptions.  
 - Prescription OCR Verification & Reminders: Parallel EasyOCR + Vision LLM execution with HTTP 429 retry/Dual-Key Failover, automated `needs_review=True` flagging on field or schedule/quantity mismatches, mandatory *Human-in-the-Loop* user confirmation before saving medication schedules, and server-backed in-app reminder notifications.  
-- Security & Cost Control: Strict Private Subnet isolation for EC2 and RDS, magic-byte & size validation (`core/storage_service.py`), PII log redaction, and **AWS Budgets** alerts set at a $20 threshold.  
+- Security & Cost Control: Strict Private Subnet isolation for EC2 and RDS, magic-byte & size validation (`core/storage_service.py`), PII log redaction, and **AWS Budgets** alerts set at a 20 USD threshold.  
 
 *Contingency Plan*  
 - Trigger the **Circuit Breaker** (`core/circuit_breaker.py`) after 5 consecutive external API failures to fail over seamlessly to the local **Fallback Clinical Engine** and deterministic nutrition filtering without UI downtime.  
