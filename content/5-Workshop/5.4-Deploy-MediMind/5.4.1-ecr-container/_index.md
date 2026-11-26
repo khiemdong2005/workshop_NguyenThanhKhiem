@@ -73,6 +73,8 @@ aws ecr describe-image-scan-findings \
 ```
 *(or `{}` when zero CVEs are reported; confirm zero `CRITICAL` findings before deploying).*
 
+> **[Screenshot 09: Amazon ECR `medimind-clinical-ai` with `v1.0.0` Image & CVE Scan Findings]** — `static/images/5-Workshop/5.4-Deploy-MediMind/09-ecr-scan.png`
+
 {{% notice warning %}}
 Before running `docker build`, verify that `.dockerignore` explicitly excludes `.env`, `instance/`, `medical_vectordb/`, and `uploads/`. Because `Dockerfile` executes `COPY --chown=appuser:appuser . .`, omitting those directories will bake local SQLite databases, ChromaDB vectors, or local user uploads into the ECR image (both bloating the image beyond the 500 MB Free Tier limit and risking local data exposure).
 {{% /notice %}}

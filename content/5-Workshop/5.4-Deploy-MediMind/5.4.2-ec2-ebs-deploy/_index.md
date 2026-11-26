@@ -17,6 +17,8 @@ pre: " <b> 5.4.2 </b> "
    - **IAM Instance Profile:** `medimind-ec2-role`
    - **Storage:** Root volume 15 GB `gp3` + additional encrypted **20 GB `gp3` EBS data volume** (`/dev/sdf`, KMS encrypted) dedicated to persistent ChromaDB vectors and `/uploads` (total 35 GB; keep combined EBS $\le 30\text{ GB}$ if staying strictly within Free Tier).
 
+> **[Screenshot 10: Amazon EC2 `medimind-app-server` (`Running`, Private Subnet, No Public IP) & Encrypted `gp3` EBS Volume]** — `static/images/5-Workshop/5.4-Deploy-MediMind/10-ec2-ebs.png`
+
 #### Step 2: Connect Keylessly via Session Manager & Mount the EBS Volume
 
 1. In the **EC2 Console**, select `medimind-app-server` -> **Connect** -> **Session Manager** (or run `aws ssm start-session --target <INSTANCE_ID>`).
@@ -121,6 +123,8 @@ curl -s http://localhost:8000/ready
 {"status":"ok"}
 {"status":"ready","rag":"ready","gemini":"ready","circuit_breaker":"CLOSED"}
 ```
+
+> **[Screenshot 11: CloudShell / SSM Session verifying EBS Mount, `docker ps` (`healthy`), `active_collection.json`, `/health` & `/ready`]** — `static/images/5-Workshop/5.4-Deploy-MediMind/11-ssm-health.png`
 
 Configure a daily cron job to sync ChromaDB snapshots and medical uploads to your encrypted **Amazon S3** bucket (`Backup / Archive`):
 

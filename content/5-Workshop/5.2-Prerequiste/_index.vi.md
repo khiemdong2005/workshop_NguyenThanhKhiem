@@ -22,6 +22,8 @@ Trước khi khởi tạo hạ tầng AWS hoặc build Docker image, bạn cần
 
 Trước khi tạo tài nguyên, hãy chọn đúng khu vực **Asia Pacific (Singapore) `ap-southeast-1`** trên thanh góc phải AWS Management Console và xác thực danh tính AWS CLI trên terminal:
 
+> **[Ảnh 01: Chọn Region Asia Pacific (Singapore) `ap-southeast-1` trên AWS Console]** — `static/images/5-Workshop/5.2-Prerequisite/01-region.png`
+
 ```bash
 export AWS_REGION=ap-southeast-1
 aws configure set region ap-southeast-1
@@ -41,6 +43,8 @@ aws configure get region
 ```text
 ap-southeast-1
 ```
+
+> **[Ảnh 02: Xác thực AWS CLI & Region trên AWS CloudShell (`aws sts get-caller-identity`)]** — `static/images/5-Workshop/5.2-Prerequisite/02-aws-identity.png`
 
 #### Chính sách Quyền IAM cho Triển khai Workshop
 

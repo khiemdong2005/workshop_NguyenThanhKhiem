@@ -59,6 +59,8 @@ docker compose down -v
 docker compose -f monitoring/docker-compose.observability.yml down -v
 ```
 
+> **[Screenshot 22: AWS Resource Cleanup Verification After Demo Defense (S3 Deleted, EC2 Terminated, No Unattached Elastic IPs)]** — `static/images/5-Workshop/5.6-Cleanup/22-cleanup-done.png`
+
 {{% notice tip %}}
 **Cost-Safety Reminder:** Unattached **Elastic IPs** (`$0.005/hr`), running **NAT Gateways** (`$0.059/hr` in `ap-southeast-1`), and **AWS Secrets Manager** secrets left in recovery without `--force-delete-without-recovery` continue incurring charges. Always verify `EC2 -> Elastic IPs`, `VPC -> NAT Gateways`, and `AWS Billing -> Bills` 24 hours after cleanup.
 {{% /notice %}}

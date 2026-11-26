@@ -25,7 +25,7 @@ graph LR
     NAT -->|"Egress via EIP"| IGW
     IGW -->|"HTTPS :443 / SMTP :587"| EXT["External: Groq API, Google OAuth, Gmail SMTP, SpeedSMS"]
     EC2 -->|"SQL :5432"| RDS["Private DB Subnet: RDS PostgreSQL"]
-    IGW -.->|"AWS Endpoints (EC2 IAM Role)"| AWS["ECR, S3 Backup, Secrets Manager, CloudWatch"]
+    IGW -.->|"AWS Endpoints (authorized via EC2 IAM Role)"| AWS["ECR, S3 Backup, Secrets Manager, CloudWatch, SSM"]
 {{< /mermaid >}}
 
 #### Content

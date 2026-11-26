@@ -18,6 +18,8 @@ While local development defaults to SQLite (`sqlite:///./instance/medimind.db`),
    - **Connectivity:** `Don't connect to an EC2 compute resource`, **VPC:** `medimind-vpc`, **DB subnet group:** `medimind-db-subnet-group`, **Public access:** `No`, **Existing VPC security groups:** `sg-medimind-rds` (`TCP 5432`)
    - **Additional configuration:** **Initial database name:** `medimind` -> click **Create database**. Once status becomes `Available`, copy the **Endpoint** (`<RDS_ENDPOINT>`) from the **Connectivity & security** tab.
 
+> **[Screenshot 06: Amazon RDS PostgreSQL `medimind-pg-db` (`Available`, `Public access: No`, KMS Encrypted)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/06-rds-available.png`
+
 When the Flask/SQLAlchemy startup routine (`create_app()`) runs on EC2, `core/models.py` initializes and migrates the 7 relational tables:
 
 | Table (`__tablename__`) | ORM Model | Stored Clinical & Application Data |
@@ -77,6 +79,8 @@ aws s3api put-bucket-lifecycle-configuration \
   --lifecycle-configuration file://lifecycle.json
 ```
 
+> **[Screenshot 07: Amazon S3 Backup Bucket (`Block Public Access: On`, `Versioning` & `Lifecycle Policy: Enabled`)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/07-s3-backup.png`
+
 #### Step 3: Store Sensitive Runtime Credentials in AWS Secrets Manager
 
 Create **3 secret groups** (`$0.40/secret/month` = `$1.20/month`) so zero API keys or DB passwords are ever baked into Docker images or Git:
@@ -120,3 +124,5 @@ aws secretsmanager create-secret \
     "GEMINI_API_KEY": "<OPTIONAL_GEMINI_FALLBACK_KEY>"
   }' --region ap-southeast-1
 ```
+
+> **[Screenshot 08: Three Secrets in AWS Secrets Manager (`medimind/app-db`, `medimind/auth-otp`, `medimind/ai-providers` — values masked)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/08-secrets-manager.png`

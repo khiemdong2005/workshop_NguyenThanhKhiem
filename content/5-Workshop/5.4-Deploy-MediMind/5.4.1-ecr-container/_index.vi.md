@@ -73,6 +73,8 @@ aws ecr describe-image-scan-findings \
 ```
 *(hoặc `{}` nếu không phát hiện CVE; đảm bảo `CRITICAL` = `0` trước khi triển khai).*
 
+> **[Ảnh 09: Amazon ECR `medimind-clinical-ai` đã push image `v1.0.0` & kết quả quét lỗ hổng CVE]** — `static/images/5-Workshop/5.4-Deploy-MediMind/09-ecr-scan.png`
+
 {{% notice warning %}}
 Trước khi chạy `docker build`, hãy kiểm tra lại tệp `.dockerignore` đã liệt kê đầy đủ `.env`, `instance/`, `medical_vectordb/` và `uploads/`. Vì `Dockerfile` dùng `COPY --chown=appuser:appuser . .`, nếu thiếu các dòng này trong `.dockerignore`, CSDL SQLite cục bộ, chỉ mục ChromaDB hoặc ảnh bệnh nhân tải lên máy cá nhân sẽ bị đóng gói thẳng vào Docker Image đẩy lên ECR (vừa phình image vượt 500 MB Free Tier, vừa gây lộ dữ liệu cục bộ).
 {{% /notice %}}

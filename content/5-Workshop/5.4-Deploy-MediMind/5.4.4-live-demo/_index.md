@@ -14,6 +14,8 @@ Verify account registration, 6-digit OTP delivery, and Google OAuth 2.0 login:
 - **Email/Phone Registration & OTP:** Register via `POST /api/auth/register` or request an OTP code via `POST /api/auth/otp/send` (routed through Gmail SMTP `smtp.gmail.com:587` or SpeedSMS via the NAT Gateway) and confirm with `POST /api/auth/otp/verify`.
 - **Google OAuth 2.0:** Click **Sign in with Google** (`GET /api/auth/google/login` -> Google Consent Screen -> `/api/auth/google/callback`) and confirm user persistence in Amazon RDS PostgreSQL (`users` table).
 
+> **[Screenshot 15: Live Demo 1 — Google OAuth / OTP Login on Production HTTPS Domain]** — `static/images/5-Workshop/5.4-Deploy-MediMind/15-demo-auth.png`
+
 #### Step 2: Clinical Triage, Negation Trap & Grounded RAG (`POST /api/chat`)
 
 Test both emergency bypass and negation handling against `core/triage.py` and `core/rag_service.py`:
@@ -38,21 +40,24 @@ curl -s -X POST https://medimind.yourdomain.com/api/chat \
 ```json
 // Case 1 (Red Flag Emergency)
 {
-  "risk_level": "Nguy cơ cao (Cần thăm khám khẩn)",
   "is_emergency": true,
-  "recommended_action": "Gọi Cấp cứu 115 ngay lập tức"
+  "risk_level": "Nguy cơ cao (Cần thăm khám khẩn)",
+  "specialist": "Cấp cứu 115 / Khoa Cấp cứu",
+  "sources": []
 }
 
 // Case 2 (Negation Safe & Grounded RAG)
 {
-  "risk_level": "Theo dõi tại nhà",
   "is_emergency": false,
+  "risk_level": "Theo dõi tại nhà",
   "specialist": "Tai Mũi Họng",
   "sources": [
-    {"title": "Acute pharyngitis", "source": "MedlinePlus NIH"}
+    {"title": "...", "url": "..."}
   ]
 }
 ```
+
+> **[Screenshot 16: Live Demo 2 — Emergency 115 Red Flag & Negation Trap with Grounded RAG Citations]** — `static/images/5-Workshop/5.4-Deploy-MediMind/16-demo-triage-rag.png`
 
 #### Step 3: 8-Step OCR Cross-Verification (`POST /api/prescription/scan`)
 
@@ -69,11 +74,15 @@ Upload a prescription or biochemistry lab photo via the Web SPA or `POST /api/pr
 | `[6]` | **AI Interpretation** | Summarizes only the validated JSON fields (no ungrounded hallucination). |
 | `[7]` | **Human-in-the-Loop Confirm** | User reviews and confirms via `POST /api/prescription/confirm` before saving to `prescription_history`. |
 
+> **[Screenshot 17: Live Demo 3 — Prescription OCR Scan & Morning–Noon–Afternoon–Evening Reminders]** — `static/images/5-Workshop/5.4-Deploy-MediMind/17-demo-ocr.png`
+
 #### Step 4: Clinical Nutrition Studio (`POST /api/nutrition/meal-plan`, `GET /api/nutrition/recipe-catalog`)
 
 Submit a **BMR/TDEE** survey with clinical conditions and allergy constraints (e.g., *"Đau dạ dày, không cay, dị ứng hải sản"* — or single-dish analysis via `POST /api/nutrition/analyze`):
 - `core/nutrition/nutrition_rules.py` executes deterministic **Fail-Closed Allergy Filtering** (12 clinical contexts, 12 allergen groups) across **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)**.
 - `core/nutrition/nutrition_meal_planner.py` builds safe meal plans while strictly locking dish names, ingredients, and `kcal` values to the verified catalog (`GET /api/nutrition/recipe-catalog`).
+
+> **[Screenshot 18: Live Demo 4 — BMR/TDEE Survey & Verified Mon Ngon Moi Ngay Meal Plan with kcal]** — `static/images/5-Workshop/5.4-Deploy-MediMind/18-demo-nutrition.png`
 
 #### Step 5: 30-Second Pre-Consultation Summary & Facility Booking (`Flow 9`)
 
@@ -86,3 +95,5 @@ curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?region=hanoi
 ```
 
 **Expected Output:** HTTP `200` JSON payload returning clinic/hospital metadata (facility name, address, and `lat`/`lng` coordinates rendered on Leaflet/OpenStreetMap).
+
+> **[Screenshot 19: Live Demo 5 — 30-Second Pre-Consultation Summary & 2,144-Facility Map / Booking]** — `static/images/5-Workshop/5.4-Deploy-MediMind/19-demo-facilities.png`

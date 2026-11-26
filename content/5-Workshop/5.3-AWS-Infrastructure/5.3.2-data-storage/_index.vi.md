@@ -18,6 +18,8 @@ Trong khi môi trường phát triển cục bộ dùng SQLite (`sqlite:///./ins
    - **Connectivity:** `Don't connect to an EC2 compute resource`, **VPC:** `medimind-vpc`, **DB subnet group:** `medimind-db-subnet-group`, **Public access:** `No`, **Existing VPC security groups:** `sg-medimind-rds` (`TCP 5432`)
    - **Additional configuration:** **Initial database name:** `medimind` -> nhấn **Create database**. Sau khi trạng thái chuyển thành `Available`, vào tab **Connectivity & security** để sao chép **Endpoint** (`<RDS_ENDPOINT>`).
 
+> **[Ảnh 06: Amazon RDS PostgreSQL `medimind-pg-db` trạng thái `Available`, `Public access: No`, mã hóa KMS]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/06-rds-available.png`
+
 Khi ứng dụng khởi động trên EC2 (`create_app()`), SQLAlchemy (`core/models.py`) sẽ tự động khởi tạo và migrate 7 bảng dữ liệu quan hệ:
 
 | Tên bảng (`__tablename__`) | Lớp ORM | Dữ liệu Lưu trữ |
@@ -77,6 +79,8 @@ aws s3api put-bucket-lifecycle-configuration \
   --lifecycle-configuration file://lifecycle.json
 ```
 
+> **[Ảnh 07: Amazon S3 Backup Bucket (`Block Public Access: On`, `Versioning` & `Lifecycle Policy: Enabled`)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/07-s3-backup.png`
+
 #### Bước 3: Lưu Biến Bí mật trong AWS Secrets Manager
 
 Khởi tạo **3 nhóm Secrets** (`$0.40/secret/tháng` = `$1.20/tháng`) để không bao giờ lưu cứng mật khẩu hay API Key trong Docker Image hoặc mã nguồn Git:
@@ -120,3 +124,5 @@ aws secretsmanager create-secret \
     "GEMINI_API_KEY": "<OPTIONAL_GEMINI_FALLBACK_KEY>"
   }' --region ap-southeast-1
 ```
+
+> **[Ảnh 08: Danh sách 3 Secrets trên AWS Secrets Manager (`medimind/app-db`, `medimind/auth-otp`, `medimind/ai-providers` — ẩn giá trị mật)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/08-secrets-manager.png`

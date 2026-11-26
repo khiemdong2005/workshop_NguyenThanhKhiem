@@ -43,6 +43,8 @@ pytest -q
 
 **Expected Output:** All 95 test files execute cleanly with `0 failed` (Exit Code `0`).
 
+> **[Screenshot 20: `pytest -q` Passing All 95 Automated Test Files]** — `static/images/5-Workshop/5.5-Security-Testing/20-pytest-pass.png`
+
 | Evaluation Category | Metric (`evaluation/quality_gates.json`) | Required Threshold |
 | :--- | :--- | :---: |
 | **Clinical Safety** | `emergency_recall_min` | **100%** (`1.0`) |
@@ -99,3 +101,5 @@ aws budgets describe-budgets --account-id $ACCOUNT_ID --query 'Budgets[*].[Budge
 |  medimind-ec2-high-cpu             |  OK    |
 +------------------------------------+--------+
 ```
+
+> **[Screenshot 21: CloudWatch Logs `/medimind/clinical-api` Showing PII Redaction (`[REDACTED]`) & CloudWatch Alarm / AWS Budgets `OK`]** — `static/images/5-Workshop/5.5-Security-Testing/21-cloudwatch-budgets.png`

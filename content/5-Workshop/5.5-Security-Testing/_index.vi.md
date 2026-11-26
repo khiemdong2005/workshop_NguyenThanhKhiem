@@ -43,6 +43,8 @@ pytest -q
 
 **Expected Output:** Toàn bộ 95 tệp kiểm thử tự động chạy hoàn tất với `0 failed` (Exit Code `0`).
 
+> **[Ảnh 20: Kết quả chạy `pytest -q` pass xanh toàn bộ 95 tệp kiểm thử tự động]** — `static/images/5-Workshop/5.5-Security-Testing/20-pytest-pass.png`
+
 | Nhóm Kiểm định | Chỉ tiêu (`evaluation/quality_gates.json`) | Ngưỡng Bắt buộc |
 | :--- | :--- | :---: |
 | **An toàn Lâm sàng** | `emergency_recall_min` | **100%** (`1.0`) |
@@ -99,3 +101,5 @@ aws budgets describe-budgets --account-id $ACCOUNT_ID --query 'Budgets[*].[Budge
 |  medimind-ec2-high-cpu             |  OK    |
 +------------------------------------+--------+
 ```
+
+> **[Ảnh 21: CloudWatch Logs `/medimind/clinical-api` hiển thị log đã ẩn danh PII (`[REDACTED]`) & CloudWatch Alarm / AWS Budgets trạng thái `OK`]** — `static/images/5-Workshop/5.5-Security-Testing/21-cloudwatch-budgets.png`

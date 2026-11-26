@@ -59,6 +59,8 @@ docker compose down -v
 docker compose -f monitoring/docker-compose.observability.yml down -v
 ```
 
+> **[Ảnh 22: Xác nhận dọn sạch tài nguyên AWS sau nghiệm thu (S3 đã xóa, EC2 Terminated, Elastic IP trống)]** — `static/images/5-Workshop/5.6-Cleanup/22-cleanup-done.png`
+
 {{% notice tip %}}
 **Lưu ý Tránh Phát sinh Chi phí Ngầm:** **Elastic IP** không gắn vào tài nguyên (`$0.005/giờ`), **NAT Gateway** đang chạy (`$0.059/giờ` tại `ap-southeast-1`) và **Secrets Manager** nếu xóa thiếu cờ `--force-delete-without-recovery` vẫn có thể tính phí. Luôn kiểm tra lại mục `EC2 -> Elastic IPs`, `VPC -> NAT Gateways` và `AWS Billing -> Bills` sau khi dọn dẹp 24 giờ.
 {{% /notice %}}

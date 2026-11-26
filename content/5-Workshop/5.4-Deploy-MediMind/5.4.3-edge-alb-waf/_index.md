@@ -24,6 +24,8 @@ pre: " <b> 5.4.3 </b> "
 Because `TRUST_PROXY_HEADERS=true` and `TRUSTED_PROXY_COUNT=2` are set in `/etc/medimind.env` (accounting for 2 proxy hops `CloudFront -> ALB -> EC2`; set `=1` only if routing directly to ALB without CloudFront), MediMind accurately extracts the real client IP (`ips[-trusted_proxy_count]` from `X-Forwarded-For`) and HTTPS scheme (`X-Forwarded-Proto`) for rate limiting (`core/rate_limit_service.py`) and OAuth callback URLs.
 {{% /notice %}}
 
+> **[Screenshot 12: Target Group `medimind-tg` (`Healthy` on `:8000`) & ALB `medimind-alb` (`Active`, HTTPS `:443`)]** — `static/images/5-Workshop/5.4-Deploy-MediMind/12-alb-tg-healthy.png`
+
 #### Step 2: Create an AWS WAF Web ACL (Layer-7 Firewall)
 
 Open **AWS WAF & Shield Console -> Web ACLs**, switch the top **Region** dropdown to **`Global (CloudFront)`**, and click **Create web ACL**:
@@ -34,6 +36,8 @@ Open **AWS WAF & Shield Console -> Web ACLs**, switch the top **Region** dropdow
     2. **SQL database (`AWSManagedRulesSQLiRuleSet`)** — Filters SQL injection payloads targeting auth and search APIs.
     3. **Known bad inputs (`AWSManagedRulesKnownBadInputsRuleSet`)** — Rejects malformed headers and known vulnerable scanner patterns.
   - Click **Add rules -> Add my own rules and rule groups -> Rule builder**: name it `MediMindRateLimit`, **Type:** `Rate-based rule`, **Rate limit:** `1000` requests per 5 minutes per IP, **Action:** `Block` -> **Create web ACL**.
+
+> **[Screenshot 13: AWS WAF Web ACL `medimind-edge-waf` (Global CloudFront) with 4 Defensive Rules]** — `static/images/5-Workshop/5.4-Deploy-MediMind/13-waf-rules.png`
 
 #### Step 3: Configure Amazon CloudFront & Route 53 DNS
 
@@ -47,3 +51,5 @@ Open **AWS WAF & Shield Console -> Web ACLs**, switch the top **Region** dropdow
      - **Behavior 1 (`/static/*`):** **Cache policy:** `CachingOptimized` (serves CSS, JS, and recipe/UI images from edge within the **1 TB/month Always-Free** tier).
      - **Behavior 2 (`/api/*`, including `/api/auth/*`):** **Cache policy:** `CachingDisabled` + **Origin request policy:** `AllViewer` so clinical triage, OCR uploads, and OAuth callbacks (`/api/auth/google/callback`) bypass edge caching and preserve cookies/headers.
 3. In **Route 53 Console -> Hosted zones**, open your domain -> **Create record**: **Record name:** `medimind`, **Record type:** `A`, toggle **Alias** on, **Route traffic to:** `Alias to CloudFront distribution`, select `dxxxxxxxxxxxx.cloudfront.net` -> **Create records**.
+
+> **[Screenshot 14: CloudFront Distribution (`Deployed`, Behaviors `/static/*`, `/api/*`) & Route 53 Alias `A` Record]** — `static/images/5-Workshop/5.4-Deploy-MediMind/14-cloudfront-route53.png`

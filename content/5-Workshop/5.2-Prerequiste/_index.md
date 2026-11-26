@@ -22,6 +22,8 @@ Before provisioning AWS resources or building the container image, ensure you ha
 
 Before provisioning resources, ensure **Asia Pacific (Singapore) `ap-southeast-1`** is selected in the top-right AWS Management Console region selector and verify your active AWS CLI credentials:
 
+> **[Screenshot 01: Select Asia Pacific (Singapore) `ap-southeast-1` Region in AWS Console]** — `static/images/5-Workshop/5.2-Prerequisite/01-region.png`
+
 ```bash
 export AWS_REGION=ap-southeast-1
 aws configure set region ap-southeast-1
@@ -41,6 +43,8 @@ aws configure get region
 ```text
 ap-southeast-1
 ```
+
+> **[Screenshot 02: Verify AWS CLI Identity & Region in AWS CloudShell (`aws sts get-caller-identity`)]** — `static/images/5-Workshop/5.2-Prerequisite/02-aws-identity.png`
 
 #### IAM Permissions Policy for Workshop Deployment
 

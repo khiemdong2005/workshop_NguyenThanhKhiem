@@ -14,6 +14,8 @@ Kiểm tra đăng ký tài khoản, gửi OTP 6 số và đăng nhập Google OA
 - **Đăng ký & OTP qua Email/SMS:** Đăng ký qua `POST /api/auth/register` hoặc yêu cầu mã OTP qua `POST /api/auth/otp/send` (đi qua NAT Gateway tới Gmail SMTP `smtp.gmail.com:587` hoặc SpeedSMS) và xác thực tại `POST /api/auth/otp/verify`.
 - **Google OAuth 2.0:** Chọn **Đăng nhập bằng Google** (`GET /api/auth/google/login` -> màn hình cấp quyền Google -> `/api/auth/google/callback`) và kiểm tra bản ghi người dùng được lưu trong **Amazon RDS PostgreSQL** (bảng `users`).
 
+> **[Ảnh 15: Live Demo 1 — Đăng nhập thành công qua Google OAuth / OTP trên HTTPS domain thật]** — `static/images/5-Workshop/5.4-Deploy-MediMind/15-demo-auth.png`
+
 #### Bước 2: Sàng lọc Lâm sàng, Bẫy Phủ định & Grounded RAG (`POST /api/chat`)
 
 Kiểm chứng cả luồng vượt cấp cứu 115 lẫn khả năng chống bẫy phủ định của `core/triage.py` và `core/rag_service.py`:
@@ -38,21 +40,24 @@ curl -s -X POST https://medimind.yourdomain.com/api/chat \
 ```json
 // Ca 1 (Cờ đỏ Cấp cứu)
 {
-  "risk_level": "Nguy cơ cao (Cần thăm khám khẩn)",
   "is_emergency": true,
-  "recommended_action": "Gọi Cấp cứu 115 ngay lập tức"
+  "risk_level": "Nguy cơ cao (Cần thăm khám khẩn)",
+  "specialist": "Cấp cứu 115 / Khoa Cấp cứu",
+  "sources": []
 }
 
 // Ca 2 (Chống bẫy phủ định & Grounded RAG)
 {
-  "risk_level": "Theo dõi tại nhà",
   "is_emergency": false,
+  "risk_level": "Theo dõi tại nhà",
   "specialist": "Tai Mũi Họng",
   "sources": [
-    {"title": "Acute pharyngitis", "source": "MedlinePlus NIH"}
+    {"title": "...", "url": "..."}
   ]
 }
 ```
+
+> **[Ảnh 16: Live Demo 2 — Sàng lọc Cờ đỏ 115 & chống bẫy phủ định có trích dẫn nguồn RAG]** — `static/images/5-Workshop/5.4-Deploy-MediMind/16-demo-triage-rag.png`
 
 #### Bước 3: Pipeline OCR Đối soát 8 Bước (`POST /api/prescription/scan`)
 
@@ -69,11 +74,15 @@ Tải ảnh đơn thuốc hoặc phiếu xét nghiệm sinh hóa máu qua giao d
 | `[6]` | **Diễn giải Lâm sàng** | AI chỉ diễn giải trên JSON đã chuẩn hóa, không bịa thông tin ngoài dữ liệu. |
 | `[7]` | **Xác nhận Human-in-the-Loop** | Người bệnh kiểm tra và xác nhận qua `POST /api/prescription/confirm` trước khi lưu `prescription_history`. |
 
+> **[Ảnh 17: Live Demo 3 — Quét OCR đơn thuốc & lịch nhắc uống thuốc Sáng–Trưa–Chiều–Tối]** — `static/images/5-Workshop/5.4-Deploy-MediMind/17-demo-ocr.png`
+
 #### Bước 4: Tư vấn Dinh dưỡng Lâm sàng (`POST /api/nutrition/meal-plan`, `GET /api/nutrition/recipe-catalog`)
 
 Gửi khảo sát **BMR/TDEE**, tình trạng bệnh lý và dị ứng (VD: *"Đau dạ dày, không cay, dị ứng hải sản"* hoặc kiểm tra nhanh trên `POST /api/nutrition/analyze`):
 - `core/nutrition/nutrition_rules.py` thực thi lọc dị ứng tất định **Fail-Closed** (12 ngữ cảnh bệnh lý, 12 nhóm dị ứng) trên danh mục **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)**.
 - `core/nutrition/nutrition_meal_planner.py` lập thực đơn cân đối năng lượng với tên món, nguyên liệu và lượng `kcal` khóa chặt theo danh mục gốc (`GET /api/nutrition/recipe-catalog`).
+
+> **[Ảnh 18: Live Demo 4 — Khảo sát BMR/TDEE & gợi ý thực đơn Món Ngon Mỗi Ngày kèm kcal]** — `static/images/5-Workshop/5.4-Deploy-MediMind/18-demo-nutrition.png`
 
 #### Bước 5: Tóm tắt Tiền khám 30 Giây & Đặt lịch 2.144 Cơ sở Y tế (`Luồng 9`)
 
@@ -86,3 +95,5 @@ curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?region=hanoi
 ```
 
 **Expected Output:** Trả về JSON HTTP `200` danh sách cơ sở y tế (tên bệnh viện/phòng khám, địa chỉ, tọa độ `lat`/`lng` để hiển thị trên bản đồ Leaflet/OpenStreetMap).
+
+> **[Ảnh 19: Live Demo 5 — Tóm tắt tiền khám 30s & bản đồ/đặt lịch 2.144 cơ sở y tế]** — `static/images/5-Workshop/5.4-Deploy-MediMind/19-demo-facilities.png`

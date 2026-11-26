@@ -34,6 +34,8 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 | `medimind-private-db-a` | `ap-southeast-1a` | `10.0.21.0/24` | Đặt RDS PostgreSQL chính |
 | `medimind-private-db-b` | `ap-southeast-1b` | `10.0.22.0/24` | Subnet thứ 2 cho RDS Subnet Group |
 
+> **[Ảnh 03: VPC Resource Map của `medimind-vpc` (hiển thị đủ 6 Subnets, 3 Route Tables, IGW, NAT Gateway)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/03-vpc-resource-map.png`
+
 #### Bước 2: Khởi tạo Internet Gateway, NAT Gateway & Route Tables
 
 1. **Internet Gateway:** Vào **VPC -> Internet gateways -> Create internet gateway** -> đặt tên `medimind-igw` -> **Create** -> chọn **Actions -> Attach to VPC** -> gắn vào `medimind-vpc`.
@@ -61,6 +63,8 @@ Vào **VPC -> Security Groups -> Create security group** (chọn VPC `medimind-v
 | `sg-medimind-alb` | `HTTPS (443)` và `HTTP (80)` từ CloudFront Prefix List / `0.0.0.0/0` | `TCP 8000` tới `sg-medimind-ec2` |
 | `sg-medimind-ec2` | `TCP 8000` **chỉ** từ `sg-medimind-alb` *(không mở cổng SSH 22)* | `TCP 5432` tới `sg-medimind-rds`; `HTTPS (443)` & `587` (SMTP) qua NAT |
 | `sg-medimind-rds` | `TCP 5432` **chỉ** từ `sg-medimind-ec2` | Giới hạn nội bộ VPC |
+
+> **[Ảnh 04: 3 Security Groups lồng nhau (`sg-medimind-alb`, `sg-medimind-ec2`, `sg-medimind-rds`) & Inbound rules]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/04-security-groups.png`
 
 #### Bước 4: Tạo IAM Role `medimind-ec2-role` & Instance Profile
 
@@ -97,3 +101,5 @@ Mở **IAM Console -> Roles -> Create role** -> chọn **Trusted entity type:** 
   ]
 }
 ```
+
+> **[Ảnh 05: IAM Role `medimind-ec2-role` đã gắn đủ 3 Policies theo chuẩn Least Privilege]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/05-iam-role.png`
