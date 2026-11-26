@@ -11,7 +11,7 @@ pre: " <b> 5.4.2 </b> "
 1. Mở **EC2 Console** (`ap-southeast-1`) và khởi tạo máy chủ với cấu hình:
    - **Name:** `medimind-app-server`
    - **AMI:** Ubuntu Server 22.04 LTS hoặc Amazon Linux 2023 (64-bit x86)
-   - **Instance Type:** `t3.micro` (Free Tier PoC) hoặc `t3.small` (2 vCPU, 2 GB RAM khuyến nghị cho EasyOCR + ChromaDB)
+   - **Instance Type:** `t3.micro` (Free Tier PoC) hoặc `t3.small` (2 vCPU, 2 GB RAM khuyến nghị cho ChromaDB + Hybrid RAG / BGE Reranker)
    - **Network:** VPC `medimind-vpc`, Subnet `medimind-private-app-a` (`10.0.11.0/24`), **Auto-assign public IP: Disable**
    - **Security Group:** `sg-medimind-ec2`
    - **IAM Instance Profile:** `medimind-ec2-role`
@@ -64,8 +64,10 @@ PORT=8000
 HOST=0.0.0.0
 FLASK_ENV=production
 TRUST_PROXY_HEADERS=true
-TRUSTED_PROXY_COUNT=1
+TRUSTED_PROXY_COUNT=2
 SESSION_COOKIE_SECURE=true
+CORS_ALLOWED_ORIGINS=https://medimind.yourdomain.com
+# REDIS_URL=redis://<ELASTICACHE_ENDPOINT>:6379/0
 VECTOR_DB_PATH=/app/medical_vectordb
 RAG_VECTOR_SEARCH_ENABLED=true
 AI_CIRCUIT_BREAKER_ENABLED=true

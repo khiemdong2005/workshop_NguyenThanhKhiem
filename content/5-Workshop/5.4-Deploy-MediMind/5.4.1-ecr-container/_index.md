@@ -11,7 +11,7 @@ pre: " <b> 5.4.1 </b> "
 The project `Dockerfile` implements container security and build-caching best practices:
 - **Slim Base Image & Non-Root Execution:** Uses `python:3.11-slim` and creates an unprivileged user `appuser` (`UID 1000`, `GID 1000`) owning `/app/medical_vectordb`, `/app/instance`, `/app/uploads`, and `/home/appuser/.cache/huggingface`.
 - **Optional BGE Reranker Layer (`INSTALL_RERANKER`):** Defaults to `INSTALL_RERANKER=false` (~450 MB footprint, keeping Amazon ECR within the 500 MB Free Tier limit). Set `--build-arg INSTALL_RERANKER=true` when enabling local `BAAI/bge-reranker-v2-m3` cross-encoder reranking.
-- **Built-in Health Probe & Entrypoint:** Exposes port `8000`, configures `HEALTHCHECK` against `http://localhost:8000/health`, and launches `uvicorn core.main_fastapi:app --host 0.0.0.0 --port 8000`.
+- **Built-in Health Probe & Entrypoint:** Exposes port `8000`, configures `HEALTHCHECK` against `http://localhost:8000/health`, and launches `uvicorn core.main_fastapi:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips=*`.
 
 #### Step 1: Create a Private ECR Repository with Scan-on-Push
 
@@ -54,6 +54,6 @@ aws ecr describe-image-scan-findings \
   --query 'imageScanFindings.findingSeverityCounts'
 ```
 
-{{% notice note %}}
-Because `.dockerignore` excludes `.env`, `instance/`, `medical_vectordb/`, and `uploads/`, no local secrets or patient uploads are ever embedded in the ECR image layers.
+{{% notice warning %}}
+Before running `docker build`, verify that `.dockerignore` explicitly excludes `.env`, `instance/`, `medical_vectordb/`, and `uploads/`. Because `Dockerfile` executes `COPY --chown=appuser:appuser . .`, omitting those directories will bake local SQLite databases, ChromaDB vectors, or local user uploads into the ECR image (both bloating the image beyond the 500 MB Free Tier limit and risking local data exposure).
 {{% /notice %}}

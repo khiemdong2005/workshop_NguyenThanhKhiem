@@ -21,7 +21,7 @@ pre: " <b> 5.4.3 </b> "
    - **Listener 2 (`HTTP : 80`):** Redirect permanently (`301`) to `HTTPS : 443`.
 
 {{% notice info %}}
-Because `TRUST_PROXY_HEADERS=true` and `TRUSTED_PROXY_COUNT=1` are set in `/etc/medimind.env`, MediMind accurately extracts client IPs (`X-Forwarded-For`) and HTTPS scheme (`X-Forwarded-Proto`) from ALB for rate limiting (`core/rate_limit_service.py`) and OAuth callback URLs.
+Because `TRUST_PROXY_HEADERS=true` and `TRUSTED_PROXY_COUNT=2` are set in `/etc/medimind.env` (accounting for 2 proxy hops `CloudFront -> ALB -> EC2`; set `=1` only if routing directly to ALB without CloudFront), MediMind accurately extracts the real client IP (`ips[-trusted_proxy_count]` from `X-Forwarded-For`) and HTTPS scheme (`X-Forwarded-Proto`) for rate limiting (`core/rate_limit_service.py`) and OAuth callback URLs.
 {{% /notice %}}
 
 #### Step 2: Create an AWS WAF Web ACL (Layer-7 Firewall)
@@ -39,6 +39,6 @@ In the **AWS WAF & Shield Console**, select **Global (CloudFront)** scope (`us-e
 2. Create a **CloudFront Distribution** pointing to `medimind-alb` DNS as the Origin (`HTTPS only`, TLSv1.2+):
    - **Web Application Firewall (WAF):** Attach `medimind-edge-waf`.
    - **Cache Behavior 1 (`/static/*`):** `CachingOptimized` (serves CSS, JS, and recipe/UI images from edge within the **1 TB/month Always-Free** tier).
-   - **Cache Behavior 2 (`/api/*` and `/auth/*`):** `CachingDisabled` + `AllViewer` origin request policy so clinical triage, OCR uploads, and OAuth callbacks bypass edge caching and preserve cookies/headers.
+   - **Cache Behavior 2 (`/api/*`, including `/api/auth/*`):** `CachingDisabled` + `AllViewer` origin request policy so clinical triage, OCR uploads, and OAuth callbacks (`/api/auth/google/callback`) bypass edge caching and preserve cookies/headers.
    - **Default (`*`):** `CachingDisabled` + `AllViewer` for dynamic SPA HTML rendering.
 3. In **Amazon Route 53**, open your Hosted Zone and create an **Alias `A` record** for `medimind.yourdomain.com` pointing to the CloudFront distribution domain (`dxxxxxxxxxxxx.cloudfront.net`).

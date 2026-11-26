@@ -15,8 +15,8 @@ Before provisioning AWS resources or building the container image, ensure you ha
   - **Docker Engine 24.0+** & **Docker Compose 2.20+** (or Docker Desktop).
   - **Python 3.11+** and **Git** (for running `pytest` and inspecting evaluation scripts locally).
 - **AI & Integration Keys:**
-  - **OpenRouter API Key** (free tier `:free` models such as `nvidia/nemotron-3.5-super-vl:free` and `nvidia/nemotron-3.5-lightning:free` for `$0.00` PoC inference) and/or **Google Gemini API Key**.
-  - *(Optional for full auth/maps)* Google OAuth 2.0 Client ID/Secret, Gmail SMTP App Password, SpeedSMS Auth Token, and Google Maps Platform API Key.
+  - **Groq API Key** (recommended Dual-Key Failover `GROQ_API_KEY`, `GROQ_API_KEY_2` plus workload-specific keys for `qwen/qwen3.8-27b` on Groq Free Tier) and/or **Google Gemini API Key** (`GEMINI_API_KEY`, optional fallback).
+  - *(Optional for full auth/maps)* Google OAuth 2.0 Client ID/Secret, Gmail SMTP App Password, SpeedSMS Auth Token, and Google Maps Platform API Key (Leaflet / OpenStreetMap is active by default).
 
 #### IAM Permissions Policy for Workshop Deployment
 
@@ -83,13 +83,13 @@ chatbot_medical/
 ├── data/                      # 364 RAG documents, 2,500 Mon Ngon Moi Ngay recipes, 2,144 facilities
 ├── evaluation/                # quality_gates.json & 4 quantitative benchmark datasets
 ├── monitoring/                # Prometheus, Grafana & Wazuh alert rules
-├── tests/                     # 83 automated pytest test files
+├── tests/                     # 95 automated pytest test files
 ├── Dockerfile                 # Non-root python:3.11-slim image on port 8000
 ├── docker-compose.yml         # Local stack with EBS-equivalent volumes
 └── ingest.py                  # ChromaDB vector & metadata ingestion script
 ```
 
-2. Create your `.env` file from `.env.example` and verify the critical runtime parameters:
+2. Create your `.env` file from `.env.example` and verify the critical runtime parameters (if `.env.example` contains a duplicate `GROQ_MODEL` block, ensure `qwen/qwen3.8-27b` takes precedence):
 
 ```bash
 cp .env.example .env
@@ -102,12 +102,14 @@ Key environment variables used in both local Docker verification and AWS product
 | `SECRET_KEY` | Random 64-char hex | From Secrets Manager | Flask session & CSRF signing key |
 | `DATABASE_URL` | `sqlite:///./instance/medimind.db` | `postgresql+psycopg2://...` | SQLAlchemy DB URI (RDS `:5432` in AWS) |
 | `PORT` / `HOST` | `8000` / `0.0.0.0` | `8000` / `0.0.0.0` | Uvicorn/FastAPI listening socket |
-| `TRUST_PROXY_HEADERS` | `false` | `true` | Honors ALB/CloudFront `X-Forwarded-*` headers |
+| `TRUST_PROXY_HEADERS` | `false` | `true` | Honors CloudFront/ALB `X-Forwarded-*` headers |
+| `TRUSTED_PROXY_COUNT` | `1` | `2` *(1 if ALB-only)* | Proxy hop count (`CloudFront + ALB = 2`) to extract true client IP |
 | `SESSION_COOKIE_SECURE` | `false` | `true` | Enforces HTTPS-only session cookies |
-| `AI_PROVIDER` | `openrouter` | `openrouter` | Routes AI inference to OpenRouter |
-| `OPENROUTER_CHAT_MODEL` | `openrouter/free` | `openrouter/free` | Primary clinical chat & verification model |
-| `OPENROUTER_OCR_MODEL` | `nvidia/nemotron-3.5-super-vl:free` | `nvidia/nemotron-3.5-super-vl:free` | Multimodal Vision OCR schema extraction |
-| `OPENROUTER_NUTRITION_MODEL` | `nvidia/nemotron-3.5-lightning:free` | `nvidia/nemotron-3.5-lightning:free` | Clinical nutrition meal ranking |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:8000` | `https://medimind.yourdomain.com` | Restricts cross-origin API callers |
+| `AI_PROVIDER` | `groq` | `groq` | Routes AI inference to Groq (optional `gemini` fallback) |
+| `GROQ_MODEL` | `qwen/qwen3.8-27b` | `qwen/qwen3.8-27b` | Primary model for Chat, Vision OCR & Nutrition |
+| `GROQ_API_KEY` / `GROQ_API_KEY_2` | Personal Groq keys | From Secrets Manager | Dual-Key Failover pair (plus Chat/OCR/Nutrition workload keys) |
+| `REDIS_URL` *(optional)* | *(Empty — local/DB fallback)* | `redis://<ELASTICACHE_HOST>:6379/0` | Shared OTP & rate-limit state across Multi-EC2 nodes |
 | `VECTOR_DB_PATH` | `./medical_vectordb` | `/app/medical_vectordb` | Persistent ChromaDB directory on EBS |
 | `AI_CIRCUIT_BREAKER_ENABLED` | `true` | `true` | Enables fail-fast fallback after 5 errors |
 
@@ -128,5 +130,5 @@ curl -f http://localhost:8000/ready
 ```
 
 {{% notice tip %}}
-After `docker compose up -d` succeeds, you can preview the Web SPA at `http://localhost:8000`, Swagger UI at `http://localhost:8000/docs`, and the local observability dashboard at `http://localhost:8000/system`.
+After `docker compose up -d` succeeds in Local Dev, you can preview the Web SPA at `http://localhost:8000`, Swagger UI at `http://localhost:8000/docs`, and the local observability dashboard at `http://localhost:8000/system`. Note that in Production (`FLASK_ENV=production`), `core/main_fastapi.py` automatically disables `/docs`, `/redoc`, and `/openapi.json` for hardening.
 {{% /notice %}}

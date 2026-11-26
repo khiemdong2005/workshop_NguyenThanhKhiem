@@ -35,7 +35,7 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 #### Step 2: Internet Gateway, NAT Gateway & Route Tables
 
 1. Create and attach **`medimind-igw`** to `medimind-vpc`.
-2. Allocate an **Elastic IP** and launch **`medimind-nat-gw`** inside `medimind-public-a` so the private EC2 instance can pull ECR images and reach OpenRouter, Google OAuth, Gmail SMTP, and SpeedSMS without receiving inbound Internet traffic.
+2. Allocate an **Elastic IP** and launch **`medimind-nat-gw`** inside `medimind-public-a` so the private EC2 instance can pull ECR images and reach Groq API (and Gemini fallback), Google OAuth, Gmail SMTP, and SpeedSMS without receiving inbound Internet traffic.
 3. Configure three explicit Route Tables:
 
 | Route Table | Associated Subnets | Destination `0.0.0.0/0` Target | Local Target |

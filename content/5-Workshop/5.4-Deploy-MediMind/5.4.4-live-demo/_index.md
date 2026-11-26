@@ -41,18 +41,18 @@ Upload a prescription or biochemistry lab photo via the Web SPA or `POST /api/pr
 | :---: | :--- | :--- |
 | `[0]` | **Intake & Quality Check** | Detects blur, low brightness, glare, and optionally masks PII on image. |
 | `[1]` | **Lightweight Preprocessing** | Retains original pass + deskew/perspective crop + conditional CLAHE. |
-| `[2]` | **Parallel Dual Extraction** | Executes **EasyOCR** (`core/ocr_parallel_service.py`) and **Vision LLM** (`nvidia/nemotron-3.5-super-vl:free`) in parallel. |
+| `[2]` | **Vision & OCR Extraction** | Production AWS container runs **Vision LLM** (`qwen/qwen3.8-27b` via `core/ocr/groq_schema_service.py` with Groq Dual-Key); the local **EasyOCR** branch (`core/ocr/ocr_parallel_service.py`) is an optional non-default local dependency. |
 | `[3]` | **Field-by-Field Reconciliation** | Compares both outputs; sets `needs_review=True` if drug names, dosages, or lab metrics diverge. |
 | `[4]` | **Deterministic Grounding** | Normalizes drug entities, units, and schedule buckets (*Morning – Noon – Afternoon – Evening*). |
 | `[5]` | **Clinical Rules Validation** | Flags High/Low lab values, drug interactions, and patient allergy contraindications. |
 | `[6]` | **AI Interpretation** | Summarizes only the validated JSON fields (no ungrounded hallucination). |
 | `[7]` | **Human-in-the-Loop Confirm** | User reviews and confirms via `POST /api/prescription/confirm` before saving to `prescription_history`. |
 
-#### Step 4: Clinical Nutrition Studio (`POST /api/nutrition/analyze`)
+#### Step 4: Clinical Nutrition Studio (`POST /api/nutrition/meal-plan`, `GET /api/nutrition/recipe-catalog`)
 
-Submit a clinical condition and allergy constraint (e.g., *"Đau dạ dày, không cay, dị ứng hải sản"*):
-- `core/nutrition_rules.py` executes deterministic **Fail-Closed Allergy Filtering** across **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)**.
-- `core/nutrition_ai.py` ranks up to **6 safe dishes** while strictly locking dish names, ingredients, and `kcal` values to the verified catalog.
+Submit a **BMR/TDEE** survey with clinical conditions and allergy constraints (e.g., *"Đau dạ dày, không cay, dị ứng hải sản"* — or single-dish analysis via `POST /api/nutrition/analyze`):
+- `core/nutrition/nutrition_rules.py` executes deterministic **Fail-Closed Allergy Filtering** (12 clinical contexts, 12 allergen groups) across **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)**.
+- `core/nutrition/nutrition_meal_planner.py` builds safe meal plans while strictly locking dish names, ingredients, and `kcal` values to the verified catalog (`GET /api/nutrition/recipe-catalog`).
 
 #### Step 5: 30-Second Pre-Consultation Summary & Facility Booking (`Flow 9`)
 

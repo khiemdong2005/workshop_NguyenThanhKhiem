@@ -15,8 +15,8 @@ Trước khi khởi tạo hạ tầng AWS hoặc build Docker image, bạn cần
   - **Docker Engine 24.0+** & **Docker Compose 2.20+** (hoặc Docker Desktop).
   - **Python 3.11+** và **Git** để chạy `pytest` và kiểm tra dữ liệu đánh giá cục bộ.
 - **Khóa API AI & Dịch vụ Tích hợp:**
-  - **OpenRouter API Key** (tận dụng các mô hình `:free` như `nvidia/nemotron-3.5-super-vl:free` và `nvidia/nemotron-3.5-lightning:free` với chi phí token `$0.00`) và/hoặc **Google Gemini API Key**.
-  - *(Tùy chọn cho đăng nhập & bản đồ đầy đủ)* Google OAuth 2.0 Client ID/Secret, Gmail SMTP App Password, SpeedSMS Auth Token và Google Maps Platform API Key.
+  - **Groq API Key** (khuyến nghị 2 khóa dự phòng Dual-Key Failover `GROQ_API_KEY`, `GROQ_API_KEY_2` và khóa tách theo tác vụ cho mô hình `qwen/qwen3.8-27b` trên Free Tier) và/hoặc **Google Gemini API Key** (`GEMINI_API_KEY`, tùy chọn dự phòng).
+  - *(Tùy chọn cho đăng nhập & bản đồ nâng cao)* Google OAuth 2.0 Client ID/Secret, Gmail SMTP App Password, SpeedSMS Auth Token và Google Maps Platform API Key (mặc định dùng Leaflet / OpenStreetMap).
 
 #### Chính sách Quyền IAM cho Triển khai Workshop
 
@@ -83,13 +83,13 @@ chatbot_medical/
 ├── data/                      # 364 tài liệu RAG, 2.500 món Món Ngon Mỗi Ngày, 2.144 cơ sở y tế
 ├── evaluation/                # quality_gates.json & 4 bộ dữ liệu benchmark định lượng
 ├── monitoring/                # Cấu hình Prometheus, Grafana & luật cảnh báo Wazuh
-├── tests/                     # 83 tệp kiểm thử tự động pytest
+├── tests/                     # 95 tệp kiểm thử tự động pytest
 ├── Dockerfile                 # Image python:3.11-slim chạy quyền non-root appuser cổng 8000
 ├── docker-compose.yml         # Cấu hình chạy cục bộ với volume tương đương EBS
 └── ingest.py                  # Script nạp chỉ mục vector ChromaDB
 ```
 
-2. Tạo tệp `.env` từ `.env.example` và rà soát các biến môi trường trọng yếu:
+2. Tạo tệp `.env` từ `.env.example` và rà soát các biến môi trường trọng yếu (lưu ý nếu `.env.example` có dòng trùng `GROQ_MODEL`, hãy giữ giá trị `qwen/qwen3.8-27b` ở phần trên):
 
 ```bash
 cp .env.example .env
@@ -102,12 +102,14 @@ Bảng đối chiếu biến môi trường giữa Local Dev và AWS Production 
 | `SECRET_KEY` | Chuỗi hex 64 ký tự ngẫu nhiên | Đọc từ Secrets Manager | Khóa ký Session Flask & CSRF token |
 | `DATABASE_URL` | `sqlite:///./instance/medimind.db` | `postgresql+psycopg2://...` | Chuỗi kết nối CSDL (RDS `:5432` trên AWS) |
 | `PORT` / `HOST` | `8000` / `0.0.0.0` | `8000` / `0.0.0.0` | Cổng lắng nghe của Uvicorn/FastAPI |
-| `TRUST_PROXY_HEADERS` | `false` | `true` | Tin cậy header `X-Forwarded-*` từ ALB/CloudFront |
+| `TRUST_PROXY_HEADERS` | `false` | `true` | Tin cậy header `X-Forwarded-*` từ CloudFront/ALB |
+| `TRUSTED_PROXY_COUNT` | `1` | `2` *(1 nếu chỉ qua ALB)* | Số lớp proxy (`CloudFront + ALB = 2`) để cắt đúng IP khách |
 | `SESSION_COOKIE_SECURE` | `false` | `true` | Bắt buộc Cookie chỉ truyền qua HTTPS |
-| `AI_PROVIDER` | `openrouter` | `openrouter` | Điều hướng suy luận AI qua OpenRouter |
-| `OPENROUTER_CHAT_MODEL` | `openrouter/free` | `openrouter/free` | Mô hình chat lâm sàng & kiểm chứng nguồn |
-| `OPENROUTER_OCR_MODEL` | `nvidia/nemotron-3.5-super-vl:free` | `nvidia/nemotron-3.5-super-vl:free` | Vision LLM bóc tách đơn thuốc/xét nghiệm |
-| `OPENROUTER_NUTRITION_MODEL` | `nvidia/nemotron-3.5-lightning:free` | `nvidia/nemotron-3.5-lightning:free` | Mô hình xếp hạng thực đơn dinh dưỡng |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:8000` | `https://medimind.yourdomain.com` | Giới hạn domain được phép gọi API cross-origin |
+| `AI_PROVIDER` | `groq` | `groq` | Điều hướng suy luận AI qua Groq (hỗ trợ fallback `gemini`) |
+| `GROQ_MODEL` | `qwen/qwen3.8-27b` | `qwen/qwen3.8-27b` | Mô hình chính cho Chat, Vision OCR & Dinh dưỡng |
+| `GROQ_API_KEY` / `GROQ_API_KEY_2` | Khóa Groq cá nhân | Đọc từ Secrets Manager | Cặp khóa Dual-Key Failover (và khóa tách riêng Chat/OCR/Nutrition) |
+| `REDIS_URL` *(tùy chọn)* | *(Trống — dùng DB/bộ nhớ cục bộ)* | `redis://<ELASTICACHE_HOST>:6379/0` | Chia sẻ trạng thái OTP & Rate Limiting khi chạy Multi-EC2 |
 | `VECTOR_DB_PATH` | `./medical_vectordb` | `/app/medical_vectordb` | Thư mục lưu chỉ mục ChromaDB trên EBS |
 | `AI_CIRCUIT_BREAKER_ENABLED` | `true` | `true` | Tự động ngắt mạch chuyển Fallback sau 5 lỗi |
 
@@ -128,5 +130,5 @@ curl -f http://localhost:8000/ready
 ```
 
 {{% notice tip %}}
-Sau khi `docker compose up -d` chạy ổn định, bạn có thể mở giao diện Web SPA tại `http://localhost:8000`, tài liệu Swagger UI tại `http://localhost:8000/docs` và trang giám sát hệ thống tại `http://localhost:8000/system`.
+Sau khi `docker compose up -d` chạy ổn định ở Local Dev, bạn có thể mở Web SPA tại `http://localhost:8000`, Swagger UI tại `http://localhost:8000/docs` và trang giám sát tại `http://localhost:8000/system`. Lưu ý khi lên Production (`FLASK_ENV=production`), `core/main_fastapi.py` sẽ tự động đóng `/docs`, `/redoc` và `/openapi.json` để bảo mật.
 {{% /notice %}}

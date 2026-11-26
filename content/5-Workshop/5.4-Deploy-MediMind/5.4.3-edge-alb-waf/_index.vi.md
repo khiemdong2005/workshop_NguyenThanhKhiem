@@ -21,7 +21,7 @@ pre: " <b> 5.4.3 </b> "
    - **Listener 2 (`HTTP : 80`):** Chuyển hướng cố định (`301`) sang `HTTPS : 443`.
 
 {{% notice info %}}
-Nhờ cấu hình `TRUST_PROXY_HEADERS=true` và `TRUSTED_PROXY_COUNT=1` trong `/etc/medimind.env`, ứng dụng MediMind đọc chính xác IP người dùng (`X-Forwarded-For`) và giao thức HTTPS (`X-Forwarded-Proto`) từ ALB để thực thi giới hạn tần suất (`core/rate_limit_service.py`) và tạo link callback OAuth chuẩn xác.
+Nhờ cấu hình `TRUST_PROXY_HEADERS=true` và `TRUSTED_PROXY_COUNT=2` trong `/etc/medimind.env` (vì lưu lượng đi qua 2 tầng proxy `CloudFront -> ALB -> EC2`; chỉ đặt `=1` nếu truy cập trực tiếp qua ALB không qua CloudFront), ứng dụng MediMind cắt đúng IP người dùng (`ips[-trusted_proxy_count]` trong `X-Forwarded-For`) và giao thức HTTPS (`X-Forwarded-Proto`) để thực thi giới hạn tần suất (`core/rate_limit_service.py`) và tạo link callback OAuth chuẩn xác.
 {{% /notice %}}
 
 #### Bước 2: Tạo AWS WAF Web ACL (Tường lửa Lớp 7)
@@ -39,6 +39,6 @@ Trong **AWS WAF & Shield Console**, chọn phạm vi **Global (CloudFront)** và
 2. Tạo **CloudFront Distribution** trỏ Origin về DNS của `medimind-alb` (`HTTPS only`, TLSv1.2+):
    - **Web Application Firewall (WAF):** Gắn `medimind-edge-waf`.
    - **Cache Behavior 1 (`/static/*`):** Chọn `CachingOptimized` để lưu đệm CSS, JS, hình ảnh món ăn/giao diện tại Edge (tận dụng gói miễn phí **1 TB/tháng**).
-   - **Cache Behavior 2 (`/api/*` và `/auth/*`):** Chọn `CachingDisabled` + chính sách `AllViewer` để các luồng sàng lọc lâm sàng, tải đơn thuốc OCR và callback OAuth đi thẳng về backend kèm đầy đủ Cookie/Header.
+   - **Cache Behavior 2 (`/api/*`, bao gồm `/api/auth/*`):** Chọn `CachingDisabled` + chính sách `AllViewer` để các luồng sàng lọc lâm sàng, tải đơn thuốc OCR và callback OAuth (`/api/auth/google/callback`) đi thẳng về backend kèm đầy đủ Cookie/Header.
    - **Default (`*`):** Chọn `CachingDisabled` + `AllViewer` cho giao diện SPA động.
 3. Trong **Amazon Route 53**, mở Hosted Zone và tạo bản ghi **Alias `A`** cho `medimind.yourdomain.com` trỏ tới tên miền CloudFront (`dxxxxxxxxxxxx.cloudfront.net`).

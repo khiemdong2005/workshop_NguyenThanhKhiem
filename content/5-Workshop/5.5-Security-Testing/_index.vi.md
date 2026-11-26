@@ -19,7 +19,7 @@ Bên cạnh lớp bảo vệ biên (**AWS WAF**, **CloudFront** và **VPC 3 tầ
 
 #### Cơ chế Chịu lỗi & Circuit Breaker (`core/circuit_breaker.py`)
 
-Nhằm ngăn ngừa sập dây chuyền khi nhà cung cấp AI ngoài (OpenRouter / Gemini) gặp sự cố hoặc giới hạn quota, `core/circuit_breaker.py` bọc các lời gọi AI bằng máy trạng thái 3 bước an toàn đa luồng (`failure_threshold=5`, `cooldown_seconds=30.0`):
+Nhằm ngăn ngừa sập dây chuyền khi nhà cung cấp AI ngoài (**Groq API Dual-Key** / **Gemini** dự phòng) gặp sự cố hoặc giới hạn quota, `core/circuit_breaker.py` bọc các lời gọi AI bằng máy trạng thái 3 bước an toàn đa luồng (`failure_threshold=5`, `cooldown_seconds=30.0`):
 
 {{< mermaid >}}
 graph LR
@@ -35,7 +35,7 @@ graph LR
 
 #### Kiểm thử Tự động & Ngưỡng Quality Gates
 
-Chạy toàn bộ **83 tệp kiểm thử tự động (`tests/test_*.py`)** và đối chiếu với bộ tiêu chuẩn đóng băng SHA-256 trong `evaluation/quality_gates.json`:
+Chạy toàn bộ **95 tệp kiểm thử tự động (`tests/test_*.py`)** và đối chiếu với bộ tiêu chuẩn đóng băng SHA-256 trong `evaluation/quality_gates.json`:
 
 ```bash
 pytest -q

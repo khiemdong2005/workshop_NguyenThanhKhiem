@@ -11,7 +11,7 @@ pre: " <b> 5.4.1 </b> "
 Tệp `Dockerfile` của dự án áp dụng đầy đủ tiêu chuẩn an toàn container và tối ưu dung lượng:
 - **Base Image Gọn nhẹ & Non-Root User:** Sử dụng `python:3.11-slim` và tạo người dùng không đặc quyền `appuser` (`UID 1000`, `GID 1000`) sở hữu các thư mục `/app/medical_vectordb`, `/app/instance`, `/app/uploads` và `/home/appuser/.cache/huggingface`.
 - **Tham số Tùy chọn BGE Reranker (`INSTALL_RERANKER`):** Mặc định `INSTALL_RERANKER=false` giữ image nhẹ (~450 MB, nằm trong hạn mức 500 MB Free Tier của Private ECR). Bật `--build-arg INSTALL_RERANKER=true` khi cần kích hoạt mô hình tái xếp hạng cục bộ `BAAI/bge-reranker-v2-m3`.
-- **Healthcheck & Entrypoint:** Mở cổng `8000`, tích hợp `HEALTHCHECK` kiểm tra `http://localhost:8000/health` và khởi chạy `uvicorn core.main_fastapi:app --host 0.0.0.0 --port 8000`.
+- **Healthcheck & Entrypoint:** Mở cổng `8000`, tích hợp `HEALTHCHECK` kiểm tra `http://localhost:8000/health` và khởi chạy `uvicorn core.main_fastapi:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips=*`.
 
 #### Bước 1: Tạo Kho lưu trữ Amazon ECR Riêng tư (Scan-on-Push)
 
@@ -54,6 +54,6 @@ aws ecr describe-image-scan-findings \
   --query 'imageScanFindings.findingSeverityCounts'
 ```
 
-{{% notice note %}}
-Nhờ tệp `.dockerignore` đã loại trừ `.env`, `instance/`, `medical_vectordb/` và `uploads/`, không có bất kỳ khóa bí mật hay tệp bệnh án cục bộ nào bị đóng gói vào các lớp Docker Image trên ECR.
+{{% notice warning %}}
+Trước khi chạy `docker build`, hãy kiểm tra lại tệp `.dockerignore` đã liệt kê đầy đủ `.env`, `instance/`, `medical_vectordb/` và `uploads/`. Vì `Dockerfile` dùng `COPY --chown=appuser:appuser . .`, nếu thiếu các dòng này trong `.dockerignore`, CSDL SQLite cục bộ, chỉ mục ChromaDB hoặc ảnh bệnh nhân tải lên máy cá nhân sẽ bị đóng gói thẳng vào Docker Image đẩy lên ECR (vừa phình image vượt 500 MB Free Tier, vừa gây lộ dữ liệu cục bộ).
 {{% /notice %}}

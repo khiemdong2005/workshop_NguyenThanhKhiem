@@ -41,18 +41,18 @@ Tải ảnh đơn thuốc hoặc phiếu xét nghiệm sinh hóa máu qua giao d
 | :---: | :--- | :--- |
 | `[0]` | **Intake & Kiểm tra Chất lượng** | Phát hiện ảnh mờ, tối, lóa sáng và tùy chọn che PII trên ảnh. |
 | `[1]` | **Tiền xử lý Nhẹ** | Giữ bản ảnh gốc + xoay thẳng/cắt vùng + tăng tương phản CLAHE khi ảnh tối. |
-| `[2]` | **Trích xuất Song song** | Chạy đồng thời **EasyOCR** (`core/ocr_parallel_service.py`) và **Vision LLM** (`nvidia/nemotron-3.5-super-vl:free`). |
+| `[2]` | **Trích xuất Thị giác & OCR** | Container AWS chạy **Vision LLM** (`qwen/qwen3.8-27b` qua `core/ocr/groq_schema_service.py` dùng Groq Dual-Key); nhánh cục bộ **EasyOCR** (`core/ocr/ocr_parallel_service.py`) là tùy chọn ngoài container mặc định. |
 | `[3]` | **Đối chiếu Từng trường** | So khớp hai kết quả; tự động bật `needs_review=True` nếu tên thuốc, liều hoặc chỉ số lệch nhau. |
 | `[4]` | **Chuẩn hóa & Grounding** | Ánh xạ hoạt chất, đơn vị và khung giờ uống (*Sáng – Trưa – Chiều – Tối*). |
 | `[5]` | **Kiểm tra Luật Lâm sàng** | Gắn cờ chỉ số Cao/Thấp, cảnh báo tương tác thuốc và dị ứng của người bệnh. |
 | `[6]` | **Diễn giải Lâm sàng** | AI chỉ diễn giải trên JSON đã chuẩn hóa, không bịa thông tin ngoài dữ liệu. |
 | `[7]` | **Xác nhận Human-in-the-Loop** | Người bệnh kiểm tra và xác nhận qua `POST /api/prescription/confirm` trước khi lưu `prescription_history`. |
 
-#### Bước 4: Tư vấn Dinh dưỡng Lâm sàng (`POST /api/nutrition/analyze`)
+#### Bước 4: Tư vấn Dinh dưỡng Lâm sàng (`POST /api/nutrition/meal-plan`, `GET /api/nutrition/recipe-catalog`)
 
-Nhập tình trạng bệnh lý và dị ứng (VD: *"Đau dạ dày, không cay, dị ứng hải sản"*):
-- `core/nutrition_rules.py` thực thi lọc dị ứng tất định **Fail-Closed** trên **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)**.
-- `core/nutrition_ai.py` chọn tối đa **6 món an toàn** với tên món, nguyên liệu và lượng `kcal` khóa chặt theo danh mục gốc.
+Gửi khảo sát **BMR/TDEE**, tình trạng bệnh lý và dị ứng (VD: *"Đau dạ dày, không cay, dị ứng hải sản"* hoặc kiểm tra nhanh trên `POST /api/nutrition/analyze`):
+- `core/nutrition/nutrition_rules.py` thực thi lọc dị ứng tất định **Fail-Closed** (12 ngữ cảnh bệnh lý, 12 nhóm dị ứng) trên danh mục **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)**.
+- `core/nutrition/nutrition_meal_planner.py` lập thực đơn cân đối năng lượng với tên món, nguyên liệu và lượng `kcal` khóa chặt theo danh mục gốc (`GET /api/nutrition/recipe-catalog`).
 
 #### Bước 5: Tóm tắt Tiền khám 30 Giây & Đặt lịch 2.144 Cơ sở Y tế (`Luồng 9`)
 

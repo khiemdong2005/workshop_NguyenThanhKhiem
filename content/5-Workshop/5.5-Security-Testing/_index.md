@@ -19,7 +19,7 @@ Beyond perimeter defenses (**AWS WAF**, **CloudFront**, and **3-Tier VPC isolati
 
 #### Fault Tolerance & AI Circuit Breaker (`core/circuit_breaker.py`)
 
-To prevent cascading failures when external LLM providers (OpenRouter / Gemini) experience rate limits or downtime, `core/circuit_breaker.py` wraps AI calls in a thread-safe 3-state state machine (`failure_threshold=5`, `cooldown_seconds=30.0`):
+To prevent cascading failures when external LLM providers (**Groq API Dual-Key** / **Gemini** fallback) experience rate limits or downtime, `core/circuit_breaker.py` wraps AI calls in a thread-safe 3-state state machine (`failure_threshold=5`, `cooldown_seconds=30.0`):
 
 {{< mermaid >}}
 graph LR
@@ -35,7 +35,7 @@ graph LR
 
 #### Automated Testing & Release Quality Gates
 
-Run the full automated test suite (**83 test files** under `tests/test_*.py`) and verify compliance against the SHA-256 frozen thresholds in `evaluation/quality_gates.json`:
+Run the full automated test suite (**95 test files** under `tests/test_*.py`) and verify compliance against the SHA-256 frozen thresholds in `evaluation/quality_gates.json`:
 
 ```bash
 pytest -q

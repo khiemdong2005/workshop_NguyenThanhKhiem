@@ -19,7 +19,7 @@ While local development defaults to SQLite (`sqlite:///./instance/medimind.db`),
    - **Connectivity:** VPC `medimind-vpc`, DB Subnet Group `medimind-db-subnet-group`, **Public access: No**, VPC Security Group: `sg-medimind-rds` (`TCP 5432`)
    - **Initial Database Name:** `medimind` | Master Username: `medimind_admin`
 
-When the Flask/SQLAlchemy startup routine (`create_app()`) runs on EC2, `core/models.py` initializes and migrates the 6 relational tables:
+When the Flask/SQLAlchemy startup routine (`create_app()`) runs on EC2, `core/models.py` initializes and migrates the 7 relational tables:
 
 | Table (`__tablename__`) | ORM Model | Stored Clinical & Application Data |
 | :--- | :--- | :--- |
@@ -29,6 +29,7 @@ When the Flask/SQLAlchemy startup routine (`create_app()`) runs on EC2, `core/mo
 | `clinical_consultations` | `ClinicalConsultation` | Triage risk level/score, differential summary, grounded citations |
 | `intake_sessions` | `IntakeSessionRecord` | Multi-turn structured intake state & confirmed Pre-Consultation Summary |
 | `medical_appointments` | `MedicalAppointment` | Booked clinic appointments across the 2,144 facilities |
+| `user_notifications` | `UserNotification` | Server-backed medication reminders & appointment booking/cancellation alerts |
 
 #### Step 2: Create the Encrypted Amazon S3 Backup Bucket & Lifecycle Policy
 
@@ -98,22 +99,25 @@ aws secretsmanager create-secret \
   --secret-string '{
     "GOOGLE_CLIENT_ID": "<GOOGLE_CLIENT_ID>",
     "GOOGLE_CLIENT_SECRET": "<GOOGLE_CLIENT_SECRET>",
-    "GOOGLE_REDIRECT_URI": "https://medimind.yourdomain.com/auth/google/callback",
+    "GOOGLE_REDIRECT_URI": "https://medimind.yourdomain.com/api/auth/google/callback",
     "SMTP_USERNAME": "<EMAIL>@gmail.com",
     "SMTP_PASSWORD": "<GMAIL_APP_PASSWORD>",
     "SPEEDSMS_AUTH_TOKEN": "<SPEEDSMS_TOKEN>",
     "GOOGLE_MAPS_API_KEY": "<MAPS_API_KEY>"
   }' --region ap-southeast-1
 
-# 3. Workload-Isolated OpenRouter / Gemini AI Provider Keys
+# 3. Workload-Isolated Groq Dual-Key AI Provider Keys (with optional Gemini fallback)
 aws secretsmanager create-secret \
   --name medimind/ai-providers \
-  --description "Separate OpenRouter keys for Chat, OCR, and Nutrition workloads" \
+  --description "Groq Dual-Key Failover and task-specific keys (plus optional Gemini fallback)" \
   --secret-string '{
-    "AI_PROVIDER": "openrouter",
-    "OPENROUTER_API_KEY": "<OPENROUTER_PRIMARY_KEY>",
-    "OPENROUTER_CHAT_API_KEY": "<OPENROUTER_CHAT_KEY>",
-    "OPENROUTER_OCR_API_KEY": "<OPENROUTER_OCR_KEY>",
-    "OPENROUTER_NUTRITION_API_KEY": "<OPENROUTER_NUTRITION_KEY>"
+    "AI_PROVIDER": "groq",
+    "GROQ_MODEL": "qwen/qwen3.8-27b",
+    "GROQ_API_KEY": "<GROQ_PRIMARY_KEY>",
+    "GROQ_API_KEY_2": "<GROQ_SECONDARY_FAILOVER_KEY>",
+    "GROQ_CHAT_API_KEY": "<GROQ_CHAT_KEY>",
+    "GROQ_OCR_API_KEY": "<GROQ_OCR_KEY>",
+    "GROQ_NUTRITION_API_KEY": "<GROQ_NUTRITION_KEY>",
+    "GEMINI_API_KEY": "<OPTIONAL_GEMINI_FALLBACK_KEY>"
   }' --region ap-southeast-1
 ```

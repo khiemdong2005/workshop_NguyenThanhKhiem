@@ -19,7 +19,7 @@ Trong khi môi trường phát triển cục bộ dùng SQLite (`sqlite:///./ins
    - **Connectivity:** VPC `medimind-vpc`, DB Subnet Group `medimind-db-subnet-group`, **Public access: No**, Security Group: `sg-medimind-rds` (`TCP 5432`)
    - **Initial Database Name:** `medimind` | Master Username: `medimind_admin`
 
-Khi ứng dụng khởi động trên EC2 (`create_app()`), SQLAlchemy (`core/models.py`) sẽ tự động khởi tạo và migrate 6 bảng dữ liệu quan hệ:
+Khi ứng dụng khởi động trên EC2 (`create_app()`), SQLAlchemy (`core/models.py`) sẽ tự động khởi tạo và migrate 7 bảng dữ liệu quan hệ:
 
 | Tên bảng (`__tablename__`) | Lớp ORM | Dữ liệu Lưu trữ |
 | :--- | :--- | :--- |
@@ -29,6 +29,7 @@ Khi ứng dụng khởi động trên EC2 (`create_app()`), SQLAlchemy (`core/mo
 | `clinical_consultations` | `ClinicalConsultation` | Điểm & tầng nguy cơ Triage, chẩn đoán phân biệt sơ bộ, nguồn trích dẫn y khoa |
 | `intake_sessions` | `IntakeSessionRecord` | Trạng thái hỏi bệnh đa lượt & Bản Tóm tắt Tiền khám 30 giây đã xác nhận |
 | `medical_appointments` | `MedicalAppointment` | Lịch hẹn khám bệnh tại mạng lưới 2.144 cơ sở y tế |
+| `user_notifications` | `UserNotification` | Chuông thông báo nhắc uống thuốc & xác nhận đặt/hủy lịch khám |
 
 #### Bước 2: Tạo Bucket Amazon S3 Sao lưu Mã hóa & Lifecycle Policy
 
@@ -98,22 +99,25 @@ aws secretsmanager create-secret \
   --secret-string '{
     "GOOGLE_CLIENT_ID": "<GOOGLE_CLIENT_ID>",
     "GOOGLE_CLIENT_SECRET": "<GOOGLE_CLIENT_SECRET>",
-    "GOOGLE_REDIRECT_URI": "https://medimind.yourdomain.com/auth/google/callback",
+    "GOOGLE_REDIRECT_URI": "https://medimind.yourdomain.com/api/auth/google/callback",
     "SMTP_USERNAME": "<EMAIL>@gmail.com",
     "SMTP_PASSWORD": "<GMAIL_APP_PASSWORD>",
     "SPEEDSMS_AUTH_TOKEN": "<SPEEDSMS_TOKEN>",
     "GOOGLE_MAPS_API_KEY": "<MAPS_API_KEY>"
   }' --region ap-southeast-1
 
-# 3. Nhóm API Key OpenRouter Tách biệt theo Tác vụ
+# 3. Nhóm API Key Groq Dual-Key Tách biệt theo Tác vụ (kèm Gemini fallback tùy chọn)
 aws secretsmanager create-secret \
   --name medimind/ai-providers \
-  --description "Separate OpenRouter keys for Chat, OCR, and Nutrition workloads" \
+  --description "Groq Dual-Key Failover and task-specific keys (plus optional Gemini fallback)" \
   --secret-string '{
-    "AI_PROVIDER": "openrouter",
-    "OPENROUTER_API_KEY": "<OPENROUTER_PRIMARY_KEY>",
-    "OPENROUTER_CHAT_API_KEY": "<OPENROUTER_CHAT_KEY>",
-    "OPENROUTER_OCR_API_KEY": "<OPENROUTER_OCR_KEY>",
-    "OPENROUTER_NUTRITION_API_KEY": "<OPENROUTER_NUTRITION_KEY>"
+    "AI_PROVIDER": "groq",
+    "GROQ_MODEL": "qwen/qwen3.8-27b",
+    "GROQ_API_KEY": "<GROQ_PRIMARY_KEY>",
+    "GROQ_API_KEY_2": "<GROQ_SECONDARY_FAILOVER_KEY>",
+    "GROQ_CHAT_API_KEY": "<GROQ_CHAT_KEY>",
+    "GROQ_OCR_API_KEY": "<GROQ_OCR_KEY>",
+    "GROQ_NUTRITION_API_KEY": "<GROQ_NUTRITION_KEY>",
+    "GEMINI_API_KEY": "<OPTIONAL_GEMINI_FALLBACK_KEY>"
   }' --region ap-southeast-1
 ```

@@ -35,7 +35,7 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 #### Bước 2: Khởi tạo Internet Gateway, NAT Gateway & Route Tables
 
 1. Tạo và gắn **`medimind-igw`** vào `medimind-vpc`.
-2. Cấp phát 1 **Elastic IP** và tạo **`medimind-nat-gw`** trong `medimind-public-a` để EC2 ở mạng riêng có thể kéo ECR Image và gọi API ra OpenRouter, Google OAuth, Gmail SMTP và SpeedSMS nhưng vẫn chặn 100% kết nối chiều vào từ Internet.
+2. Cấp phát 1 **Elastic IP** và tạo **`medimind-nat-gw`** trong `medimind-public-a` để EC2 ở mạng riêng có thể kéo ECR Image và gọi API ra Groq API (và Gemini fallback), Google OAuth, Gmail SMTP và SpeedSMS nhưng vẫn chặn 100% kết nối chiều vào từ Internet.
 3. Tạo và gắn 3 Route Table riêng biệt:
 
 | Route Table | Subnet Liên kết | Tuyến `0.0.0.0/0` | Tuyến Nội bộ |
