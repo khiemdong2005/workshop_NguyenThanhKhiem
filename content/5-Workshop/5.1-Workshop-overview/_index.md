@@ -27,7 +27,7 @@ To solve these bottlenecks end-to-end, the codebase implements five tightly inte
 
 #### Target AWS 3-Tier VPC Architecture (`ap-southeast-1`)
 
-![MediMind AWS Architecture](/images/5-Workshop/5.1-Workshop-overview/aws_architecture_current.png)
+![MediMind AWS Architecture](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.1-Workshop-overview/aws_architecture_current.png)
 
 ##### End-to-End Request & Data Flows (Flows 1 – 9)
 

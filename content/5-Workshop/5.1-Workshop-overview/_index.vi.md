@@ -27,7 +27,7 @@ Nhiều bệnh viện tuyến cuối tại Việt Nam thường xuyên quá tả
 
 #### Kiến trúc AWS VPC 3 Tầng Mục tiêu (`ap-southeast-1`)
 
-![Sơ đồ Kiến trúc AWS MediMind](/images/5-Workshop/5.1-Workshop-overview/aws_architecture_current.png)
+![Sơ đồ Kiến trúc AWS MediMind](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.1-Workshop-overview/aws_architecture_current.png)
 
 ##### Giải thích Chi tiết 9 Luồng Dữ liệu trên Kiến trúc:
 
