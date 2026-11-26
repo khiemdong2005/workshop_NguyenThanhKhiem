@@ -29,7 +29,8 @@ export BACKUP_BUCKET="medimind-clinical-backup-${ACCOUNT_ID}"
 python3 - << 'EOF'
 import os, json, subprocess
 b = os.environ["BACKUP_BUCKET"]
-data = json.loads(subprocess.check_output(["aws", "s3api", "list-object-versions", "--bucket", b]))
+raw = subprocess.check_output(["aws", "s3api", "list-object-versions", "--bucket", b]).decode().strip()
+data = json.loads(raw) if raw else {}
 objs = [{"Key": x["Key"], "VersionId": x["VersionId"]} for k in ("Versions", "DeleteMarkers") for x in data.get(k, [])]
 for i in range(0, len(objs), 1000):
     subprocess.check_call(["aws", "s3api", "delete-objects", "--bucket", b, "--delete", json.dumps({"Objects": objs[i:i+1000]})])

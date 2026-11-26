@@ -115,7 +115,7 @@ curl -s http://localhost:8000/ready
 
 ```text
 # ls -lh /mnt/medimind-data/medical_vectordb/active_collection.json
--rw-r--r-- 1 appuser appuser 142 Nov 26 12:15 /mnt/medimind-data/medical_vectordb/active_collection.json
+-rw-r--r-- 1 ubuntu ubuntu 142 Nov 26 12:15 /mnt/medimind-data/medical_vectordb/active_collection.json
 
 # curl -s http://localhost:8000/health & /ready
 {"status":"ok"}

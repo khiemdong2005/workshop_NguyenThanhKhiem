@@ -30,29 +30,31 @@ curl -s -X POST https://medimind.yourdomain.com/api/chat \
   -d '{"message": "Tôi bị đau rát họng, sốt nhẹ 38 độ từ hôm qua nhưng không khó thở, không đau ngực", "history": []}' | jq .
 ```
 
-- **Expected Case 1 Output:** `risk_level: "red"`, immediate **Emergency 115** guidance without delaying for multi-turn intake.
-- **Expected Case 2 Output:** Negation parser recognizes *"không khó thở, không đau ngực"* (zero false emergency alarm), recommends ENT (*Tai Mũi Họng*), and attaches verified citations retrieved from the **364 ChromaDB clinical documents** (*MoH / kcb.vn / MedlinePlus NIH*).
+- **Expected Case 1 Output:** `is_emergency: true`, `risk_level: "Nguy cơ cao (Cần thăm khám khẩn)"`, immediate **Emergency 115** guidance without delaying for multi-turn intake.
+- **Expected Case 2 Output:** Negation parser recognizes *"không khó thở, không đau ngực"* (zero false emergency alarm), `is_emergency: false`, `risk_level: "Theo dõi tại nhà"`, recommends ENT (`specialist`), and attaches verified `sources` retrieved from the **364 ChromaDB clinical documents** (*MoH / kcb.vn / MedlinePlus NIH*).
 
 **Expected Output (Sample Cases 1 & 2):**
 
 ```json
 // Case 1 (Red Flag Emergency)
 {
-  "risk_level": "red",
-  "emergency": true,
+  "risk_level": "Nguy cơ cao (Cần thăm khám khẩn)",
+  "is_emergency": true,
   "recommended_action": "Gọi Cấp cứu 115 ngay lập tức"
 }
 
 // Case 2 (Negation Safe & Grounded RAG)
 {
-  "risk_level": "green",
-  "emergency": false,
-  "department": "Tai Mũi Họng",
-  "sources_count": 3
+  "risk_level": "Theo dõi tại nhà",
+  "is_emergency": false,
+  "specialist": "Tai Mũi Họng",
+  "sources": [
+    {"title": "Acute pharyngitis", "source": "MedlinePlus NIH"}
+  ]
 }
 ```
 
-#### Step 3: 8-Step Parallel OCR Cross-Verification (`POST /api/prescription/scan`)
+#### Step 3: 8-Step OCR Cross-Verification (`POST /api/prescription/scan`)
 
 Upload a prescription or biochemistry lab photo via the Web SPA or `POST /api/prescription/scan` / `POST /api/upload-lab` and verify the 8-step orchestrator (`core/pipeline_orchestrator.py`):
 
@@ -61,7 +63,7 @@ Upload a prescription or biochemistry lab photo via the Web SPA or `POST /api/pr
 | `[0]` | **Intake & Quality Check** | Detects blur, low brightness, glare, and optionally masks PII on image. |
 | `[1]` | **Lightweight Preprocessing** | Retains original pass + deskew/perspective crop + conditional CLAHE. |
 | `[2]` | **Vision & OCR Extraction** | Production AWS container runs **Vision LLM** (`qwen/qwen3.8-27b` via `core/ocr/groq_schema_service.py` with Groq Dual-Key); the local **EasyOCR** branch (`core/ocr/ocr_parallel_service.py`) is an optional non-default local dependency. |
-| `[3]` | **Field-by-Field Reconciliation** | Compares both outputs; sets `needs_review=True` if drug names, dosages, or lab metrics diverge. |
+| `[3]` | **Field-by-Field Reconciliation** | Cross-checks schema fields and dose/quantity totals (or reconciles with EasyOCR when enabled locally); sets `needs_review=True` on discrepancies. |
 | `[4]` | **Deterministic Grounding** | Normalizes drug entities, units, and schedule buckets (*Morning – Noon – Afternoon – Evening*). |
 | `[5]` | **Clinical Rules Validation** | Flags High/Low lab values, drug interactions, and patient allergy contraindications. |
 | `[6]` | **AI Interpretation** | Summarizes only the validated JSON fields (no ungrounded hallucination). |
@@ -79,8 +81,8 @@ Submit a **BMR/TDEE** survey with clinical conditions and allergy constraints (e
 2. Query the **2,144 healthcare facilities** (1,505 in HCMC + 639 in Hanoi) and book an appointment:
 
 ```bash
-curl -s "https://medimind.yourdomain.com/api/facilities?city=TP.HCM&limit=5" | jq .
-curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?city=Ha%20Noi" | jq '.[0:3]'
+curl -s "https://medimind.yourdomain.com/api/facilities?region=hcm&limit=5" | jq .
+curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?region=hanoi" | jq '.markers[0:3]'
 ```
 
 **Expected Output:** HTTP `200` JSON payload returning clinic/hospital metadata (facility name, address, and `lat`/`lng` coordinates rendered on Leaflet/OpenStreetMap).

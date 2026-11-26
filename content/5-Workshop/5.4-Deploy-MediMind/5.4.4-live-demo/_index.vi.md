@@ -30,29 +30,31 @@ curl -s -X POST https://medimind.yourdomain.com/api/chat \
   -d '{"message": "Tôi bị đau rát họng, sốt nhẹ 38 độ từ hôm qua nhưng không khó thở, không đau ngực", "history": []}' | jq .
 ```
 
-- **Kết quả Ca 1:** `risk_level: "red"`, kích hoạt hướng dẫn **Gọi Cấp cứu 115** ngay lập tức, bỏ qua luồng hỏi bệnh thông thường.
-- **Kết quả Ca 2:** Bộ phân tích phủ định nhận diện đúng cụm *"không khó thở, không đau ngực"* (không báo nhầm cấp cứu), định tuyến chuyên khoa **Tai Mũi Họng** và đính kèm nguồn trích dẫn thực tế từ **364 tài liệu ChromaDB** (*Bộ Y Tế / kcb.vn / MedlinePlus NIH*).
+- **Kết quả Ca 1:** `is_emergency: true`, `risk_level: "Nguy cơ cao (Cần thăm khám khẩn)"`, kích hoạt hướng dẫn **Gọi Cấp cứu 115** ngay lập tức, bỏ qua luồng hỏi bệnh thông thường.
+- **Kết quả Ca 2:** Bộ phân tích phủ định nhận diện đúng cụm *"không khó thở, không đau ngực"* (không báo nhầm cấp cứu), `is_emergency: false`, `risk_level: "Theo dõi tại nhà"`, định tuyến chuyên khoa **Tai Mũi Họng** (`specialist`) và đính kèm danh sách trích dẫn `sources` từ **364 tài liệu ChromaDB** (*Bộ Y Tế / kcb.vn / MedlinePlus NIH*).
 
 **Expected Output (mẫu Ca 1 & Ca 2):**
 
 ```json
 // Ca 1 (Cờ đỏ Cấp cứu)
 {
-  "risk_level": "red",
-  "emergency": true,
+  "risk_level": "Nguy cơ cao (Cần thăm khám khẩn)",
+  "is_emergency": true,
   "recommended_action": "Gọi Cấp cứu 115 ngay lập tức"
 }
 
 // Ca 2 (Chống bẫy phủ định & Grounded RAG)
 {
-  "risk_level": "green",
-  "emergency": false,
-  "department": "Tai Mũi Họng",
-  "sources_count": 3
+  "risk_level": "Theo dõi tại nhà",
+  "is_emergency": false,
+  "specialist": "Tai Mũi Họng",
+  "sources": [
+    {"title": "Acute pharyngitis", "source": "MedlinePlus NIH"}
+  ]
 }
 ```
 
-#### Bước 3: Pipeline OCR Đối soát Song song 8 Bước (`POST /api/prescription/scan`)
+#### Bước 3: Pipeline OCR Đối soát 8 Bước (`POST /api/prescription/scan`)
 
 Tải ảnh đơn thuốc hoặc phiếu xét nghiệm sinh hóa máu qua giao diện Web SPA hoặc `POST /api/prescription/scan` / `POST /api/upload-lab` để kiểm chứng pipeline (`core/pipeline_orchestrator.py`):
 
@@ -61,7 +63,7 @@ Tải ảnh đơn thuốc hoặc phiếu xét nghiệm sinh hóa máu qua giao d
 | `[0]` | **Intake & Kiểm tra Chất lượng** | Phát hiện ảnh mờ, tối, lóa sáng và tùy chọn che PII trên ảnh. |
 | `[1]` | **Tiền xử lý Nhẹ** | Giữ bản ảnh gốc + xoay thẳng/cắt vùng + tăng tương phản CLAHE khi ảnh tối. |
 | `[2]` | **Trích xuất Thị giác & OCR** | Container AWS chạy **Vision LLM** (`qwen/qwen3.8-27b` qua `core/ocr/groq_schema_service.py` dùng Groq Dual-Key); nhánh cục bộ **EasyOCR** (`core/ocr/ocr_parallel_service.py`) là tùy chọn ngoài container mặc định. |
-| `[3]` | **Đối chiếu Từng trường** | So khớp hai kết quả; tự động bật `needs_review=True` nếu tên thuốc, liều hoặc chỉ số lệch nhau. |
+| `[3]` | **Đối chiếu Từng trường** | Kiểm tra nhất quán schema và đối chiếu cữ/số lượng thuốc (hoặc so khớp với EasyOCR nếu bật nhánh cục bộ); tự động bật `needs_review=True` nếu sai lệch. |
 | `[4]` | **Chuẩn hóa & Grounding** | Ánh xạ hoạt chất, đơn vị và khung giờ uống (*Sáng – Trưa – Chiều – Tối*). |
 | `[5]` | **Kiểm tra Luật Lâm sàng** | Gắn cờ chỉ số Cao/Thấp, cảnh báo tương tác thuốc và dị ứng của người bệnh. |
 | `[6]` | **Diễn giải Lâm sàng** | AI chỉ diễn giải trên JSON đã chuẩn hóa, không bịa thông tin ngoài dữ liệu. |
@@ -79,8 +81,8 @@ Gửi khảo sát **BMR/TDEE**, tình trạng bệnh lý và dị ứng (VD: *"�
 2. Tra cứu mạng lưới **2.144 cơ sở y tế** (1.505 tại TP.HCM + 639 tại Hà Nội) và đặt lịch hẹn khám:
 
 ```bash
-curl -s "https://medimind.yourdomain.com/api/facilities?city=TP.HCM&limit=5" | jq .
-curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?city=Ha%20Noi" | jq '.[0:3]'
+curl -s "https://medimind.yourdomain.com/api/facilities?region=hcm&limit=5" | jq .
+curl -s "https://medimind.yourdomain.com/api/facilities/map-markers?region=hanoi" | jq '.markers[0:3]'
 ```
 
 **Expected Output:** Trả về JSON HTTP `200` danh sách cơ sở y tế (tên bệnh viện/phòng khám, địa chỉ, tọa độ `lat`/`lng` để hiển thị trên bản đồ Leaflet/OpenStreetMap).
