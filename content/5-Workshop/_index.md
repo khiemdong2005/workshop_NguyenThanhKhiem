@@ -26,7 +26,7 @@ By completing this workshop, you will learn how to:
 2. Provision **Amazon RDS for PostgreSQL**, **Amazon S3** with Lifecycle policies, and **AWS Secrets Manager** for least-privilege runtime secret injection via an **EC2 IAM Role**.
 3. Build a hardened non-root Docker image (`python:3.11-slim`), push it to **Amazon ECR**, attach an encrypted **Amazon EBS (`gp3`)** volume for persistent **ChromaDB** vector storage, and ingest 364 medical documents.
 4. Expose the application securely through **Amazon Route 53**, **AWS WAF**, **Amazon CloudFront**, **AWS Certificate Manager (TLS 1.3)**, and an **Application Load Balancer (ALB)**.
-5. Validate end-to-end clinical triage, negation handling, parallel OCR reconciliation, nutrition filtering (BMR/TDEE + 2,500 Mon Ngon Moi Ngay), Circuit Breaker resilience, and **Prometheus/Grafana + CloudWatch** observability, then cleanly tear down all AWS resources.
+5. Validate end-to-end clinical triage, negation handling, OCR reconciliation, nutrition filtering (BMR/TDEE + 2,500 Mon Ngon Moi Ngay), Circuit Breaker resilience, and **Prometheus/Grafana + CloudWatch** observability, then cleanly tear down all AWS resources.
 
 #### Content
 
