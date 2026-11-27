@@ -19,7 +19,7 @@ chapter: false
 
 &emsp; **Major:** Artificial Intelligence
 
-&emsp; **Class:**
+&emsp; **Class:** cbt_team
 
 &emsp; **Internship Company:** Amazon Web Services Viet Nam Company Limited
 

@@ -17,7 +17,7 @@ chapter: false
 
 &emsp; **Ngành:** Trí tuệ nhân tạo
 
-&emsp; **Lớp:**
+&emsp; **Lớp:** cbt_team
 
 &emsp; **Công ty thực tập:** Công ty TNHH Amazon Web Services Viet Nam
 
