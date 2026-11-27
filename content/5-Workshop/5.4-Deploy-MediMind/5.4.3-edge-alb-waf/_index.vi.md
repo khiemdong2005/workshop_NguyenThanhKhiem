@@ -24,7 +24,11 @@ pre: " <b> 5.4.3 </b> "
 Nhờ cấu hình `TRUST_PROXY_HEADERS=true` và `TRUSTED_PROXY_COUNT=2` trong `/etc/medimind.env` (vì lưu lượng đi qua 2 tầng proxy `CloudFront -> ALB -> EC2`; chỉ đặt `=1` nếu truy cập trực tiếp qua ALB không qua CloudFront), ứng dụng MediMind cắt đúng IP người dùng (`ips[-trusted_proxy_count]` trong `X-Forwarded-For`) và giao thức HTTPS (`X-Forwarded-Proto`) để thực thi giới hạn tần suất (`core/rate_limit_service.py`) và tạo link callback OAuth chuẩn xác.
 {{% /notice %}}
 
-> **[Ảnh 12: Target Group `medimind-tg` trạng thái `Healthy` (:8000) & ALB `medimind-alb` `Active` (HTTPS :443)]** — `static/images/5-Workshop/5.4-Deploy-MediMind/12-alb-tg-healthy.png`
+![Tạo Target Group medimind-tg và ALB medimind-alb qua CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/12a-cli-alb.png)
+
+![Target Group medimind-tg trạng thái Healthy (:8000)](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/12-alb-tg-healthy.png)
+
+![Application Load Balancer medimind-alb trạng thái Active (2 AZs)](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/12c-alb-active.png)
 
 #### Bước 2: Tạo AWS WAF Web ACL (Tường lửa Lớp 7)
 
@@ -37,7 +41,9 @@ Mở **AWS WAF & Shield Console** -> mục **Web ACLs** -> ở ô **Region** ph�
     3. **Known bad inputs (`AWSManagedRulesKnownBadInputsRuleSet`)** — Từ chối header giả mạo và mẫu quét lỗ hổng phổ biến.
   - Nhấn **Add rules -> Add my own rules and rule groups -> Rule builder**: đặt tên `MediMindRateLimit`, **Type:** `Rate-based rule`, **Rate limit:** `1000` yêu cầu / 5 phút / IP -> **Action:** `Block` -> **Create web ACL**.
 
-> **[Ảnh 13: AWS WAF Web ACL `medimind-edge-waf` (Global CloudFront) với 4 luật bảo vệ]** — `static/images/5-Workshop/5.4-Deploy-MediMind/13-waf-rules.png`
+![Khởi tạo AWS WAF Web ACL medimind-edge-waf qua CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/13a-cli-waf.png)
+
+![AWS WAF Web ACL medimind-edge-waf (Global CloudFront) với 4 luật bảo vệ](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/13-waf-rules.png)
 
 #### Bước 3: Cấu hình Amazon CloudFront & Route 53 DNS
 
@@ -52,4 +58,6 @@ Mở **AWS WAF & Shield Console** -> mục **Web ACLs** -> ở ô **Region** ph�
      - **Behavior 2 (`/api/*`, bao gồm `/api/auth/*`):** **Cache policy:** `CachingDisabled` + **Origin request policy:** `AllViewer` để các luồng sàng lọc lâm sàng, tải đơn thuốc OCR và callback OAuth (`/api/auth/google/callback`) đi thẳng về backend kèm đầy đủ Cookie/Header.
 3. Mở **Route 53 Console -> Hosted zones** -> chọn domain của bạn -> **Create record**: **Record name:** `medimind`, **Record type:** `A`, bật **Alias**, **Route traffic to:** `Alias to CloudFront distribution` -> chọn tên miền CloudFront (`dxxxxxxxxxxxx.cloudfront.net`) -> **Create records**.
 
-> **[Ảnh 14: CloudFront Distribution trạng thái `Deployed` (Behaviors `/static/*`, `/api/*`) & bản ghi Route 53 Alias `A`]** — `static/images/5-Workshop/5.4-Deploy-MediMind/14-cloudfront-route53.png`
+![Khởi tạo CloudFront Distribution qua CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/14a-cli-cloudfront.png)
+
+![CloudFront Distribution trạng thái Enabled trỏ Origin về medimind-alb](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/14-cloudfront-route53.png)

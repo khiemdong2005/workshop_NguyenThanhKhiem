@@ -17,11 +17,15 @@ pre: " <b> 5.4.2 </b> "
    - **IAM Instance Profile:** `medimind-ec2-role`
    - **Storage:** Ổ hệ thống 10–15 GB `gp3` + ổ đĩa dữ liệu **20 GB `gp3` EBS được mã hóa KMS** (`/dev/sdf`) chuyên dùng lưu bền vững ChromaDB và `/uploads` (giữ tổng dung lượng EBS $\le 30\text{ GB}$ nếu muốn tối ưu 100% trong gói Free Tier).
 
-> **[Ảnh 10: Amazon EC2 `medimind-app-server` trạng thái `Running` trong Private Subnet (không Public IP) & ổ EBS `gp3` Encrypted]** — `static/images/5-Workshop/5.4-Deploy-MediMind/10-ec2-ebs.png`
+![Khởi tạo Amazon EC2 medimind-app-server trong Private Subnet qua CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/10a-cli-ec2.png)
+
+![Amazon EC2 medimind-app-server trạng thái Running trong Private Subnet (không Public IP)](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/10-ec2-ebs.png)
 
 #### Bước 2: Kết nối qua Session Manager & Mount Ổ đĩa EBS
 
 1. Trên **EC2 Console**, chọn `medimind-app-server` -> **Connect** -> **Session Manager** (hoặc dùng `aws ssm start-session --target <INSTANCE_ID>`).
+
+![Kết nối không cần SSH Key tới EC2 qua SSM Session Manager](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/10b-ssm-connect.png)
 2. Cài đặt Docker, `awscli`, `jq`, định dạng ổ đĩa EBS và phân quyền cho `appuser` (`UID/GID 1000`):
 
 ```bash
@@ -42,6 +46,8 @@ echo "UUID=$(sudo blkid -s UUID -o value /dev/nvme1n1) /mnt/medimind-data ext4 d
 sudo mkdir -p /mnt/medimind-data/{medical_vectordb,uploads,instance,hf_cache}
 sudo chown -R 1000:1000 /mnt/medimind-data
 ```
+
+![Cài Docker, format và mount ổ đĩa EBS 20 GB qua SSM Session Manager](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/11a-ssm-mount-ebs.png)
 
 #### Bước 3: Nạp Secrets từ AWS Secrets Manager & Khởi chạy Container
 
@@ -78,6 +84,8 @@ EOF
   chmod 600 /etc/medimind.env
 '
 ```
+
+![Nạp biến môi trường từ Secrets Manager vào /etc/medimind.env trên EC2](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/11b-ssm-secrets-env.png)
 
 2. Kéo Docker Image từ Amazon ECR và khởi chạy `medimind-clinical-api` gắn volume EBS cùng log driver CloudWatch:
 
@@ -124,7 +132,7 @@ curl -s http://localhost:8000/ready
 {"status":"ready","rag":"ready","gemini":"ready","circuit_breaker":"CLOSED"}
 ```
 
-> **[Ảnh 11: Kết nối EC2 qua CloudShell SSM / Session Manager kiểm tra mount EBS, `docker ps` (`healthy`), `active_collection.json`, `/health` & `/ready`]** — `static/images/5-Workshop/5.4-Deploy-MediMind/11-ssm-health.png`
+![Kiểm tra EBS mount, docker ps, active_collection.json, /health và /ready qua SSM Session Manager](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/11-ssm-health.png)
 
 Thiết lập lịch đồng bộ hằng ngày bản snapshot ChromaDB và tệp tải lên sang bucket **Amazon S3** đã mã hóa (`Backup / Archive`):
 

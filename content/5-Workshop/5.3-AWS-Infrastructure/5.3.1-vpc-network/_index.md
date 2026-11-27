@@ -34,7 +34,9 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 | `medimind-private-db-a` | `ap-southeast-1a` | `10.0.21.0/24` | RDS PostgreSQL Primary |
 | `medimind-private-db-b` | `ap-southeast-1b` | `10.0.22.0/24` | RDS DB Subnet Group |
 
-> **[Screenshot 03: VPC Resource Map of `medimind-vpc` (showing 6 Subnets, 3 Route Tables, IGW, NAT Gateway)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/03-vpc-resource-map.png`
+![Create VPC and 6 Subnets via CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/03a-cli-vpc-subnets.png)
+
+![VPC Resource Map of medimind-vpc showing 6 Subnets, 3 Route Tables, IGW, and NAT Gateway](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/03-vpc-resource-map.png)
 
 #### Step 2: Internet Gateway, NAT Gateway & Route Tables
 
@@ -54,6 +56,10 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 Because **Amazon RDS** requires subnets in at least two Availability Zones for a DB Subnet Group, always associate both `medimind-private-db-a` and `medimind-private-db-b` with `rt-private-db`.
 {{% /notice %}}
 
+![Create IGW and NAT Gateway via CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/03b-cli-igw-nat.png)
+
+![Configure 3 Route Tables via CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/03c-cli-route-tables.png)
+
 #### Step 3: Configure Chained Security Groups
 
 Go to **VPC -> Security Groups -> Create security group** (select `medimind-vpc`), create the 3 Security Groups below, and configure their **Inbound rules** and **Outbound rules** tabs so each tier only trusts the Security Group ID of the tier above it:
@@ -64,7 +70,11 @@ Go to **VPC -> Security Groups -> Create security group** (select `medimind-vpc`
 | `sg-medimind-ec2` | `TCP 8000` **only** from `sg-medimind-alb` *(no SSH port 22 exposed)* | `TCP 5432` to `sg-medimind-rds`; `HTTPS (443)` & `587` (SMTP) outbound via NAT |
 | `sg-medimind-rds` | `TCP 5432` **only** from `sg-medimind-ec2` | Restricted (`10.0.0.0/16` or default) |
 
-> **[Screenshot 04: Chained Security Groups (`sg-medimind-alb`, `sg-medimind-ec2`, `sg-medimind-rds`) & Inbound Rules]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/04-security-groups.png`
+![Create Chained Security Groups via CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/04a-cli-sg.png)
+
+![Chained Security Groups (sg-medimind-alb, sg-medimind-ec2, sg-medimind-rds)](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/04-security-groups.png)
+
+![sg-medimind-ec2 Inbound Rule allowing TCP 8000 solely from ALB](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/04b-sg-ec2-inbound.png)
 
 #### Step 4: Create the `medimind-ec2-role` IAM Role & Instance Profile
 
@@ -102,4 +112,6 @@ Open **IAM Console -> Roles -> Create role** -> **Trusted entity type:** `AWS se
 }
 ```
 
-> **[Screenshot 05: IAM Role `medimind-ec2-role` with all 3 Least-Privilege Policies Attached]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/05-iam-role.png`
+![Create IAM Role medimind-ec2-role via CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/05a-cli-iam-role.png)
+
+![IAM Role medimind-ec2-role with all 3 Least-Privilege Policies Attached](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/05-iam-role.png)

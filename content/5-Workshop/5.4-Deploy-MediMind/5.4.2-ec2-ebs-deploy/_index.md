@@ -17,11 +17,15 @@ pre: " <b> 5.4.2 </b> "
    - **IAM Instance Profile:** `medimind-ec2-role`
    - **Storage:** Root volume 15 GB `gp3` + additional encrypted **20 GB `gp3` EBS data volume** (`/dev/sdf`, KMS encrypted) dedicated to persistent ChromaDB vectors and `/uploads` (total 35 GB; keep combined EBS $\le 30\text{ GB}$ if staying strictly within Free Tier).
 
-> **[Screenshot 10: Amazon EC2 `medimind-app-server` (`Running`, Private Subnet, No Public IP) & Encrypted `gp3` EBS Volume]** — `static/images/5-Workshop/5.4-Deploy-MediMind/10-ec2-ebs.png`
+![Launch Amazon EC2 medimind-app-server in Private Subnet via CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/10a-cli-ec2.png)
+
+![Amazon EC2 medimind-app-server Running in Private Subnet with Zero Public IP](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/10-ec2-ebs.png)
 
 #### Step 2: Connect Keylessly via Session Manager & Mount the EBS Volume
 
 1. In the **EC2 Console**, select `medimind-app-server` -> **Connect** -> **Session Manager** (or run `aws ssm start-session --target <INSTANCE_ID>`).
+
+![Keyless Connection to Private EC2 via SSM Session Manager](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/10b-ssm-connect.png)
 2. Install Docker, `awscli`, and `jq`, then format and mount the encrypted EBS volume so the container's `appuser` (`1000:1000`) owns the persistent directories:
 
 ```bash
@@ -42,6 +46,8 @@ echo "UUID=$(sudo blkid -s UUID -o value /dev/nvme1n1) /mnt/medimind-data ext4 d
 sudo mkdir -p /mnt/medimind-data/{medical_vectordb,uploads,instance,hf_cache}
 sudo chown -R 1000:1000 /mnt/medimind-data
 ```
+
+![Install Docker, format and mount 20 GB EBS volume via SSM Session Manager](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/11a-ssm-mount-ebs.png)
 
 #### Step 3: Inject Secrets from AWS Secrets Manager & Run the Container
 
@@ -78,6 +84,8 @@ EOF
   chmod 600 /etc/medimind.env
 '
 ```
+
+![Fetch Secrets Manager values into /etc/medimind.env on EC2](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/cli-steps/11b-ssm-secrets-env.png)
 
 2. Pull the ECR image and start `medimind-clinical-api` with EBS bind mounts and CloudWatch logging:
 
@@ -124,7 +132,7 @@ curl -s http://localhost:8000/ready
 {"status":"ready","rag":"ready","gemini":"ready","circuit_breaker":"CLOSED"}
 ```
 
-> **[Screenshot 11: CloudShell / SSM Session verifying EBS Mount, `docker ps` (`healthy`), `active_collection.json`, `/health` & `/ready`]** — `static/images/5-Workshop/5.4-Deploy-MediMind/11-ssm-health.png`
+![Verify EBS Mount, docker ps, active_collection.json, /health, and /ready in SSM Session Manager](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.4-Deploy-MediMind/11-ssm-health.png)
 
 Configure a daily cron job to sync ChromaDB snapshots and medical uploads to your encrypted **Amazon S3** bucket (`Backup / Archive`):
 

@@ -18,7 +18,9 @@ Trong khi môi trường phát triển cục bộ dùng SQLite (`sqlite:///./ins
    - **Connectivity:** `Don't connect to an EC2 compute resource`, **VPC:** `medimind-vpc`, **DB subnet group:** `medimind-db-subnet-group`, **Public access:** `No`, **Existing VPC security groups:** `sg-medimind-rds` (`TCP 5432`)
    - **Additional configuration:** **Initial database name:** `medimind` -> nhấn **Create database**. Sau khi trạng thái chuyển thành `Available`, vào tab **Connectivity & security** để sao chép **Endpoint** (`<RDS_ENDPOINT>`).
 
-> **[Ảnh 06: Amazon RDS PostgreSQL `medimind-pg-db` trạng thái `Available`, `Public access: No`, mã hóa KMS]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/06-rds-available.png`
+![Khởi tạo RDS PostgreSQL medimind-pg-db qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/06a-cli-rds.png)
+
+![Amazon RDS PostgreSQL medimind-pg-db trạng thái Available, Public access: No, mã hóa KMS](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/06-rds-available.png)
 
 Khi ứng dụng khởi động trên EC2 (`create_app()`), SQLAlchemy (`core/models.py`) sẽ tự động khởi tạo và migrate 7 bảng dữ liệu quan hệ:
 
@@ -79,7 +81,9 @@ aws s3api put-bucket-lifecycle-configuration \
   --lifecycle-configuration file://lifecycle.json
 ```
 
-> **[Ảnh 07: Amazon S3 Backup Bucket (`Block Public Access: On`, `Versioning` & `Lifecycle Policy: Enabled`)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/07-s3-backup.png`
+![Khởi tạo S3 Backup Bucket, Block Public Access, Versioning & Lifecycle qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/07a-cli-s3.png)
+
+![Amazon S3 Backup Bucket (Block Public Access: On, Versioning & Lifecycle Policy: Enabled)](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/07-s3-backup.png)
 
 #### Bước 3: Lưu Biến Bí mật trong AWS Secrets Manager
 
@@ -125,4 +129,6 @@ aws secretsmanager create-secret \
   }' --region ap-southeast-1
 ```
 
-> **[Ảnh 08: Danh sách 3 Secrets trên AWS Secrets Manager (`medimind/app-db`, `medimind/auth-otp`, `medimind/ai-providers` — ẩn giá trị mật)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/08-secrets-manager.png`
+![Tạo Secrets trong AWS Secrets Manager qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/08a-cli-secret-app-db.png)
+
+![Danh sách 3 Secrets trên AWS Secrets Manager (medimind/app-db, medimind/auth-otp, medimind/ai-providers)](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/08-secrets-manager.png)

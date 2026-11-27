@@ -34,7 +34,9 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 | `medimind-private-db-a` | `ap-southeast-1a` | `10.0.21.0/24` | Đặt RDS PostgreSQL chính |
 | `medimind-private-db-b` | `ap-southeast-1b` | `10.0.22.0/24` | Subnet thứ 2 cho RDS Subnet Group |
 
-> **[Ảnh 03: VPC Resource Map của `medimind-vpc` (hiển thị đủ 6 Subnets, 3 Route Tables, IGW, NAT Gateway)]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/03-vpc-resource-map.png`
+![Khởi tạo VPC và 6 Subnets qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/03a-cli-vpc-subnets.png)
+
+![VPC Resource Map của medimind-vpc với 6 Subnets, 3 Route Tables, IGW và NAT Gateway](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/03-vpc-resource-map.png)
 
 #### Bước 2: Khởi tạo Internet Gateway, NAT Gateway & Route Tables
 
@@ -54,6 +56,10 @@ aws ec2 modify-vpc-attribute --vpc-id $VPC_ID --enable-dns-hostnames '{"Value":t
 **Amazon RDS** yêu cầu DB Subnet Group phải có ít nhất 2 Subnet thuộc 2 Availability Zones khác nhau; hãy đảm bảo cả `medimind-private-db-a` và `medimind-private-db-b` đều gắn vào `rt-private-db`.
 {{% /notice %}}
 
+![Khởi tạo IGW & NAT Gateway qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/03b-cli-igw-nat.png)
+
+![Cấu hình 3 Route Tables qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/03c-cli-route-tables.png)
+
 #### Bước 3: Thiết lập Security Group Lồng nhau (Chained Security Groups)
 
 Vào **VPC -> Security Groups -> Create security group** (chọn VPC `medimind-vpc`), tạo lần lượt 3 Security Group và thiết lập các tab **Inbound rules** / **Outbound rules** theo nguyên tắc mỗi tầng chỉ tin cậy Security Group ID của tầng đứng ngay trước nó:
@@ -64,7 +70,11 @@ Vào **VPC -> Security Groups -> Create security group** (chọn VPC `medimind-v
 | `sg-medimind-ec2` | `TCP 8000` **chỉ** từ `sg-medimind-alb` *(không mở cổng SSH 22)* | `TCP 5432` tới `sg-medimind-rds`; `HTTPS (443)` & `587` (SMTP) qua NAT |
 | `sg-medimind-rds` | `TCP 5432` **chỉ** từ `sg-medimind-ec2` | Giới hạn nội bộ VPC |
 
-> **[Ảnh 04: 3 Security Groups lồng nhau (`sg-medimind-alb`, `sg-medimind-ec2`, `sg-medimind-rds`) & Inbound rules]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/04-security-groups.png`
+![Khởi tạo Security Groups lồng nhau qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/04a-cli-sg.png)
+
+![Danh sách 3 Security Groups lồng nhau (sg-medimind-alb, sg-medimind-ec2, sg-medimind-rds)](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/04-security-groups.png)
+
+![Luật Inbound TCP 8000 chỉ nhận từ ALB trên sg-medimind-ec2](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/04b-sg-ec2-inbound.png)
 
 #### Bước 4: Tạo IAM Role `medimind-ec2-role` & Instance Profile
 
@@ -102,4 +112,6 @@ Mở **IAM Console -> Roles -> Create role** -> chọn **Trusted entity type:** 
 }
 ```
 
-> **[Ảnh 05: IAM Role `medimind-ec2-role` đã gắn đủ 3 Policies theo chuẩn Least Privilege]** — `static/images/5-Workshop/5.3-AWS-Infrastructure/05-iam-role.png`
+![Tạo IAM Role medimind-ec2-role qua CloudShell CLI](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/cli-steps/05a-cli-iam-role.png)
+
+![IAM Role medimind-ec2-role đã gắn đủ 3 Policies theo chuẩn Least Privilege](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/5-Workshop/5.3-AWS-Infrastructure/05-iam-role.png)
