@@ -1,4 +1,8 @@
 ---
+report_key: "proposal"
+report_language: "vi"
+report_fields: {"title": "Đề xuất Dự án: MediMind Clinical AI trên AWS", "subtitle": "Bản đề xuất tổng quan bài toán, kiến trúc AWS sơ bộ, lộ trình triển khai, dự toán chi phí và quản trị rủi ro.", "kpis": [{"label": "PHẠM VI DỰ ÁN", "value": "5 Phân hệ", "sub": "Sàng lọc · OCR · RAG · Dinh dưỡng · Đặt lịch"}, {"label": "KIẾN TRÚC AWS", "value": "Multi-AZ 3-Tier", "sub": "VPC cô lập tại Singapore (ap-southeast-1)"}, {"label": "LỘ TRÌNH", "value": "12 Tuần", "sub": "Từ thiết kế kiến trúc đến nghiệm thu Live"}, {"label": "NGÂN SÁCH DỰ KIẾN", "value": "$16.86 / $228.76", "sub": "Demo Workshop (~40h) vs Production 24/7"}], "sections": [{"id": "summary", "code": "2.1", "nav": "Tổng quan đề xuất", "heading": "Tổng quan Đề xuất (Executive Summary)", "lead": "MediMind Clinical AI là nền tảng trợ lý y tế số hỗ trợ người dân sàng lọc triệu chứng sớm, đọc hiểu đơn thuốc an toàn và chuẩn bị thông tin trước khi thăm khám, vận hành trên hạ tầng AWS an toàn và tối ưu chi phí.", "blocks": [{"title": "5 tính năng chính đề xuất", "bullets": ["**Sàng lọc triệu chứng an toàn:** Phân mức nguy cơ (Xanh – Vàng – Đỏ), phát hiện sớm dấu hiệu cấp cứu 115 và không tự ý kê đơn kháng sinh.", "**Quét & đối soát đơn thuốc (OCR):** Trích xuất tên thuốc, liều dùng, cảnh báo sai lệch cần người dùng xác nhận và hỗ trợ nhắc lịch uống thuốc.", "**Tra cứu y khoa có căn cứ (RAG):** Trả lời dựa trên 364 tài liệu chuẩn từ MedlinePlus NIH và hướng dẫn Bộ Y tế, giảm ảo giác AI.", "**Dinh dưỡng cá nhân hóa:** Tính chỉ số BMR/TDEE theo hồ sơ sức khỏe, lọc dị ứng và bệnh nền trên kho 2.500 món ăn Việt (Món Ngon Mỗi Ngày).", "**Hỗ trợ tiền khám & đặt lịch:** Tóm tắt bệnh sử gọn gàng, gợi ý cơ sở y tế gần nhất (2.144 cơ sở tại TP.HCM & Hà Nội) và đặt lịch hẹn."]}]}, {"id": "problem", "code": "2.2", "nav": "Vấn đề cần giải quyết", "heading": "Vấn đề Cần Giải quyết (Problem Statement)", "lead": "Hệ thống tập trung tháo gỡ 4 nút thắt thực tiễn phổ biến trong chăm sóc sức khỏe tại nhà và khám chữa bệnh tuyến đầu:", "blocks": [{"bullets": ["**Quá tải tuyến đầu:** Bệnh nhân thiếu công cụ sàng lọc ban đầu và chuẩn bị bệnh sử, làm kéo dài thời gian khai thác thông tin tại phòng khám.", "**Rủi ro tự tra cứu trên mạng:** Thông tin y tế rời rạc, thiếu kiểm chứng dễ khiến người bệnh bỏ lỡ dấu hiệu cấp cứu hoặc tự dùng sai thuốc.", "**Khó đọc hiểu đơn thuốc tại nhà:** Đơn thuốc viết tắt, nhiều thuốc dễ gây nhầm liều hoặc quên giờ uống ở người lớn tuổi và bệnh nhân mạn tính.", "**Trải nghiệm chăm sóc phân mảnh:** Tra cứu triệu chứng, theo dõi dinh dưỡng theo bệnh nền và đặt lịch khám hiện nằm rời rạc ở nhiều ứng dụng khác nhau."]}]}, {"id": "solution", "code": "2.3", "nav": "Mục tiêu & Phạm vi", "heading": "Mục tiêu & Phạm vi Đề xuất (Objectives & Scope)", "lead": "Đặt mục tiêu vừa đáp ứng an toàn y tế cho người dùng cuối, vừa chuẩn hóa kiến trúc đám mây theo AWS Well-Architected trong ngân sách sinh viên.", "blocks": [{"columns": [{"title": "Mục tiêu cốt lõi", "bullets": ["Nhận diện chính xác ca nguy cấp (115) và kiểm soát an toàn câu trả lời AI.", "Triển khai được hệ thống chạy live HTTPS ổn định, dễ mở rộng trên AWS.", "Đảm bảo bảo mật dữ liệu người dùng (cô lập mạng riêng, mã hóa, không lộ khóa).", "Tối ưu chi phí vận hành dưới ngưỡng kiểm soát AWS Budgets ($20 cho giai đoạn demo)."]}, {"title": "Phạm vi thực hiện", "bullets": ["**Trong phạm vi:** Ứng dụng web hoàn chỉnh 5 phân hệ (song ngữ VI/EN), đăng nhập Google OAuth / OTP, triển khai hạ tầng AWS Multi-AZ và tài liệu Workshop.", "**Ngoài phạm vi:** Không thay thế chẩn đoán hay kê đơn của bác sĩ; chưa tích hợp trực tiếp hệ thống bệnh án điện tử bệnh viện (HIS/HL7 FHIR) ở giai đoạn này."]}]}]}, {"id": "arch", "code": "2.4", "nav": "Kiến trúc sơ bộ", "heading": "Kiến trúc Giải pháp Sơ bộ trên AWS (Preliminary Architecture)", "lead": "Hệ thống được thiết kế theo mô hình VPC 3 tầng cô lập (Public – Private App – Private DB) trên 2 Availability Zones tại Singapore (ap-southeast-1):", "blocks": [{"title": "Tóm tắt 4 lớp kiến trúc chính", "bullets": ["**Lớp Biên mạng & Bảo mật:** Amazon CloudFront phân phối HTTPS toàn cầu kết hợp AWS WAF (chặn tấn công Web OWASP/SQLi/Rate Limit); dự kiến gắn Route 53 & ACM khi dùng tên miền thương hiệu riêng.", "**Lớp Ứng dụng (Multi-AZ):** Application Load Balancer chia tải vào cụm Amazon EC2 (Auto Scaling Group 2 AZ, nằm hoàn toàn trong Private Subnet, không Public IP) dùng chung Amazon EFS và kéo container từ Amazon ECR.", "**Lớp Dữ liệu & Bí mật:** Amazon RDS for PostgreSQL đặt trong Private DB Subnet tách biệt hoàn toàn với Internet; Amazon S3 (kèm S3 Gateway Endpoint) lưu sao lưu; AWS Secrets Manager quản lý tập trung khóa API & mật khẩu.", "**Lớp AI & Giám sát vận hành:** Kết nối ra ngoài qua NAT Gateway tới Groq API (4-Key Pool Failover), Google OAuth, Gmail SMTP và Google Maps; theo dõi tập trung bằng Amazon CloudWatch và kiểm soát chi phí với AWS Budgets."]}]}, {"id": "timeline", "code": "2.5", "nav": "Kế hoạch 12 tuần", "heading": "Kế hoạch & Lộ trình Thực hiện (12 Tuần)", "lead": "Lộ trình chia làm 4 giai đoạn nối tiếp từ thiết kế đến triển khai thực tế và nghiệm thu:", "blocks": [{"table": {"headers": ["Giai đoạn", "Thời gian", "Hạng mục trọng tâm"], "rows": [["1. Khảo sát & Thiết kế", "Tuần 1 – 3", "Phân tích bài toán, thiết kế kiến trúc AWS 3 tầng, chuẩn hóa dữ liệu y khoa, món ăn và cơ sở y tế."], ["2. Xây dựng Lõi AI & OCR", "Tuần 4 – 6", "Phát triển bộ lọc an toàn lâm sàng, tìm kiếm RAG có trích dẫn và tính năng đọc đơn thuốc OCR."], ["3. Hoàn thiện Ứng dụng", "Tuần 7 – 9", "Hoàn thiện phân hệ Dinh dưỡng, Bản đồ đặt lịch, xác thực Google OAuth/OTP và kiểm thử tự động."], ["4. Triển khai AWS & Nghiệm thu", "Tuần 10 – 12", "Triển khai hạ tầng AWS Multi-AZ, thiết lập giám sát/ngân sách, hoàn thiện Workshop và demo sản phẩm."]]}}]}, {"id": "budget", "code": "2.6", "nav": "Ngân sách & Chi phí", "heading": "Dự toán Ngân sách & Chi phí AWS (ap-southeast-1)", "lead": "Ước tính chi phí minh bạch theo đơn giá Singapore (ap-southeast-1), tách rõ chi phí thực hành demo và chi phí vận hành Production 24/7:", "blocks": [{"costCards": [{"label": "Demo Workshop (~40h)", "value": "~$16.86 / tháng", "note": "Thực chi tháng 11 đến 27/11 mới $11.57 (dưới ngưỡng Budget $20)."}, {"label": "Live đang chạy (24/7)", "value": "$207.28 / tháng", "note": "2 EC2 + 2 NAT GW + RDS Single-AZ + EFS + WAF + CloudWatch."}, {"label": "Full Multi-AZ (Calculator)", "value": "$228.76 / tháng", "note": "Bật thêm RDS Multi-AZ Standby ($2,745.12 / năm · Upfront $0).", "featured": true}], "table": {"headers": ["Nhóm dịch vụ chính", "Demo (~40h)", "Full Multi-AZ (24/7)"], "rows": [["Máy chủ & Lưu trữ (2 EC2 t3.small, 30 GB EBS)", "$0.00 – $3.17", "$43.69"], ["Cơ sở dữ liệu (RDS PostgreSQL Multi-AZ 20 GB)", "$0.00", "$42.24"], ["Mạng & Cân bằng tải (1 ALB, 2 NAT GW, 4 IPv4)", "$3.97", "$127.23"], ["Bảo mật & Biên mạng (WAF us-east-1, Secrets, Route 53, S3, ECR)", "~$9.72", "$12.30"], ["Lưu trữ dùng chung & Vận hành (EFS 5 GB, CloudWatch, CodeBuild)", "$0.00", "$3.30"], ["Miễn phí (CloudFront Free Plan, ASG, S3 Endpoint, ACM, Budgets, Groq)", "$0.00", "$0.00"], ["**Tổng cộng ước tính**", "**~$16.86 / tháng**", "**$228.76 / tháng**"]]}, "cta": {"text": "**Ghi chú tên miền (Route 53 & ACM):** Đã dự toán $0.90/tháng cho tên miền riêng ở bản Production; khi triển khai Workshop thực tế nhóm dùng sẵn tên miền HTTPS miễn phí của CloudFront.", "label": "Mở AWS Pricing Calculator", "url": "https://calculator.aws/#/estimate?id=ec26a26022ee93e0eb9785a0048f4dca71eb6fb3", "pdfLabel": "Xem PDF gốc", "pdfUrl": "static/docs/medimind-aws-pricing-calculator.pdf"}, "foldImage": "Xem ảnh bảng tính chi tiết 13 dịch vụ từ AWS Pricing Calculator", "image": {"url": "static/images/2-Proposal/aws-pricing-calculator.png", "caption": "Bảng dự toán chính thức AWS Pricing Calculator (13 dịch vụ · $228.76/tháng · $2,745.12/12 tháng) — Bấm để phóng to"}}]}, {"id": "risks", "code": "2.7", "nav": "Rủi ro & Giảm thiểu", "heading": "Quản trị Rủi ro & Phương án Giảm thiểu", "lead": "Các rủi ro trọng yếu về an toàn y tế, vận hành và ngân sách đều được lên phương án phòng ngừa ngay từ khâu thiết kế:", "blocks": [{"table": {"headers": ["Rủi ro trọng yếu", "Mức độ", "Phương án giảm thiểu đề xuất"], "rows": [["AI trả lời thiếu chính xác hoặc bỏ sót ca cấp cứu", "Cao", "Áp dụng lớp kiểm duyệt an toàn trước/sau khi gọi AI, ưu tiên cảnh báo 115 và trích dẫn tài liệu y khoa chuẩn."], ["Ảnh đơn thuốc mờ hoặc quá tải API AI (HTTP 429)", "Trung bình", "Sử dụng cơ chế luân chuyển 4 khóa Groq API, tự động thử lại và yêu cầu người dùng xác nhận đơn thuốc."], ["Rò rỉ dữ liệu sức khỏe hoặc lộ khóa truy cập", "Cao", "Cô lập EC2 & RDS trong Private Subnets, dùng IAM Role + Secrets Manager, ẩn danh thông tin cá nhân."], ["Gián đoạn 1 vùng AZ hoặc phát sinh chi phí ngoài dự kiến", "Trung bình", "Thiết kế Multi-AZ (2 EC2 ASG, 2 NAT GW), thiết lập CloudWatch Alarms và cảnh báo AWS Budgets ngưỡng $20."]]}}]}]}
+report_shared: {"archImgDataUrl": "static/images/2-Proposal/medimind-aws-architecture.png?v=20261127"}
 title: "Bản đề xuất"
 date: 2026-09-14
 weight: 2
@@ -6,110 +10,101 @@ chapter: false
 pre: " <b> 2. </b> "
 ---
 
-# MediMind Clinical AI  
-## Nền tảng Trợ lý Y tế Lâm sàng, Đối soát Đơn thuốc & Chăm sóc Sức khỏe Thông minh trên AWS  
+# Đề xuất Dự án: MediMind Clinical AI trên AWS
 
-### 1. Tóm tắt điều hành  
-MediMind Clinical AI được thiết kế nhằm hỗ trợ sàng lọc triệu chứng ban đầu, đối soát đơn thuốc/phiếu xét nghiệm, nhắc lịch uống thuốc và tư vấn dinh dưỡng cá nhân hóa cho người bệnh và bác sĩ tại Việt Nam. Hệ thống kết hợp kiến trúc **Hybrid RAG (BM25 + ChromaDB Vector + Cross-Encoder Reranker)** trên 364 tài liệu y khoa chuẩn hóa từ *MedlinePlus NIH* (kết hợp quy trình phân tầng/cấp cứu tham chiếu *Bộ Y Tế – kcb.vn*), cơ chế bảo vệ hai lớp (**Clinical Triage & Double Guardrails**) và **Pipeline OCR Đối soát** sử dụng Vision LLM (`qwen/qwen3.8-27b` qua Groq API Dual-Key Failover, hỗ trợ nhánh cục bộ tùy chọn EasyOCR). Nền tảng được đóng gói Docker và triển khai trên hạ tầng **Amazon Web Services (AWS)** khu vực `ap-southeast-1` (Singapore) với kiến trúc VPC 3 tầng mạng tách biệt đa vùng sẵn sàng (**Multi-AZ**), tuân thủ **AWS Well-Architected Framework** và áp dụng các biện pháp kiểm soát bảo mật theo định hướng **HIPAA** (*HIPAA-aligned security controls*: mã hóa truyền tải & lưu trữ, cô lập Private Subnet, phân quyền tối thiểu và ẩn danh PII).  
+> Bản đề xuất tổng quan bài toán, kiến trúc AWS sơ bộ, lộ trình triển khai, dự toán chi phí và quản trị rủi ro.
 
-### 2. Tuyên bố vấn đề  
-*Vấn đề hiện tại*  
-Nhiều bệnh viện tuyến cuối thường xuyên quá tải công suất, khiến thời gian chờ khám kéo dài nhiều giờ và bác sĩ thiếu bản tóm tắt bệnh sử trước khám. Đồng thời, việc người dân tự tra cứu triệu chứng qua các công cụ AI không kiểm chứng dễ dẫn đến bỏ lỡ "giờ vàng" cấp cứu. Các chatbot thông thường cũng dễ mắc bẫy phủ định (báo động giả khi người bệnh nhập *"không khó thở"*) hoặc tự bịa nguồn trích dẫn y khoa và thực đơn gây dị ứng. Ngoài ra, các công cụ OCR đơn lẻ dễ nhận diện sai trên đơn thuốc mờ dẫn đến nhầm liều dùng, người bệnh lại hay quên lịch uống thuốc (trước/sau bữa ăn), đồng thời thiếu gợi ý dinh dưỡng an toàn theo bệnh lý và món ăn quen thuộc tại Việt Nam.  
+## 2.1. Tổng quan Đề xuất (Executive Summary)
 
-*Giải pháp*  
-Nền tảng xây dựng quy trình chăm sóc sức khỏe khép kín gồm 5 phân hệ: (1) Sàng lọc triệu chứng đa lượt phân tầng 3 mức nguy cơ (**Xanh – Vàng – Đỏ**), xử lý tiếng Việt không dấu và bẫy phủ định để kích hoạt gọi **Cấp cứu 115** kịp thời; (2) Pipeline OCR đối soát dùng Vision LLM kết hợp nhánh cục bộ tùy chọn EasyOCR, đối chiếu chéo từng trường dữ liệu, gắn cờ `needs_review` khi sai lệch dữ liệu hoặc lệch cữ/số lượng thuốc và chuyển thành lịch nhắc uống thuốc trực quan (*Sáng – Trưa – Chiều – Tối; Trước/Sau ăn*) kết nối **chuông thông báo lưu trữ trên server** sau khi người dùng xác nhận; (3) Tra cứu tri thức có căn cứ từ 364 tài liệu y khoa chuẩn; (4) Tư vấn dinh dưỡng lâm sàng kết hợp khảo sát **BMR/TDEE**, **12 ngữ cảnh bệnh lý** – **12 nhóm dị ứng** (*Fail-Closed Allergy Filtering*) từ **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)**; và (5) Xuất hồ sơ tóm tắt tiền khám nhanh (mục tiêu ~30 giây), hỗ trợ đặt lịch khám trong ứng dụng theo danh mục **2.144 cơ sở y tế** (1.505 tại TP.HCM và 639 tại Hà Nội), gửi email xác nhận về hộp thư người dùng và cập nhật thông báo đặt/hủy lịch trên chuông thông báo. Toàn bộ ứng dụng chạy trên **Amazon EC2 (Auto Scaling Group) + Amazon EFS** và **Amazon RDS PostgreSQL (Multi-AZ)**, bảo vệ biên bởi **AWS WAF**, **CloudFront** và **ALB**.  
+MediMind Clinical AI là nền tảng trợ lý y tế số hỗ trợ người dân sàng lọc triệu chứng sớm, đọc hiểu đơn thuốc an toàn và chuẩn bị thông tin trước khi thăm khám, vận hành trên hạ tầng AWS an toàn và tối ưu chi phí.
 
-*Lợi ích và hoàn vốn đầu tư (ROI)*  
-Giải pháp hướng tới rút ngắn thời gian khai thác bệnh sử ban đầu xuống khoảng 30 giây, giảm sai sót dùng thuốc/quên cữ uống thuốc tại nhà và ngăn ngừa biến cố dị ứng/tương tác thuốc nhờ cơ chế xác nhận *Human-in-the-Loop* cùng chuông thông báo nhắc lịch lưu trữ trên server. Nhờ nạp chỉ mục vector ChromaDB (`medical_vectordb`, ~43 MB) dạng chỉ đọc từ Docker/S3 xuống ổ đĩa EC2 kết hợp **Amazon EFS** cho `/uploads` thay cho các dịch vụ Managed Vector DB đắt đỏ và tận dụng **Groq API Dual-Key** tối ưu hạn mức miễn phí ở giai đoạn thử nghiệm, chi phí hạ tầng giai đoạn **Dev/PoC Workshop** chỉ ở mức **~16,86 USD/tháng** (~202,32 USD/12 tháng), còn hạ tầng AWS **Production Multi-AZ** cho quy mô 10.000 người dùng/tháng đạt khoảng **220,95 – 233,45 USD/tháng** (**~0,0088 – 0,0093 USD/phiên tư vấn**, tương đương **~225 – 240 VNĐ/lượt**), tiết kiệm đáng kể so với chi phí thuê cụm GPU và Managed Vector DB riêng.  
+### 5 tính năng chính đề xuất
 
-### 3. Kiến trúc giải pháp  
-Nền tảng áp dụng kiến trúc **AWS 3-Tier Multi-AZ VPC (`10.0.0.0/16`)** trải trên 2 Availability Zones (`ap-southeast-1a`, `ap-southeast-1b`) tại khu vực `ap-southeast-1` nhằm cô lập hoàn toàn tầng tính toán và cơ sở dữ liệu khỏi truy cập Internet trực tiếp. Lưu lượng người dùng đi qua **Route 53**, **AWS WAF** và **Amazon CloudFront** tới **Application Load Balancer (ALB)** tại `Public Subnet`, sau đó định tuyến nội bộ qua cổng `8000` vào container trên **Amazon EC2** thuộc **Auto Scaling Group** nằm trong `Private App Subnet 1 & 2`. Thư mục tệp tải lên (`./uploads`) được chia sẻ qua **Amazon EFS** gắn cho các EC2 và sao lưu sang **Amazon S3** thông qua **S3 Gateway Endpoint** (còn chỉ mục **ChromaDB `./medical_vectordb`** dạng chỉ đọc được đóng gói trong Docker image hoặc đồng bộ từ S3 xuống EBS cục bộ của từng EC2 để tránh lỗi khóa file SQLite qua NFS), trong khi 7 bảng dữ liệu giao dịch lưu tại **Amazon RDS PostgreSQL (Primary & Standby với Sync Replication)** (`SQL :5432`) trong `Private Database Subnet 1 & 2`. Mọi kết nối chiều ra tới **Groq API**, **Google OAuth 2.0** và **Gmail SMTP / SpeedSMS** đều đi qua **NAT Gateway 1 & 2**.  
+- **Sàng lọc triệu chứng an toàn:** Phân mức nguy cơ (Xanh – Vàng – Đỏ), phát hiện sớm dấu hiệu cấp cứu 115 và không tự ý kê đơn kháng sinh.
+- **Quét & đối soát đơn thuốc (OCR):** Trích xuất tên thuốc, liều dùng, cảnh báo sai lệch cần người dùng xác nhận và hỗ trợ nhắc lịch uống thuốc.
+- **Tra cứu y khoa có căn cứ (RAG):** Trả lời dựa trên 364 tài liệu chuẩn từ MedlinePlus NIH và hướng dẫn Bộ Y tế, giảm ảo giác AI.
+- **Dinh dưỡng cá nhân hóa:** Tính chỉ số BMR/TDEE theo hồ sơ sức khỏe, lọc dị ứng và bệnh nền trên kho 2.500 món ăn Việt (Món Ngon Mỗi Ngày).
+- **Hỗ trợ tiền khám & đặt lịch:** Tóm tắt bệnh sử gọn gàng, gợi ý cơ sở y tế gần nhất (2.144 cơ sở tại TP.HCM & Hà Nội) và đặt lịch hẹn.
 
-![Kiến trúc giải pháp MediMind Clinical AI trên AWS](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/2-Proposal/architecture.png)
+## 2.2. Vấn đề Cần Giải quyết (Problem Statement)
 
+Hệ thống tập trung tháo gỡ 4 nút thắt thực tiễn phổ biến trong chăm sóc sức khỏe tại nhà và khám chữa bệnh tuyến đầu:
 
-*Dịch vụ AWS sử dụng*  
-- *Amazon Route 53 & Amazon CloudFront*: Phân giải DNS, lưu đệm tài nguyên tĩnh (1 TB miễn phí/tháng) và ẩn địa chỉ gốc máy chủ.  
-- *AWS WAF & AWS Certificate Manager (ACM)*: Tường lửa lớp 7 chống OWASP Top 10, Rate Limiting và cấp phát chứng chỉ SSL/TLS 1.3 miễn phí (tầng Global `us-east-1` cho CloudFront và Regional `ap-southeast-1` cho ALB).  
-- *Application Load Balancer (ALB) & NAT Gateway*: Thực hiện TLS Termination tại `Public Subnet` và cấp quyền truy cập chiều ra an toàn cho `Private App Subnet 1 & 2`.  
-- *Amazon EC2 (Auto Scaling Group) & Amazon EFS*: Máy chủ chạy container ứng dụng (`PORT=8000`) tự động mở rộng theo tải; gắn **Amazon EFS** chia sẻ thư mục `/uploads` và nạp chỉ mục ChromaDB (364 tài liệu) dạng chỉ đọc từ image/S3 xuống EBS cục bộ.  
-- *Amazon RDS for PostgreSQL (Multi-AZ)*: Cơ sở dữ liệu quan hệ cô lập trong `Private Database Subnet 1 & 2` (`SQL :5432`) gồm Primary và Standby đồng bộ dữ liệu tự động chuyển đổi dự phòng (Auto Failover), quản lý người dùng, hồ sơ y tế, thông báo và lịch hẹn.  
-- *Amazon ElastiCache for Redis (tùy chọn mở rộng Multi-AZ)*: Lưu trữ trạng thái OTP và Rate Limiting dùng chung giữa các máy chủ EC2 trong Auto Scaling Group (có thể đồng bộ qua RDS PostgreSQL sẵn có ở chế độ tiết kiệm).  
-- *Amazon S3, S3 Gateway Endpoint & Amazon ECR*: Lưu trữ sao lưu (`Backup / Archive`) hồ sơ và snapshot RAG qua kết nối nội bộ **S3 Gateway Endpoint**, đồng thời quản lý Docker Image riêng tư trên ECR.  
-- *AWS Secrets Manager, CloudWatch, AWS IAM, Cost Explorer & AWS Budgets*: Quản lý khóa API tập trung, thu thập log/metrics/cảnh báo đã ẩn danh PII, phân quyền tối thiểu qua `EC2 IAM Role` và theo dõi ngân sách.  
+- **Quá tải tuyến đầu:** Bệnh nhân thiếu công cụ sàng lọc ban đầu và chuẩn bị bệnh sử, làm kéo dài thời gian khai thác thông tin tại phòng khám.
+- **Rủi ro tự tra cứu trên mạng:** Thông tin y tế rời rạc, thiếu kiểm chứng dễ khiến người bệnh bỏ lỡ dấu hiệu cấp cứu hoặc tự dùng sai thuốc.
+- **Khó đọc hiểu đơn thuốc tại nhà:** Đơn thuốc viết tắt, nhiều thuốc dễ gây nhầm liều hoặc quên giờ uống ở người lớn tuổi và bệnh nhân mạn tính.
+- **Trải nghiệm chăm sóc phân mảnh:** Tra cứu triệu chứng, theo dõi dinh dưỡng theo bệnh nền và đặt lịch khám hiện nằm rời rạc ở nhiều ứng dụng khác nhau.
 
-*Thiết kế thành phần*  
-- *Tầng Biên & Bảo mật*: Route 53, WAF, CloudFront và ALB chặn tấn công mạng và mã hóa toàn bộ lưu lượng HTTPS.  
-- *Tầng Ứng dụng & AI (`Private App Subnet`)*: Backend Python (`app.py` / `core/main_fastapi.py`) xử lý Double Guardrails, Hybrid RAG (BM25 + ChromaDB + BGE Reranker), OCR đối soát, chuông thông báo (`/api/notifications`) cho lịch hẹn/nhắc uống thuốc, bộ lọc dinh dưỡng tất định (12 ngữ cảnh bệnh lý, 12 nhóm dị ứng, 10 quy tắc kiêng kỵ) và Circuit Breaker dự phòng.  
-- *Tầng Dữ liệu & Lưu trữ (`Private Database Subnet` & Storage)*: RDS PostgreSQL (Primary & Standby) lưu 7 bảng nghiệp vụ (`users`, `medical_documents`, `prescription_history`, `clinical_consultations`, `intake_sessions`, `medical_appointments`, `user_notifications`); **Redis dùng chung** (Amazon ElastiCache `cache.t4g.micro` hoặc đồng bộ qua RDS ở chế độ tiết kiệm) lưu OTP/Rate Limiting cho đa thực thể EC2; **Amazon EFS** chia sẻ `/uploads`; **EBS cục bộ** lưu chỉ mục ChromaDB chỉ đọc; **Amazon S3** lưu bản sao lưu dài hạn.  
-- *Tích hợp Dịch vụ Ngoài*: Xác thực qua Google OAuth 2.0, gửi OTP 6 số và email xác nhận lịch hẹn qua Gmail SMTP / SpeedSMS, suy luận AI đa khóa (**Groq Dual-Key Failover**) và hiển thị bản đồ 2.144 cơ sở y tế bằng **Leaflet / OpenStreetMap** (hỗ trợ tùy chọn Google Maps Platform API).  
+## 2.3. Mục tiêu & Phạm vi Đề xuất (Objectives & Scope)
 
-### 4. Triển khai kỹ thuật  
-*Các giai đoạn triển khai*  
-Dự án được xây dựng đồng bộ từ lõi lâm sàng đến hạ tầng AWS qua 4 giai đoạn chính:  
-1. *Khảo sát & Thiết kế Kiến trúc*: Thu thập dữ liệu y khoa chuẩn hóa, thiết kế sơ đồ AWS 3-Subnet Multi-AZ VPC, lược đồ 7 bảng PostgreSQL và đặc tả API (Tuần 1–2).  
-2. *Phát triển Lõi Lâm sàng & RAG*: Xây dựng Double Guardrails chống bẫy phủ định, chỉ mục Hybrid RAG 364 tài liệu và Pipeline OCR đối soát (Tuần 3–6).  
-3. *Mở rộng Nghiệp vụ & Giao diện SPA*: Tích hợp **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)** kèm khảo sát BMR/TDEE, danh mục 2.144 cơ sở y tế, đặt lịch khám, chuông thông báo nhắc thuốc/lịch hẹn, xác thực OAuth/OTP và giao diện Web SPA (Tuần 7–8).  
-4. *Đóng gói Container, Triển khai AWS & Kiểm định*: Đóng gói Docker lên Amazon ECR, cấu hình EC2 (Auto Scaling Group) + EFS + RDS (Multi-AZ) + ALB + WAF + Secrets Manager, chạy 95 tệp kiểm thử tự động và đánh giá chất lượng (Tuần 9–12).  
+Đặt mục tiêu vừa đáp ứng an toàn y tế cho người dùng cuối, vừa chuẩn hóa kiến trúc đám mây theo AWS Well-Architected trong ngân sách sinh viên.
 
-*Yêu cầu kỹ thuật*  
-- *Backend & AI Pipeline*: Python (`Flask` / `FastAPI` gateway, `SQLAlchemy`), `ChromaDB`, BM25 tự cài đặt cục bộ (in-house BM25), `BAAI/bge-reranker-v2-m3`, `EasyOCR` (nhánh cục bộ tùy chọn), `Redis` (OTP/RateLimit), tích hợp đa khóa **Groq Dual-Key** (`GROQ_API_KEY`, `GROQ_API_KEY_2`, `GROQ_CHAT_API_KEY`, `GROQ_OCR_API_KEY`, `GROQ_NUTRITION_API_KEY`) kèm Circuit Breaker cùng Retry Policy xử lý HTTP 429.  
-- *An toàn Tệp & Dữ liệu*: Kiểm tra Magic Bytes chống giả mạo định dạng, chặn Decompression/Zip Bomb (ảnh ≤ 25 MP, PDF ≤ 30 trang, tỷ lệ nén DOCX < 50x), bảo vệ CSRF và ẩn danh PII tự động trong log.  
-- *Hạ tầng AWS*: VPC `10.0.0.0/16` tại `ap-southeast-1`, Security Groups phân tách chặt chẽ giữa ALB (`443`), EC2 (`8000`) và RDS (`5432`), nạp biến môi trường động từ AWS Secrets Manager thông qua EC2 IAM Role.  
+### Mục tiêu cốt lõi
 
-### 5. Lộ trình & Mốc triển khai  
-- *Trước thực tập (Tháng 0)*: Khảo sát bài toán quá tải y tế tuyến đầu, thu thập 364 tài liệu chuẩn hóa từ *MedlinePlus NIH* (kết hợp tài liệu tham chiếu phân tầng *Bộ Y Tế – kcb.vn*), **2.500 món ăn Việt (*Món Ngon Mỗi Ngày*)** và danh mục 2.144 cơ sở y tế.  
-- *Thực tập (Tháng 1–3 / 12 Tuần)*:  
-  - Tháng 1 (Tuần 1–4): Thiết kế kiến trúc AWS 3-Subnet VPC, phát triển lõi Clinical Triage, Double Guardrails và cơ sở dữ liệu.  
-  - Tháng 2 (Tuần 5–8): Hoàn thiện Hybrid RAG, Pipeline OCR đối soát, Clinical Nutrition Studio (BMR/TDEE + lọc đa bệnh nền), đặt lịch khám, chuông thông báo nhắc thuốc và giao diện Web SPA.  
-  - Tháng 3 (Tuần 9–12): Đóng gói Docker lên ECR, triển khai trên EC2 + EFS + RDS (Multi-AZ) + ALB + WAF, chạy 95 tệp kiểm thử tự động (`pytest`) và chuẩn bị Live Demo Workshop.  
-- *Sau triển khai*: Mở rộng tích hợp chuẩn liên thông dữ liệu y tế HL7 FHIR và triển khai thử nghiệm tại các phòng khám đa khoa vệ tinh.  
+- Nhận diện chính xác ca nguy cấp (115) và kiểm soát an toàn câu trả lời AI.
+- Triển khai được hệ thống chạy live HTTPS ổn định, dễ mở rộng trên AWS.
+- Đảm bảo bảo mật dữ liệu người dùng (cô lập mạng riêng, mã hóa, không lộ khóa).
+- Tối ưu chi phí vận hành dưới ngưỡng kiểm soát AWS Budgets ($20 cho giai đoạn demo).
 
-### 6. Ước tính ngân sách  
-Chi phí được ước tính theo đơn giá On-Demand tại khu vực **Singapore (`ap-southeast-1`)** cho hai giai đoạn: **Dev/PoC Workshop** (chạy Single-AZ tận dụng AWS Free Tier / Free Tier Credits và chỉ bật ALB/NAT theo giờ demo rồi tắt) và **Production Multi-AZ** (khớp 100% sơ đồ mục 3 cho 10.000 người dùng/tháng chạy 24/7).  
+### Phạm vi thực hiện
 
-*Chi phí hạ tầng (Giai đoạn Dev / PoC Workshop)*  
-- Amazon EC2 (`t3.micro` / `t3.small`, cổng 8000): 0,00 – 3,17 USD/tháng (`t3.micro` miễn phí 750 giờ Free Tier kèm swap/tắt reranker cục bộ; `t3.small` 2 GB RAM chạy ~120 giờ demo ở mức ~0,0264 USD/giờ).  
-- Amazon EFS / EBS (lưu `/uploads` & `medical_vectordb` ~43 MB trong hạn mức 5 GB EFS Free Tier / Free Tier Credits và 30 GB EBS Free Tier): 0,00 USD/tháng.  
-- Amazon RDS PostgreSQL (`db.t4g.micro` Single-AZ, cổng 5432): 0,00 USD/tháng (miễn phí 750 giờ + 20 GB Free Tier 12 tháng đầu).  
-- Application Load Balancer & 1 NAT Gateway (~40 giờ kiểm thử/demo): ~3,97 USD/tháng (gồm 3,37 USD phí giờ ALB + NAT GW và ~0,60 USD cho 3 Public IPv4 của ALB/NAT vì gói 750 giờ IPv4 Free Tier chỉ áp dụng cho EC2).  
-- Amazon S3 (`Backup / Archive` ~2 GB), S3 Gateway Endpoint & Amazon ECR: ~0,00 – 0,15 USD/tháng (ECR miễn phí 500 MB/tháng trong 12 tháng đầu; nếu image đóng gói vượt ngưỡng ~1–2 GB tốn thêm ~0,05 – 0,15 USD/tháng).  
-- AWS Secrets Manager (3 nhóm Secrets): 1,20 USD/tháng (0,40 USD/secret).  
-- Amazon CloudFront (15 GB), ACM (TLS 1.3), CloudWatch, AWS IAM, Cost Explorer & AWS Budgets: 0,00 USD/tháng (Always-Free / Free Tier).  
-- Amazon Route 53 (1 Hosted Zone + 50.000 queries): 0,52 USD/tháng.  
-- AWS WAF (1 Web ACL + 3 Managed Rules, bật cả tháng): 8,00 USD/tháng (5,00 USD Web ACL + 1,00 USD × 3 rule groups; nếu chỉ bật 40 giờ demo tính theo giờ là ~0,44 USD).  
-- Dịch vụ AI & Xác thực ngoài (Groq API Dual-Key Free Tier, Gmail SMTP, Google OAuth, Leaflet/OpenStreetMap & Google Maps Platform tùy chọn trong hạn mức miễn phí): 0,00 USD/tháng.  
+- **Trong phạm vi:** Ứng dụng web hoàn chỉnh 5 phân hệ (song ngữ VI/EN), đăng nhập Google OAuth / OTP, triển khai hạ tầng AWS Multi-AZ và tài liệu Workshop.
+- **Ngoài phạm vi:** Không thay thế chẩn đoán hay kê đơn của bác sĩ; chưa tích hợp trực tiếp hệ thống bệnh án điện tử bệnh viện (HIS/HL7 FHIR) ở giai đoạn này.
 
-*Tổng (Dev / PoC Workshop)*: **~16,86 USD/tháng** (~430.000 VNĐ/tháng, **~202,32 USD/12 tháng**; lưu ý tắt/xóa ALB & NAT Gateway sau khi demo để tránh phát sinh ~72 USD/tháng nếu chạy 24/7).  
+## 2.4. Kiến trúc Giải pháp Sơ bộ trên AWS (Preliminary Architecture)
 
-*Chi phí mở rộng Production Multi-AZ (10.000 người dùng / 25.000 phiên tư vấn / 8.000 lượt OCR mỗi tháng, chạy 24/7 — đúng theo sơ đồ mục 3)*  
-- 2 × Amazon EC2 (`t3.small` trong Auto Scaling Group, `2 × 0,0264 USD/giờ × 730 giờ`): ~38,54 USD/tháng.  
-- Amazon EFS Standard (~5 GB cho `/uploads`) & 2 × EBS gốc (`gp3` 20 GB chứa `medical_vectordb` read-only): ~5,64 USD/tháng.  
-- Amazon RDS PostgreSQL Multi-AZ (`db.t4g.micro` Primary + Standby ~0,050 USD/giờ + 20 GB `gp3` Multi-AZ): ~41,10 USD/tháng.  
-- 1 × ALB + 2 × NAT Gateway (24/7) + 4 Public IPv4 (14,60 USD) + LCU & Data Processing (~20 GB): ~122,32 USD/tháng.  
-- Amazon ElastiCache Redis (`cache.t4g.micro` — tùy chọn mở rộng bổ sung ngoài sơ đồ làm Shared State OTP/RateLimit cho 2 EC2): ~12,50 USD/tháng *(hoặc 0,00 USD nếu chuyển OTP/RateLimit lưu qua RDS PostgreSQL)*.  
-- AWS WAF (~8,60 USD) + Secrets Manager (1,20 USD) + Route 53 (~0,70 USD) + S3/ECR/CloudWatch (~2,85 USD) + CloudFront (< 1 TB Always-Free): ~13,35 USD/tháng.  
-- *Tổng hạ tầng AWS Production Multi-AZ*: **~233,45 USD/tháng** (nếu dùng ElastiCache Redis; hoặc **~220,95 USD/tháng** nếu lưu OTP/RateLimit trên RDS), tương đương **~0,0088 – 0,0093 USD/phiên tư vấn** (**~225 – 240 VNĐ/phiên**; chưa gồm phí nâng cấp Groq Pay-as-you-go nếu lưu lượng cao vượt Free Tier).  
+Hệ thống được thiết kế theo mô hình VPC 3 tầng cô lập (Public – Private App – Private DB) trên 2 Availability Zones tại Singapore (ap-southeast-1):
 
-### 7. Đánh giá rủi ro  
-*Ma trận rủi ro*  
-- Bỏ sót dấu hiệu cấp cứu hoặc mắc bẫy phủ định (*"không khó thở"*): Ảnh hưởng cao, xác suất trung bình.  
-- Sai lệch nhận diện OCR trên đơn thuốc viết tay mờ/lóa hoặc quá tải HTTP 429: Ảnh hưởng cao, xác suất trung bình.  
-- Tải lên tệp độc hại (Decompression/Zip Bomb) hoặc truy cập trái phép hồ sơ (IDOR): Ảnh hưởng cao, xác suất thấp.  
-- Gián đoạn API từ nhà cung cấp AI bên ngoài (Groq API) hoặc vượt ngân sách: Ảnh hưởng trung bình, xác suất thấp.  
+![Sơ đồ kiến trúc AWS MediMind Clinical AI](/images/2-Proposal/medimind-aws-architecture.png)
 
-*Chiến lược giảm thiểu*  
-- Lâm sàng & Phủ định: Áp dụng Double Guardrails (`core/triage.py`) kết hợp quy tắc tiền kiểm từ khóa cấp cứu (hỗ trợ tiếng Việt không dấu và cụm từ phủ định) cùng bước hậu kiểm phản hồi LLM, tự động cảnh báo gọi 115 khi có dấu hiệu nguy kịch và chặn việc tự kê đơn kháng sinh.  
-- OCR Đơn thuốc & Nhắc uống thuốc: Sử dụng Vision LLM kết hợp nhánh cục bộ tùy chọn EasyOCR kèm cơ chế retry HTTP 429/Dual-Key Failover, tự động gắn cờ `needs_review=True` khi lệch trường hoặc lệch cữ/số lượng thuốc, bắt buộc người dùng xác nhận (*Human-in-the-Loop*) trước khi lưu lịch uống thuốc và gửi nhắc nhở qua chuông thông báo trên server.  
-- Bảo mật & Hạ tầng: Cô lập EC2 và RDS trong Private Subnets, kiểm tra Magic Bytes & giới hạn kích thước tệp (`core/storage_service.py`), ẩn danh PII trong log và cài đặt cảnh báo **AWS Budgets** ở ngưỡng 20 USD.  
+### Tóm tắt 4 lớp kiến trúc chính
 
-*Kế hoạch dự phòng*  
-- Kích hoạt **Circuit Breaker** (`core/circuit_breaker.py`) tự động ngắt mạch sau 5 lỗi API liên tiếp để chuyển sang **Fallback Clinical Engine** và bộ lọc dinh dưỡng tất định mà không làm treo hệ thống.  
-- Khôi phục nhanh chỉ mục ChromaDB và cơ sở dữ liệu từ bản sao lưu định kỳ trên **Amazon S3** và Automated Snapshots của **Amazon RDS**.  
+- **Lớp Biên mạng & Bảo mật:** Amazon CloudFront phân phối HTTPS toàn cầu kết hợp AWS WAF (chặn tấn công Web OWASP/SQLi/Rate Limit); dự kiến gắn Route 53 & ACM khi dùng tên miền thương hiệu riêng.
+- **Lớp Ứng dụng (Multi-AZ):** Application Load Balancer chia tải vào cụm Amazon EC2 (Auto Scaling Group 2 AZ, nằm hoàn toàn trong Private Subnet, không Public IP) dùng chung Amazon EFS và kéo container từ Amazon ECR.
+- **Lớp Dữ liệu & Bí mật:** Amazon RDS for PostgreSQL đặt trong Private DB Subnet tách biệt hoàn toàn với Internet; Amazon S3 (kèm S3 Gateway Endpoint) lưu sao lưu; AWS Secrets Manager quản lý tập trung khóa API & mật khẩu.
+- **Lớp AI & Giám sát vận hành:** Kết nối ra ngoài qua NAT Gateway tới Groq API (4-Key Pool Failover), Google OAuth, Gmail SMTP và Google Maps; theo dõi tập trung bằng Amazon CloudWatch và kiểm soát chi phí với AWS Budgets.
 
-### 8. Kết quả kỳ vọng  
-*Cải tiến kỹ thuật*  
-Hoàn thiện nền tảng trợ lý y tế đa phương thức kèm bộ **95 tệp kiểm thử tự động (`pytest`)** bao phủ sàng lọc triệu chứng (xử lý phủ định và cờ đỏ cấp cứu), đối soát đơn thuốc OCR (Vision LLM kết hợp nhánh tùy chọn EasyOCR), truy xuất tri thức Hybrid RAG trên 364 tài liệu chuẩn hóa, lọc dị ứng/bệnh lý dinh dưỡng tất định và quy trình đặt lịch – nhắc uống thuốc với cơ chế dự phòng Circuit Breaker khi dịch vụ AI ngoài gián đoạn.  
+## 2.5. Kế hoạch & Lộ trình Thực hiện (12 Tuần)
 
-*Giá trị dài hạn*  
-Cung cấp kiến trúc tham chiếu chuẩn AWS bảo mật cao và chi phí thấp (**~105 VNĐ/phiên tư vấn** ở quy mô 10.000 người dùng), có thể tái sử dụng và mở rộng cho các phòng khám, bệnh viện tuyến cơ sở nhằm giảm tải khâu sàng lọc tiếp đón và nâng cao an toàn sử dụng thuốc cho cộng đồng.
+Lộ trình chia làm 4 giai đoạn nối tiếp từ thiết kế đến triển khai thực tế và nghiệm thu:
+
+| Giai đoạn | Thời gian | Hạng mục trọng tâm |
+| --- | --- | --- |
+| 1. Khảo sát & Thiết kế | Tuần 1 – 3 | Phân tích bài toán, thiết kế kiến trúc AWS 3 tầng, chuẩn hóa dữ liệu y khoa, món ăn và cơ sở y tế. |
+| 2. Xây dựng Lõi AI & OCR | Tuần 4 – 6 | Phát triển bộ lọc an toàn lâm sàng, tìm kiếm RAG có trích dẫn và tính năng đọc đơn thuốc OCR. |
+| 3. Hoàn thiện Ứng dụng | Tuần 7 – 9 | Hoàn thiện phân hệ Dinh dưỡng, Bản đồ đặt lịch, xác thực Google OAuth/OTP và kiểm thử tự động. |
+| 4. Triển khai AWS & Nghiệm thu | Tuần 10 – 12 | Triển khai hạ tầng AWS Multi-AZ, thiết lập giám sát/ngân sách, hoàn thiện Workshop và demo sản phẩm. |
+
+## 2.6. Dự toán Ngân sách & Chi phí AWS (ap-southeast-1)
+
+Ước tính chi phí minh bạch theo đơn giá Singapore (ap-southeast-1), tách rõ chi phí thực hành demo và chi phí vận hành Production 24/7:
+
+- **Demo Workshop (~40h):** ~$16.86 / tháng — Thực chi tháng 11 đến 27/11 mới $11.57 (dưới ngưỡng Budget $20).
+- **Live đang chạy (24/7):** $207.28 / tháng — 2 EC2 + 2 NAT GW + RDS Single-AZ + EFS + WAF + CloudWatch.
+- **Full Multi-AZ (Calculator):** $228.76 / tháng — Bật thêm RDS Multi-AZ Standby ($2,745.12 / năm · Upfront $0).
+
+| Nhóm dịch vụ chính | Demo (~40h) | Full Multi-AZ (24/7) |
+| --- | --- | --- |
+| Máy chủ & Lưu trữ (2 EC2 t3.small, 30 GB EBS) | $0.00 – $3.17 | $43.69 |
+| Cơ sở dữ liệu (RDS PostgreSQL Multi-AZ 20 GB) | $0.00 | $42.24 |
+| Mạng & Cân bằng tải (1 ALB, 2 NAT GW, 4 IPv4) | $3.97 | $127.23 |
+| Bảo mật & Biên mạng (WAF us-east-1, Secrets, Route 53, S3, ECR) | ~$9.72 | $12.30 |
+| Lưu trữ dùng chung & Vận hành (EFS 5 GB, CloudWatch, CodeBuild) | $0.00 | $3.30 |
+| Miễn phí (CloudFront Free Plan, ASG, S3 Endpoint, ACM, Budgets, Groq) | $0.00 | $0.00 |
+| **Tổng cộng ước tính** | **~$16.86 / tháng** | **$228.76 / tháng** |
+
+- **Ghi chú tên miền (Route 53 & ACM):** Đã dự toán $0.90/tháng cho tên miền riêng ở bản Production; khi triển khai Workshop thực tế nhóm dùng sẵn tên miền HTTPS miễn phí của CloudFront. [Mở AWS Pricing Calculator](https://calculator.aws/#/estimate?id=ec26a26022ee93e0eb9785a0048f4dca71eb6fb3) | [Xem PDF gốc](/docs/medimind-aws-pricing-calculator.pdf)
+
+![Bảng dự toán chính thức AWS Pricing Calculator (13 dịch vụ · $228.76/tháng · $2,745.12/12 tháng) — Bấm để phóng to](/images/2-Proposal/aws-pricing-calculator.png)
+*Bảng dự toán chính thức AWS Pricing Calculator (13 dịch vụ · $228.76/tháng · $2,745.12/12 tháng) — Bấm để phóng to*
+
+## 2.7. Quản trị Rủi ro & Phương án Giảm thiểu
+
+Các rủi ro trọng yếu về an toàn y tế, vận hành và ngân sách đều được lên phương án phòng ngừa ngay từ khâu thiết kế:
+
+| Rủi ro trọng yếu | Mức độ | Phương án giảm thiểu đề xuất |
+| --- | --- | --- |
+| AI trả lời thiếu chính xác hoặc bỏ sót ca cấp cứu | Cao | Áp dụng lớp kiểm duyệt an toàn trước/sau khi gọi AI, ưu tiên cảnh báo 115 và trích dẫn tài liệu y khoa chuẩn. |
+| Ảnh đơn thuốc mờ hoặc quá tải API AI (HTTP 429) | Trung bình | Sử dụng cơ chế luân chuyển 4 khóa Groq API, tự động thử lại và yêu cầu người dùng xác nhận đơn thuốc. |
+| Rò rỉ dữ liệu sức khỏe hoặc lộ khóa truy cập | Cao | Cô lập EC2 & RDS trong Private Subnets, dùng IAM Role + Secrets Manager, ẩn danh thông tin cá nhân. |
+| Gián đoạn 1 vùng AZ hoặc phát sinh chi phí ngoài dự kiến | Trung bình | Thiết kế Multi-AZ (2 EC2 ASG, 2 NAT GW), thiết lập CloudWatch Alarms và cảnh báo AWS Budgets ngưỡng $20. |

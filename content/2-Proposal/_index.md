@@ -1,4 +1,7 @@
 ---
+report_key: "proposal"
+report_language: "en"
+report_fields: {"title": "Project Proposal: MediMind Clinical AI on AWS", "subtitle": "Concise executive proposal covering problem statement, preliminary AWS architecture, 12-week plan, cost estimation, and risk mitigation.", "kpis": [{"label": "PROJECT SCOPE", "value": "5 Modules", "sub": "Triage · OCR · RAG · Nutrition · Booking"}, {"label": "AWS ARCHITECTURE", "value": "Multi-AZ 3-Tier", "sub": "Isolated VPC in Singapore (ap-southeast-1)"}, {"label": "TIMELINE", "value": "12 Weeks", "sub": "From architecture design to Live Demo"}, {"label": "ESTIMATED BUDGET", "value": "$16.86 / $228.76", "sub": "Workshop Demo (~40h) vs 24/7 Production"}], "sections": [{"id": "summary", "code": "2.1", "nav": "Executive Summary", "heading": "Executive Summary", "lead": "MediMind Clinical AI is a digital clinical assistant helping patients screen symptoms safely, understand prescriptions accurately, and prepare pre-visit context—hosted on a secure, cost-efficient AWS architecture.", "blocks": [{"title": "5 Proposed Core Capabilities", "bullets": ["**Safe Symptom Triage:** Classifies Green / Yellow / Red risk levels, triggers 115 emergency warnings early, and blocks unauthorized antibiotic prescribing.", "**Prescription OCR & Verification:** Extracts medication names and dosages, flags discrepancies for user review, and supports medication reminders.", "**Evidence-Based Medical RAG:** Grounds responses in 364 trusted clinical documents from MedlinePlus NIH and Ministry of Health guidelines.", "**Personalized Nutrition:** Computes BMR/TDEE from health profiles and filters allergies & conditions across 2,500 Vietnamese dishes (Mon Ngon Moi Ngay).", "**Pre-Visit Summary & Booking:** Generates concise pre-visit summaries, locates nearby clinics (2,144 facilities in HCMC & Hanoi), and books appointments."]}]}, {"id": "problem", "code": "2.2", "nav": "Problem Statement", "heading": "Problem Statement", "lead": "The proposal addresses four recurring bottlenecks in home healthcare and frontline consultations:", "blocks": [{"bullets": ["**Frontline Overload:** Patients arrive without structured symptom history, extending intake times at clinics.", "**Unverified Online Search Risks:** Scattered health advice leads to missed red-flag emergencies or unsafe self-medication.", "**Prescription Misinterpretation:** Abbreviated prescriptions frequently cause dosing errors or missed doses among older and chronic-care patients.", "**Fragmented Patient Experience:** Symptom lookup, therapeutic nutrition, and clinic booking remain siloed across separate apps."]}]}, {"id": "solution", "code": "2.3", "nav": "Objectives & Scope", "heading": "Objectives & Scope", "lead": "Designed to balance clinical safety for end users with AWS Well-Architected best practices under an internship-friendly budget.", "blocks": [{"columns": [{"title": "Core Objectives", "bullets": ["Reliably detect emergency red flags (115) and enforce safe AI outputs.", "Deploy a live, HTTPS-secured, scalable AWS web platform.", "Protect user health data via private subnets, encryption, and zero hardcoded secrets.", "Keep demo cloud spend controlled under a hard $20 AWS Budgets alert."]}, {"title": "Project Scope", "bullets": ["**In Scope:** Full 5-module bilingual (VI/EN) web app, Google OAuth / OTP sign-in, Multi-AZ AWS infrastructure, and step-by-step Workshop documentation.", "**Out of Scope:** Does not replace licensed medical diagnosis or prescriptions; direct hospital HIS / HL7 FHIR integration is deferred to future phases."]}]}]}, {"id": "arch", "code": "2.4", "nav": "Preliminary Architecture", "heading": "Preliminary AWS Solution Architecture", "lead": "Built on a 3-tier isolated VPC (Public – Private App – Private DB) spanning two Availability Zones in Singapore (ap-southeast-1):", "blocks": [{"title": "Overview of the 4 Core Layers", "bullets": ["**Edge & Security:** Amazon CloudFront delivers global HTTPS protected by AWS WAF (OWASP/SQLi/Rate Limit); Route 53 & ACM are planned for custom domain production.", "**Application Tier (Multi-AZ):** Application Load Balancer distributes traffic to Private EC2 instances (Dual-AZ Auto Scaling Group, no Public IP) backed by shared Amazon EFS and Amazon ECR.", "**Data & Secrets Tier:** Amazon RDS for PostgreSQL isolated in Private DB Subnets; Amazon S3 (via S3 Gateway Endpoint) for backups; AWS Secrets Manager for credentials and API keys.", "**AI & Operations:** Outbound NAT Gateways reach Groq API (4-Key Pool Failover), Google OAuth, Gmail SMTP, and Google Maps; Amazon CloudWatch & AWS Budgets handle monitoring and cost control."]}]}, {"id": "timeline", "code": "2.5", "nav": "12-Week Plan", "heading": "Implementation Plan & Timeline (12 Weeks)", "lead": "Executed across four sequential milestones from architecture design to live AWS validation:", "blocks": [{"table": {"headers": ["Phase", "Timeline", "Key Focus"], "rows": [["1. Discovery & Design", "Weeks 1 – 3", "Problem scoping, 3-tier AWS architecture design, and curating medical, nutrition, and facility datasets."], ["2. AI Core & OCR", "Weeks 4 – 6", "Build clinical safety guardrails, citation-backed RAG retrieval, and prescription OCR pipeline."], ["3. Web App & Security", "Weeks 7 – 9", "Complete Nutrition, Map/Booking modules, Google OAuth/OTP authentication, and automated testing."], ["4. AWS Deploy & Demo", "Weeks 10 – 12", "Deploy Multi-AZ AWS stack, configure monitoring/budgets, finalize Workshop docs, and run live demo."]]}}]}, {"id": "budget", "code": "2.6", "nav": "Budget & Cost", "heading": "Budget & AWS Cost Estimation (ap-southeast-1)", "lead": "Transparent Singapore On-Demand estimation (ap-southeast-1), separating hands-on Workshop demo spend from 24/7 Multi-AZ Production:", "blocks": [{"costCards": [{"label": "Workshop Demo (~40h)", "value": "~$16.86 / mo", "note": "Actual Nov spend through Nov 27 is $11.57 (under $20 Budget)."}, {"label": "Live Stack (24/7)", "value": "$207.28 / mo", "note": "2 EC2 + 2 NAT GW + Single-AZ RDS + EFS + WAF + CloudWatch."}, {"label": "Full Multi-AZ (Calculator)", "value": "$228.76 / mo", "note": "Includes Multi-AZ RDS Standby ($2,745.12 / yr · $0 upfront).", "featured": true}], "table": {"headers": ["Core Service Group", "Demo (~40h)", "Full Multi-AZ (24/7)"], "rows": [["Compute & Storage (2 EC2 t3.small, 30 GB EBS)", "$0.00 – $3.17", "$43.69"], ["Database (RDS PostgreSQL Multi-AZ 20 GB)", "$0.00", "$42.24"], ["Networking (1 ALB, 2 NAT GW, 4 IPv4)", "$3.97", "$127.23"], ["Security & Edge (us-east-1 WAF, Secrets, Route 53, S3, ECR)", "~$9.72", "$12.30"], ["Shared Storage & Ops (5 GB EFS, CloudWatch, CodeBuild)", "$0.00", "$3.30"], ["Free Tier (CloudFront Free Plan, ASG, S3 Endpoint, ACM, Budgets, Groq)", "$0.00", "$0.00"], ["**Estimated Monthly Total**", "**~$16.86 / month**", "**$228.76 / month**"]]}, "cta": {"text": "**Custom Domain Note (Route 53 & ACM):** Budgeted at $0.90/month for a production domain; the live Workshop uses CloudFront's built-in HTTPS domain to save domain purchase costs.", "label": "Open AWS Pricing Calculator", "url": "https://calculator.aws/#/estimate?id=ec26a26022ee93e0eb9785a0048f4dca71eb6fb3", "pdfLabel": "Official PDF", "pdfUrl": "static/docs/medimind-aws-pricing-calculator.pdf"}, "foldImage": "View full 13-service AWS Pricing Calculator breakdown image", "image": {"url": "static/images/2-Proposal/aws-pricing-calculator.png", "caption": "Official AWS Pricing Calculator estimate (13 services · $228.76/month · $2,745.12/12 months) — Click to zoom"}}]}, {"id": "risks", "code": "2.7", "nav": "Risks & Mitigation", "heading": "Risk Management & Mitigation", "lead": "Key clinical, operational, security, and cost risks addressed proactively in the design:", "blocks": [{"table": {"headers": ["Key Risk", "Impact", "Proposed Mitigation"], "rows": [["Inaccurate AI advice or missed emergency symptoms", "High", "Apply pre/post clinical safety guardrails, prioritize 115 emergency alerts, and ground answers in curated medical sources."], ["Blurry prescription photos or API rate limits (HTTP 429)", "Medium", "Use 4-key Groq API failover with automatic retries and mandatory user review before saving medications."], ["Health data exposure or leaked credentials", "High", "Isolate EC2 & RDS in Private Subnets, enforce Least-Privilege IAM Roles + Secrets Manager, and mask PII."], ["Single-AZ outage or unexpected cloud billing", "Medium", "Deploy Dual-AZ EC2 ASG & NAT Gateways, CloudWatch Alarms, and a $20 AWS Budgets threshold alert."]]}}]}]}
 title: "Proposal"
 date: 2026-09-14
 weight: 2
@@ -6,110 +9,101 @@ chapter: false
 pre: " <b> 2. </b> "
 ---
 
-# MediMind Clinical AI  
-## Unified AWS Clinical Assistant, Prescription Cross-Verification & Smart Healthcare Platform  
+# Project Proposal: MediMind Clinical AI on AWS
 
-### 1. Executive Summary  
-MediMind Clinical AI is designed to support initial symptom triage, prescription/lab-result cross-verification, medication reminders, and personalized clinical nutrition for patients and doctors in Vietnam. The platform combines a **Hybrid RAG architecture (BM25 + ChromaDB Vector + Cross-Encoder Reranker)** indexed over 364 standardized medical documents from *MedlinePlus NIH* (paired with clinical triage/emergency reference rules from *Vietnam Ministry of Health – kcb.vn*), **Clinical Triage & Double Guardrails**, and a **Multimodal OCR Verification Pipeline** powered by Vision LLMs (`qwen/qwen3.8-27b` via Groq API Dual-Key Failover, with an optional local EasyOCR branch). Containerized with Docker and deployed on **Amazon Web Services (AWS)** in the `ap-southeast-1` (Singapore) region, the system leverages a Multi-AZ 3-tier isolated VPC architecture compliant with the **AWS Well-Architected Framework** and **HIPAA-aligned security controls** (encryption in transit and at rest, Private Subnet isolation, least-privilege IAM, and PII log redaction).  
+> Concise executive proposal covering problem statement, preliminary AWS architecture, 12-week plan, cost estimation, and risk mitigation.
 
-### 2. Problem Statement  
-*Current Problem*  
-Many frontline public hospitals frequently operate over capacity, resulting in multi-hour patient wait times and a lack of structured pre-consultation medical histories for doctors. Meanwhile, self-diagnosing through unverified AI tools leads to missed emergency "golden hours." Standard chatbots also struggle with negation traps (triggering false alarms when users type *"no shortness of breath"*) or hallucinating medical citations and allergenic meal recommendations. In addition, single-model OCR tools frequently misread blurry prescriptions and cause dosage errors, patients often forget their medication schedules (before/after meals), and they lack safe nutrition guidance tailored to their clinical conditions, allergies, and local Vietnamese dishes.  
+## 2.1. Executive Summary
 
-*Solution*  
-The platform delivers a closed-loop healthcare workflow across five core modules: (1) Multi-turn symptom intake and 3-tier risk stratification (**Green – Yellow – Red**), handling unaccented Vietnamese and negation phrases to trigger immediate **Emergency 115** alerts; (2) A multimodal OCR verification pipeline using Vision LLMs with an optional local EasyOCR branch, cross-checking fields, flagging discrepancies or schedule/quantity mismatches (`needs_review`), and generating visual medication schedules (*Morning – Noon – Afternoon – Evening; Before/After meals*) linked to a **server-backed in-app notification bell** upon user confirmation; (3) Grounded medical Q&A backed by 364 verified clinical documents; (4) Clinical nutrition recommendations combining **BMR/TDEE surveys**, **12 clinical/goal contexts**, and deterministic **12-allergen** *Fail-Closed Allergy Filtering* across **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)**; and (5) A fast Pre-Consultation Summary (design target ~30 seconds) supporting in-app appointment scheduling across a directory of **2,144 healthcare facilities** (1,505 in HCMC and 639 in Hanoi), sending confirmation emails to the user's inbox and updating booking/cancellation alerts in the in-app notification bell. The workload runs on **Amazon EC2 (Auto Scaling Group) + Amazon EFS** and **Amazon RDS PostgreSQL (Multi-AZ)**, protected at the edge by **AWS WAF**, **CloudFront**, and **ALB**.  
+MediMind Clinical AI is a digital clinical assistant helping patients screen symptoms safely, understand prescriptions accurately, and prepare pre-visit context—hosted on a secure, cost-efficient AWS architecture.
 
-*Benefits and Return on Investment (ROI)*  
-The solution aims to shorten initial medical history intake to ~30 seconds, minimizes home dosage errors and missed medication doses, and prevents adverse drug/food allergy events via *Human-in-the-Loop* confirmation and server-backed reminder notifications. By packaging the read-only ChromaDB vector index (`medical_vectordb`, ~43 MB) via Docker/S3 onto EC2 local EBS and using **Amazon EFS** for `/uploads` instead of costly managed vector databases, alongside **Groq API Dual-Key Failover** within free tiers during PoC, **Dev/PoC Workshop** infrastructure costs stay at **~16.86 USD/month** (~202.32 USD/12 months), while a full **Multi-AZ Production** deployment for 10,000 monthly users costs approximately **220.95 – 233.45 USD/month** (**~0.0088 – 0.0093 USD per consultation session**)—substantially lower than running dedicated GPU clusters and managed vector databases.  
+### 5 Proposed Core Capabilities
 
-### 3. Solution Architecture  
-The platform adopts an **AWS 3-Tier Multi-AZ VPC (`10.0.0.0/16`)** architecture spanning two Availability Zones (`ap-southeast-1a` and `ap-southeast-1b`) in `ap-southeast-1` to completely isolate compute and database layers from direct public Internet access. Incoming user traffic routes through **Amazon Route 53**, **AWS WAF**, and **Amazon CloudFront** to an **Application Load Balancer (ALB)** in the `Public Subnet`, forwarding internal requests on port `8000` to Docker containers on **Amazon EC2** instances within an **Auto Scaling Group** inside `Private App Subnet 1 & 2`. Uploaded files (`./uploads`) are shared across EC2 instances via **Amazon EFS** with backups to **Amazon S3** over an **S3 Gateway Endpoint** (while the read-only **ChromaDB index `./medical_vectordb`** is baked into the Docker image or synced from S3 to each EC2's local EBS volume to prevent SQLite-over-NFS file locking), and seven transactional tables reside in **Amazon RDS for PostgreSQL (Primary & Standby with Sync Replication)** (`SQL :5432`) inside `Private Database Subnet 1 & 2`. All outbound requests to **Groq API**, **Google OAuth 2.0**, and **Gmail SMTP / SpeedSMS** traverse **NAT Gateway 1 & 2**.  
+- **Safe Symptom Triage:** Classifies Green / Yellow / Red risk levels, triggers 115 emergency warnings early, and blocks unauthorized antibiotic prescribing.
+- **Prescription OCR & Verification:** Extracts medication names and dosages, flags discrepancies for user review, and supports medication reminders.
+- **Evidence-Based Medical RAG:** Grounds responses in 364 trusted clinical documents from MedlinePlus NIH and Ministry of Health guidelines.
+- **Personalized Nutrition:** Computes BMR/TDEE from health profiles and filters allergies & conditions across 2,500 Vietnamese dishes (Mon Ngon Moi Ngay).
+- **Pre-Visit Summary & Booking:** Generates concise pre-visit summaries, locates nearby clinics (2,144 facilities in HCMC & Hanoi), and books appointments.
 
-![MediMind Clinical AI AWS Multi-AZ Architecture](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/2-Proposal/architecture.png)
+## 2.2. Problem Statement
 
+The proposal addresses four recurring bottlenecks in home healthcare and frontline consultations:
 
-*AWS Services Used*  
-- *Amazon Route 53 & Amazon CloudFront*: High-availability DNS routing, static asset edge caching (1 TB free/month), and backend origin masking.  
-- *AWS WAF & AWS Certificate Manager (ACM)*: Layer-7 firewall defending against OWASP Top 10 and rate abuse, paired with free SSL/TLS 1.3 certificates (Global `us-east-1` for CloudFront and Regional `ap-southeast-1` for ALB).  
-- *Application Load Balancer (ALB) & NAT Gateway*: Handles TLS termination in the `Public Subnet` and provides secure outbound internet access for `Private App Subnet 1 & 2`.  
-- *Amazon EC2 (Auto Scaling Group) & Amazon EFS*: Hosts the containerized application (`PORT=8000`) with auto-scaling capacity, **Amazon EFS** shared storage for `/uploads`, and local EBS storage for the read-only ChromaDB index (364 documents).  
-- *Amazon RDS for PostgreSQL (Multi-AZ)*: Fully managed relational database isolated in `Private Database Subnet 1 & 2` (`SQL :5432`) with synchronous Primary/Standby replication and automatic failover, storing user, document, prescription, notification, intake, and appointment records.  
-- *Amazon ElastiCache for Redis (optional Multi-AZ scale-out)*: Stores shared OTP and rate-limiting state across EC2 instances in the Auto Scaling Group (alternatively backed by RDS PostgreSQL in cost-saving mode).  
-- *Amazon S3, S3 Gateway Endpoint & Amazon ECR*: Stores encrypted backups/archives of medical uploads and RAG snapshots via a private **S3 Gateway Endpoint**, plus private Docker container images in ECR.  
-- *AWS Secrets Manager, CloudWatch, AWS IAM, Cost Explorer & AWS Budgets*: Centralizes runtime API secrets, collects PII-redacted application logs/metrics/alarms, enforces least-privilege access via an `EC2 IAM Role`, and monitors cost alerts.  
+- **Frontline Overload:** Patients arrive without structured symptom history, extending intake times at clinics.
+- **Unverified Online Search Risks:** Scattered health advice leads to missed red-flag emergencies or unsafe self-medication.
+- **Prescription Misinterpretation:** Abbreviated prescriptions frequently cause dosing errors or missed doses among older and chronic-care patients.
+- **Fragmented Patient Experience:** Symptom lookup, therapeutic nutrition, and clinic booking remain siloed across separate apps.
 
-*Component Design*  
-- *Edge & Security Layer*: Route 53, WAF, CloudFront, and ALB filter malicious traffic and enforce end-to-end HTTPS encryption.  
-- *Application & AI Layer (`Private App Subnet`)*: Python backend (`app.py` / `core/main_fastapi.py`) orchestrating Double Guardrails, Hybrid RAG (BM25 + ChromaDB + BGE Reranker), multimodal OCR cross-checking, in-app notification bell (`/api/notifications`) for appointments and medication reminders, deterministic nutrition rule filtering (12 clinical contexts, 12 allergen groups, 10 avoidance rules), and Circuit Breaker fallbacks.  
-- *Data & Storage Layer (`Private Database Subnet` & Storage)*: RDS PostgreSQL (Primary & Standby) manages seven core tables (`users`, `medical_documents`, `prescription_history`, `clinical_consultations`, `intake_sessions`, `medical_appointments`, `user_notifications`); **shared Redis** (Amazon ElastiCache `cache.t4g.micro` or PostgreSQL-backed fallback) handles OTP and rate-limiting state across multi-EC2 deployments; **Amazon EFS** shares `/uploads`; **local EBS** holds read-only ChromaDB indices; **Amazon S3** retains long-term backups.  
-- *External Integrations*: Google OAuth 2.0 login, 6-digit OTP and appointment confirmation emails via Gmail SMTP / SpeedSMS, multi-key AI inference via **Groq Dual-Key Failover**, and interactive facility mapping across 2,144 clinics via **Leaflet / OpenStreetMap** (with optional Google Maps Platform API support).  
+## 2.3. Objectives & Scope
 
-### 4. Technical Implementation  
-*Implementation Phases*  
-The project was executed from clinical core engineering to AWS cloud deployment across four phases:  
-1. *Research & Architecture Design*: Standardized medical datasets, designed the AWS 3-Subnet Multi-AZ VPC architecture, 7-table PostgreSQL schema, and REST API specifications (Weeks 1–2).  
-2. *Clinical Core & RAG Development*: Built Double Guardrails with negation handling, indexed 364 medical documents in Hybrid RAG, and engineered the multimodal OCR cross-verification pipeline (Weeks 3–6).  
-3. *Feature Expansion & Web SPA*: Integrated **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)** with BMR/TDEE surveys, 2,144 healthcare facilities, appointment booking, in-app notifications, OAuth/OTP authentication, and the Web SPA (Weeks 7–8).  
-4. *Containerization, AWS Deployment & Verification*: Packaged Docker images to Amazon ECR, provisioned EC2 (Auto Scaling Group) + EFS + RDS (Multi-AZ) + ALB + WAF + Secrets Manager, and validated 95 automated test files against quality checks (Weeks 9–12).  
+Designed to balance clinical safety for end users with AWS Well-Architected best practices under an internship-friendly budget.
 
-*Technical Requirements*  
-- *Backend & AI Pipeline*: Python (`Flask` / `FastAPI` gateway, `SQLAlchemy`), `ChromaDB`, in-house Python BM25, `BAAI/bge-reranker-v2-m3`, optional local `EasyOCR`, `Redis` (OTP/RateLimit), and multi-key **Groq Dual-Key** integration (`GROQ_API_KEY`, `GROQ_API_KEY_2`, `GROQ_CHAT_API_KEY`, `GROQ_OCR_API_KEY`, `GROQ_NUTRITION_API_KEY`) protected by Circuit Breaker and HTTP 429 Retry policies.  
-- *File & Data Hardening*: Magic-byte binary validation, anti-Decompression/Zip Bomb limits (images ≤ 25 MP, PDFs ≤ 30 pages, DOCX compression ratio < 50x), CSRF protection, and automated PII redaction in logs.  
-- *AWS Infrastructure*: VPC `10.0.0.0/16` in `ap-southeast-1`, strict Security Group chaining across ALB (`443`), EC2 (`8000`), and RDS (`5432`), and runtime secret injection via AWS Secrets Manager and EC2 IAM Role.  
+### Core Objectives
 
-### 5. Roadmap & Milestones  
-- *Pre-Internship (Month 0)*: Assessed frontline hospital triage bottlenecks and curated 364 clinical documents from *MedlinePlus NIH* (paired with triage reference guidelines from *Vietnam Ministry of Health – kcb.vn*), **2,500 Vietnamese recipes (*Mon Ngon Moi Ngay*)**, and 2,144 medical facilities.  
-- *Internship (Months 1–3 / 12 Weeks)*:  
-  - Month 1 (Weeks 1–4): Designed the AWS 3-Subnet VPC architecture, core Clinical Triage engine, Double Guardrails, and relational database schema.  
-  - Month 2 (Weeks 5–8): Completed Hybrid RAG, multimodal OCR verification pipeline, Clinical Nutrition Studio (BMR/TDEE + multi-condition filtering), facility booking, in-app notifications, and Web SPA interface.  
-  - Month 3 (Weeks 9–12): Pushed Docker images to Amazon ECR, deployed on EC2 + EFS + RDS (Multi-AZ) + ALB + WAF, executed 95 automated test files (`pytest`), and prepared the Workshop Live Demo.  
-- *Post-Deployment*: Expand interoperability with HL7 FHIR health record standards and pilot deployment in satellite outpatient clinics.  
+- Reliably detect emergency red flags (115) and enforce safe AI outputs.
+- Deploy a live, HTTPS-secured, scalable AWS web platform.
+- Protect user health data via private subnets, encryption, and zero hardcoded secrets.
+- Keep demo cloud spend controlled under a hard $20 AWS Budgets alert.
 
-### 6. Budget Estimation  
-Costs were estimated using AWS On-Demand pricing in the **Singapore (`ap-southeast-1`)** region across two scenarios: **Dev/PoC Workshop** (Single-AZ leveraging AWS Free Tier / Free Tier Credits with on-demand ALB/NAT demo hours torn down afterward) and **Multi-AZ Production** (matching the Section 3 architecture for 10,000 monthly active users running 24/7).  
+### Project Scope
 
-*Infrastructure Costs (Dev / PoC Workshop Environment)*  
-- Amazon EC2 (`t3.micro` / `t3.small`, port 8000): 0.00 – 3.17 USD/month (`t3.micro` covered by 750 hours/month Free Tier with swap/local reranker disabled; `t3.small` 2 GB RAM ~120 demo hours at ~0.0264 USD/hour).  
-- Amazon EFS / EBS (`/uploads` & `medical_vectordb` ~43 MB within 5 GB EFS Free Tier / Free Tier Credits and 30 GB EBS Free Tier): 0.00 USD/month.  
-- Amazon RDS for PostgreSQL (`db.t4g.micro` Single-AZ, port 5432): 0.00 USD/month (covered by 750 hours + 20 GB Free Tier for the first 12 months).  
-- Application Load Balancer & 1 NAT Gateway (~40 demo/testing hours): ~3.97 USD/month (3.37 USD hourly ALB + NAT GW charges plus ~0.60 USD for 3 Public IPv4 addresses on ALB/NAT, as the 750 free IPv4 hours apply to EC2 only).  
-- Amazon S3 (`Backup / Archive` ~2 GB), S3 Gateway Endpoint & Amazon ECR: ~0.00 – 0.15 USD/month (500 MB/month private ECR Free Tier for 12 months; ~0.05–0.15 USD/month if the container image exceeds 1–2 GB).  
-- AWS Secrets Manager (3 secret groups): 1.20 USD/month (0.40 USD/secret).  
-- Amazon CloudFront (15 GB), ACM (TLS 1.3), CloudWatch, AWS IAM, Cost Explorer & AWS Budgets: 0.00 USD/month (Always-Free / Free Tier).  
-- Amazon Route 53 (1 Hosted Zone + 50,000 queries): 0.52 USD/month.  
-- AWS WAF (1 Web ACL + 3 Managed Rules, full month): 8.00 USD/month (5.00 USD Web ACL + 1.00 USD × 3 rule groups; ~0.44 USD if enabled only for 40 demo hours).  
-- External AI & Auth Services (Groq API Dual-Key Free Tier, Gmail SMTP, Google OAuth, Leaflet/OpenStreetMap & optional Google Maps Platform within free tier): 0.00 USD/month.  
+- **In Scope:** Full 5-module bilingual (VI/EN) web app, Google OAuth / OTP sign-in, Multi-AZ AWS infrastructure, and step-by-step Workshop documentation.
+- **Out of Scope:** Does not replace licensed medical diagnosis or prescriptions; direct hospital HIS / HL7 FHIR integration is deferred to future phases.
 
-*Total (Dev / PoC Workshop)*: **~16.86 USD/month** (~202.32 USD/12 months; delete/stop ALB & NAT Gateway after demos to avoid ~72 USD/month 24/7 baseline charges).  
+## 2.4. Preliminary AWS Solution Architecture
 
-*Multi-AZ Production Scaling Estimate (10,000 users / 25,000 consultations / 8,000 OCR scans per month, 24/7 — aligned with Section 3 diagram)*  
-- 2 × Amazon EC2 (`t3.small` in Auto Scaling Group, `2 × 0.0264 USD/hr × 730h`): ~38.54 USD/month.  
-- Amazon EFS Standard (~5 GB for `/uploads`) & 2 × root EBS (`gp3` 20 GB for read-only `medical_vectordb`): ~5.64 USD/month.  
-- Amazon RDS for PostgreSQL Multi-AZ (`db.t4g.micro` Primary + Standby ~0.050 USD/hr + 20 GB `gp3` Multi-AZ): ~41.10 USD/month.  
-- 1 × ALB + 2 × NAT Gateways (24/7) + 4 Public IPv4 addresses (14.60 USD) + LCU/Data Processing (~20 GB): ~122.32 USD/month.  
-- Amazon ElastiCache Redis (`cache.t4g.micro` — optional addition beyond the base diagram for shared OTP/rate-limit state across 2 EC2s): ~12.50 USD/month *(or 0.00 USD if OTP/rate-limit state is stored on RDS PostgreSQL)*.  
-- AWS WAF (~8.60 USD) + Secrets Manager (1.20 USD) + Route 53 (~0.70 USD) + S3/ECR/CloudWatch (~2.85 USD) + CloudFront (< 1 TB Always-Free): ~13.35 USD/month.  
-- *Total Multi-AZ Production AWS Infrastructure*: **~233.45 USD/month** (with ElastiCache Redis; or **~220.95 USD/month** using RDS-backed state), equivalent to **~0.0088 – 0.0093 USD per consultation session** (excludes Groq pay-as-you-go API upgrades if high traffic exceeds free-tier rate limits).  
+Built on a 3-tier isolated VPC (Public – Private App – Private DB) spanning two Availability Zones in Singapore (ap-southeast-1):
 
-### 7. Risk Assessment  
-*Risk Matrix*  
-- Missed emergency red flags or negation traps (*"no shortness of breath"*): High impact, medium probability.  
-- OCR misinterpretation on blurry or glaring handwritten prescriptions or HTTP 429 rate limits: High impact, medium probability.  
-- Malicious file uploads (Decompression/Zip Bombs) or unauthorized record access (IDOR): High impact, low probability.  
-- External AI provider outages (Groq API) or budget overruns: Medium impact, low probability.  
+![MediMind Clinical AI AWS Architecture Diagram](/images/2-Proposal/medimind-aws-architecture.png)
 
-*Mitigation Strategies*  
-- Clinical & Negation Safety: Double Guardrails (`core/triage.py`) pair deterministic emergency keyword pre-checks (supporting unaccented Vietnamese and negation phrases) with LLM response post-checks to trigger Emergency 115 guidance on red flags and block unauthorized antibiotic prescriptions.  
-- Prescription OCR Verification & Reminders: Vision LLM execution (with optional local EasyOCR branch), HTTP 429 retry/Dual-Key Failover, automated `needs_review=True` flagging on field or schedule/quantity mismatches, mandatory *Human-in-the-Loop* user confirmation before saving medication schedules, and server-backed in-app reminder notifications.  
-- Security & Cost Control: Strict Private Subnet isolation for EC2 and RDS, magic-byte & size validation (`core/storage_service.py`), PII log redaction, and **AWS Budgets** alerts set at a 20 USD threshold.  
+### Overview of the 4 Core Layers
 
-*Contingency Plan*  
-- Trigger the **Circuit Breaker** (`core/circuit_breaker.py`) after 5 consecutive external API failures to fail over seamlessly to the local **Fallback Clinical Engine** and deterministic nutrition filtering without UI downtime.  
-- Rapidly restore ChromaDB indices and relational records from encrypted **Amazon S3** backups and automated **Amazon RDS** snapshots.  
+- **Edge & Security:** Amazon CloudFront delivers global HTTPS protected by AWS WAF (OWASP/SQLi/Rate Limit); Route 53 & ACM are planned for custom domain production.
+- **Application Tier (Multi-AZ):** Application Load Balancer distributes traffic to Private EC2 instances (Dual-AZ Auto Scaling Group, no Public IP) backed by shared Amazon EFS and Amazon ECR.
+- **Data & Secrets Tier:** Amazon RDS for PostgreSQL isolated in Private DB Subnets; Amazon S3 (via S3 Gateway Endpoint) for backups; AWS Secrets Manager for credentials and API keys.
+- **AI & Operations:** Outbound NAT Gateways reach Groq API (4-Key Pool Failover), Google OAuth, Gmail SMTP, and Google Maps; Amazon CloudWatch & AWS Budgets handle monitoring and cost control.
 
-### 8. Expected Results  
-*Technical Improvements*  
-Deliver a production-ready multimodal clinical AI platform backed by **95 automated test files (`pytest`)** covering symptom triage (negation handling and emergency red flags), multimodal prescription OCR verification (Vision LLM with optional local EasyOCR branch), Hybrid RAG retrieval across 364 standardized clinical documents, deterministic allergy/condition nutrition filtering, and appointment scheduling with medication reminders plus Circuit Breaker failover during external AI outages.  
+## 2.5. Implementation Plan & Timeline (12 Weeks)
 
-*Long-Term Value*  
-Establish a secure, low-cost AWS reference architecture (**~0.0041 USD (~105 VND) per consultation session** at 10,000-user scale) that can be reused and scaled across outpatient clinics and primary healthcare facilities to reduce triage congestion and improve medication safety.
+Executed across four sequential milestones from architecture design to live AWS validation:
+
+| Phase | Timeline | Key Focus |
+| --- | --- | --- |
+| 1. Discovery & Design | Weeks 1 – 3 | Problem scoping, 3-tier AWS architecture design, and curating medical, nutrition, and facility datasets. |
+| 2. AI Core & OCR | Weeks 4 – 6 | Build clinical safety guardrails, citation-backed RAG retrieval, and prescription OCR pipeline. |
+| 3. Web App & Security | Weeks 7 – 9 | Complete Nutrition, Map/Booking modules, Google OAuth/OTP authentication, and automated testing. |
+| 4. AWS Deploy & Demo | Weeks 10 – 12 | Deploy Multi-AZ AWS stack, configure monitoring/budgets, finalize Workshop docs, and run live demo. |
+
+## 2.6. Budget & AWS Cost Estimation (ap-southeast-1)
+
+Transparent Singapore On-Demand estimation (ap-southeast-1), separating hands-on Workshop demo spend from 24/7 Multi-AZ Production:
+
+- **Workshop Demo (~40h):** ~$16.86 / mo — Actual Nov spend through Nov 27 is $11.57 (under $20 Budget).
+- **Live Stack (24/7):** $207.28 / mo — 2 EC2 + 2 NAT GW + Single-AZ RDS + EFS + WAF + CloudWatch.
+- **Full Multi-AZ (Calculator):** $228.76 / mo — Includes Multi-AZ RDS Standby ($2,745.12 / yr · $0 upfront).
+
+| Core Service Group | Demo (~40h) | Full Multi-AZ (24/7) |
+| --- | --- | --- |
+| Compute & Storage (2 EC2 t3.small, 30 GB EBS) | $0.00 – $3.17 | $43.69 |
+| Database (RDS PostgreSQL Multi-AZ 20 GB) | $0.00 | $42.24 |
+| Networking (1 ALB, 2 NAT GW, 4 IPv4) | $3.97 | $127.23 |
+| Security & Edge (us-east-1 WAF, Secrets, Route 53, S3, ECR) | ~$9.72 | $12.30 |
+| Shared Storage & Ops (5 GB EFS, CloudWatch, CodeBuild) | $0.00 | $3.30 |
+| Free Tier (CloudFront Free Plan, ASG, S3 Endpoint, ACM, Budgets, Groq) | $0.00 | $0.00 |
+| **Estimated Monthly Total** | **~$16.86 / month** | **$228.76 / month** |
+
+- **Custom Domain Note (Route 53 & ACM):** Budgeted at $0.90/month for a production domain; the live Workshop uses CloudFront's built-in HTTPS domain to save domain purchase costs. [Open AWS Pricing Calculator](https://calculator.aws/#/estimate?id=ec26a26022ee93e0eb9785a0048f4dca71eb6fb3) | [Official PDF](/docs/medimind-aws-pricing-calculator.pdf)
+
+![Official AWS Pricing Calculator estimate (13 services · $228.76/month · $2,745.12/12 months) — Click to zoom](/images/2-Proposal/aws-pricing-calculator.png)
+*Official AWS Pricing Calculator estimate (13 services · $228.76/month · $2,745.12/12 months) — Click to zoom*
+
+## 2.7. Risk Management & Mitigation
+
+Key clinical, operational, security, and cost risks addressed proactively in the design:
+
+| Key Risk | Impact | Proposed Mitigation |
+| --- | --- | --- |
+| Inaccurate AI advice or missed emergency symptoms | High | Apply pre/post clinical safety guardrails, prioritize 115 emergency alerts, and ground answers in curated medical sources. |
+| Blurry prescription photos or API rate limits (HTTP 429) | Medium | Use 4-key Groq API failover with automatic retries and mandatory user review before saving medications. |
+| Health data exposure or leaked credentials | High | Isolate EC2 & RDS in Private Subnets, enforce Least-Privilege IAM Roles + Secrets Manager, and mask PII. |
+| Single-AZ outage or unexpected cloud billing | Medium | Deploy Dual-AZ EC2 ASG & NAT Gateways, CloudWatch Alarms, and a $20 AWS Budgets threshold alert. |
