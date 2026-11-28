@@ -26,7 +26,18 @@ Tổng hợp minh chứng vận hành thực tế của **MediMind Clinical AI**
 
 ## 5.7.2 — Video Demo Trực tiếp Sản phẩm & Hạ tầng AWS Multi-AZ (YouTube)
 
-- **Xem trực tiếp trên YouTube:** https://www.youtube.com/watch?v=kbFEEDeEY2I
+Video dưới đây trình diễn toàn bộ luồng vận hành trực tiếp trên `https://d2typ9pphzk4as.cloudfront.net` kèm phần đối chiếu trực quan các tài nguyên AWS đang chạy thật trong Region `ap-southeast-1` (Singapore) và lớp biên `us-east-1`.
+
+<div style="margin: 1rem 0 1.25rem; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; background: #fff;">
+  <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #0f172a;">
+    <iframe src="https://www.youtube.com/embed/kbFEEDeEY2I" title="MediMind Clinical AI — Live Demo trên AWS Multi-AZ" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; background: #f8fafc; border-top: 1px solid #e2e8f0; flex-wrap: wrap;">
+    <span style="font-size: 0.92rem; color: #334155;">MediMind Clinical AI — Live Demo trên AWS Multi-AZ</span>
+    <a href="https://www.youtube.com/watch?v=kbFEEDeEY2I" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 6px 12px; background: #0f172a; color: #ffffff; border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-decoration: none;">Mở trên YouTube ↗</a>
+  </div>
+</div>
+
 - **Xác thực & Quản trị Hồ sơ:** Đăng nhập Google OAuth 2.0, đăng ký xác thực Email OTP 6 số, Onboarding hồ sơ sức khỏe lần đầu, đổi mật khẩu và kiểm chứng chặn sai mật khẩu.
 - **Sàng lọc Lâm sàng & Hybrid RAG:** Khung chat nổi đồng bộ trực tiếp sang tab Trợ lý sức khỏe, từ chối câu hỏi ngoài phạm vi y tế và kích hoạt thẻ cảnh báo Cờ Đỏ khẩn cấp (*Double Guardrails*).
 - **OCR Đối soát Đơn thuốc & Dinh dưỡng:** Tải ảnh đơn thuốc để Vision LLM bóc tách hoạt chất/liều dùng, tạo lịch nhắc uống thuốc; lập thực đơn dinh dưỡng theo Món lẻ / Combo mâm cơm kèm công thức nấu.

@@ -26,7 +26,18 @@ Consolidated live production evidence for **MediMind Clinical AI** running on AW
 
 ## 5.7.2 — End-to-End Live Demo Video & AWS Multi-AZ Walkthrough (YouTube)
 
-- **Watch on YouTube:** https://www.youtube.com/watch?v=kbFEEDeEY2I
+This video demonstrates the full live user journey on `https://d2typ9pphzk4as.cloudfront.net` alongside live AWS Console verification across `ap-southeast-1` (Singapore) and the global edge tier (`us-east-1`).
+
+<div style="margin: 1rem 0 1.25rem; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; background: #fff;">
+  <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #0f172a;">
+    <iframe src="https://www.youtube.com/embed/kbFEEDeEY2I" title="MediMind Clinical AI — Live Demo on AWS Multi-AZ" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; background: #f8fafc; border-top: 1px solid #e2e8f0; flex-wrap: wrap;">
+    <span style="font-size: 0.92rem; color: #334155;">MediMind Clinical AI — Live Demo on AWS Multi-AZ</span>
+    <a href="https://www.youtube.com/watch?v=kbFEEDeEY2I" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 6px 12px; background: #0f172a; color: #ffffff; border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-decoration: none;">Open on YouTube ↗</a>
+  </div>
+</div>
+
 - **Authentication & Profile:** Google OAuth 2.0 sign-in, 6-digit Email OTP registration, first-login health onboarding, password change, and invalid-password rejection.
 - **Clinical Triage & Hybrid RAG:** Floating chat syncing seamlessly to the Health Assistant tab, off-topic non-medical refusal, and urgent Red-Flag alert banner (*Double Guardrails*).
 - **Prescription OCR & Nutrition:** Uploading a prescription image for Vision LLM extraction/reconciliation and medication reminders; generating single-dish and full meal-combo nutrition plans with cooking recipes.
