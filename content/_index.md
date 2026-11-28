@@ -1,6 +1,6 @@
 ---
 title: "Internship Report"
-date: 2024-01-01
+date: 2026-11-28
 weight: 1
 chapter: false
 ---
@@ -27,7 +27,7 @@ chapter: false
 
 &emsp; **Internship Duration:** From 14/09/2026 to 28/11/2026
 
-![Your profile picture](/images/nguyen-thanh-khiem.jpg)
+![Profile picture of Nguyễn Thành Khiêm](/images/nguyen-thanh-khiem.jpg)
 
 ### Report Content
 

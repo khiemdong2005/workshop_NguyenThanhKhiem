@@ -11,9 +11,10 @@ pre: " <b> 5. </b> "
 Step-by-step hands-on guide to deploying **MediMind Clinical AI** on a **3-tier AWS VPC (`10.0.0.0/16`)** in **`ap-southeast-1` (Singapore)**.
 
 - **Live HTTPS Application:** https://d2typ9pphzk4as.cloudfront.net
-- **Source Repository (`main`):** https://github.com/khiemdong2005/chatbot_medical
+- **Live Demo Video (YouTube):** https://www.youtube.com/watch?v=kbFEEDeEY2I
+- **Source Repository (`main`):** https://github.com/MediMind-Clinical-AI/chatbot_medical
 
-## Workshop Roadmap (6 Chapters)
+## Workshop Roadmap (7 Chapters — FCAJ Standard)
 
 | Chapter | Scope | Status |
 | :--- | :--- | :---: |
@@ -23,3 +24,4 @@ Step-by-step hands-on guide to deploying **MediMind Clinical AI** on a **3-tier 
 | **5.4** | [Containerization, EFS & Dual-AZ Auto Scaling (9 steps: ECR → 2/2 Healthy)](5.4-Deploy-MediMind/) | ✅ Completed |
 | **5.5** | [CloudWatch Operations, Cost Governance & Live Validation (5 steps)](5.5-Operations/) | ✅ Completed |
 | **5.6** | [Clean up AWS Resources (Runbook ready, deferred until after live defense)](5.6-Cleanup/) | ⏳ Pending |
+| **5.7** | [Live Product Proof (Production HTTPS & YouTube Demo Video)](5.7-Live-Demo/) | ✅ Completed |
