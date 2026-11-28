@@ -1,6 +1,6 @@
 ---
 title: "Worklog"
-date: 2024-01-01
+date: 2026-09-14
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
@@ -8,7 +8,7 @@ pre: " <b> 1. </b> "
 
 This worklog covers the First Cloud AI Journey internship period from 14 September to 28 November 2026. I recorded my objectives, daily tasks, and results by week. I started with AWS fundamentals and hands-on labs, then used what I learned to draft an AI project proposal and develop a healthcare application.
 
-The worklog has 12 weekly sections. Weeks 1–10 document my activities. Weeks 11–12 still contain sample entries and are pending updates.
+## Weekly entries
 
 **Week 1** — [Learned AWS fundamentals and practiced IAM, MFA, and AWS Budgets](1.1-week1/)
 
@@ -30,6 +30,4 @@ The worklog has 12 weekly sections. Weeks 1–10 document my activities. Weeks 1
 
 **Week 10** — [Updated OCR, meal recommendations, OTP, and appointment booking](1.10-week10/)
 
-**Week 11** — [Pending update](1.11-week11/)
-
-**Week 12** — [Pending update](1.12-week12/)
+**Week 11** — [Refined OCR and Nutrition, deployed to AWS, and completed the project documentation](1.11-week11/)

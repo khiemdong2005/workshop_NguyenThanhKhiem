@@ -3,32 +3,34 @@ title: "Week 10 Worklog"
 date: 2026-11-16
 weight: 10
 chapter: false
-pre: "<b>1.10.</b>"
+pre: "<b>1.10.</b> "
 ---
 
-**Period** — November 16–21, 2026.
+### Week 10 Objectives:
 
-## Objectives
+- Switch chatbot text tasks from Gemini to Groq and explore OpenRouter and Amazon Bedrock.
+- Rework prescription OCR so the vision model can process both the full prescription and a readable crop.
+- Integrate registration OTP delivery through Gmail SMTP and SpeedSMS.
+- Complete the healthcare facilities map and carry the pre-visit summary into appointment booking.
+- Refine the meal recommendation filter and improve offline testing in CI.
 
-Building on Week 9, this week focused on OCR, meal recommendations, and the healthcare facility map, alongside OTP fixes and pre-visit summaries in the booking workflow.
+### Tasks to be carried out this week:
 
-## Daily work
-
-| Day | Work completed | Start date | Completion date | References |
+| Day | Task | Start Date | Completion Date | Reference Material |
 | --- | --- | --- | --- | --- |
-| Monday | - **Model invocation for chat.** Reviewed `Converse` for structured `messages`, `ConverseStream` for incremental responses, and `InvokeModel` for model-specific input formats. Integration checks include the `modelId`, AWS Region, IAM permissions, and supported input modalities. | 16/11/2026 | 16/11/2026 | [Bedrock Runtime API](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html) |
-| Tuesday | - Fixed an account-status error in OTP registration, updated Gmail SMTP code delivery and switched SMS configuration to SpeedSMS.<br>- Added `pytest-cov` to the test dependencies.<br>- Added OpenRouter models to the AI provider configuration (`015ffc0`). | 17/11/2026 | 17/11/2026 | `8b4fd5a`, `015ffc0`, `a76d732` |
-| Wednesday | - Updated the OCR flow to send both the full prescription and a readable crop to the vision model.<br>- The full image preserves layout context, while the crop supports reading drug names and strengths.<br>- **Inference pricing.** For token-priced text models, look up separate input and output rates for the selected model, Region, and usage mode. RAG requests may include conversation history and retrieved passages in the input. For OCR, check how the chosen model prices image inputs. | 18/11/2026 | 18/11/2026 | `d239a92` · [Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
-| Thursday | - Adjusted three-dish meal sets, separated standalone savory dishes from desserts, and refined gout and fat filters.<br>- Fixed a Banitase OCR case and added cleanup for temporary crops.<br>- Added a default model for the nutrition flow as a fallback configuration in CI (`fd6b991`). | 19/11/2026 | 19/11/2026 | `8a4cd9d`, `03bd37a` |
-| Friday | - Split routes out of `app.py` into five feature modules while preserving existing URLs and endpoint names.<br>- Added Groq for text tasks and kept a separate vision configuration for OCR.<br>- Moved My Appointments into the healthcare facilities view and added accessible labels to the booking form fields (`14abf71`, `731e869`).<br>- **Project estimation.** For example, 1,000 calls averaging 1,200 input tokens and 300 output tokens would use 1.2 million input tokens and 300,000 output tokens. Multiply each usage figure by its corresponding rate and sum the two subtotals. If the design uses Knowledge Bases or Guardrails, estimate those features separately according to their pricing. These usage figures are illustrative. | 20/11/2026 | 20/11/2026 | `61bdac6`, `00c06b6`, `4b09a1b` · [Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
-| Saturday | - Updated the Content Security Policy to allow map resources from ArcGIS and the map tile CDN.<br>- Attended AWS Student Community Day and noted the main points on layered network security. | 21/11/2026 | 21/11/2026 | `3a5f359` · [Event 6 report](../../4-eventparticipated/4.6-event6/) |
+| 2 | <ul><li>Synced the OCR recapture screen and added date-of-birth and age extraction to the digitized prescription data.</li><li>Reviewed offline tests and aligned the FastAPI and Starlette versions in CI with the dependency lockfile.</li><li>Read the Amazon Bedrock Runtime documentation and compared three operations. Converse handles chat messages, ConverseStream streams responses, and InvokeModel accepts model-specific input formats.</li></ul> | 16/11/2026 | 16/11/2026 | [Project](https://github.com/khiemdong2005/chatbot_medical)<br>[Amazon Bedrock Runtime](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html) |
+| 3 | <ul><li>Integrated the team's registration OTP changes, including the account-status fix, Gmail SMTP code delivery, and the switch to SpeedSMS for SMS.</li><li>Synced the team's OpenRouter model configuration and the addition of pytest-cov to the test dependencies.</li><li>Adjusted the login interface and updated the rule that prevents duplicate ingredients in side dishes.</li><li>Reviewed the Google OAuth 2.0 redirect and callback flow, along with how the backend sends OTP codes through Gmail SMTP.</li></ul> | 17/11/2026 | 17/11/2026 | [Project](https://github.com/khiemdong2005/chatbot_medical) |
+| 4 | <ul><li>Reworked OCR image preparation to send both the full prescription and a readable crop to the vision model. The full image retains the layout, while the crop helps the model read medication names and strengths.</li><li>Reviewed Bedrock pricing and estimated chatbot tokens (including chat history and retrieved RAG passages) separately from prescription image inputs.</li></ul> | 18/11/2026 | 18/11/2026 | [Project](https://github.com/khiemdong2005/chatbot_medical)<br>[Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
+| 5 | <ul><li>Addressed a medication-name OCR error and added cleanup for temporary image crops after processing.</li><li>Adjusted three-dish meal sets, separated standalone savory dishes from desserts, and refined the nutrition filters.</li><li>Added a default model configuration for the nutrition workflow in offline CI tests.</li></ul> | 19/11/2026 | 19/11/2026 | [Project](https://github.com/khiemdong2005/chatbot_medical) |
+| 6 | <ul><li>Switched chatbot text tasks from Gemini to Groq in the integrated build. Kept a separate vision model configuration for prescription image processing.</li><li>Synced the team's refactor that moved Flask routes from app.py into five modules while preserving existing URLs and endpoint names.</li><li>Integrated booking into the healthcare facilities page, moved <strong>My Appointments</strong> into that view, added accessible form labels, and carried the pre-visit summary into the booking step.</li><li>Estimated token usage for 1,000 chatbot calls. Assuming 1,200 input and 300 output tokens per call, the totals are 1.2 million input and 300,000 output tokens.</li><li>Reviewed model selection criteria for the Groq API, including supported input types, rate limits, and configurations for text chat and image OCR.</li></ul> | 20/11/2026 | 20/11/2026 | [Project](https://github.com/khiemdong2005/chatbot_medical)<br>[Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
+| 7 | <ul><li>Finished the healthcare facilities map configuration by updating the Content Security Policy (CSP) to allow ArcGIS resources and map tiles from the CDN.</li><li>Added a fast response mode for informational questions.</li><li>Attended AWS Student Community Day and took notes on network segmentation, connectivity checks, and layered security.</li></ul> | 21/11/2026 | 21/11/2026 | [Project](https://github.com/khiemdong2005/chatbot_medical)<br>[Event 6 report](../../4-eventparticipated/4.6-event6/) |
 
-## Week 10 outcomes
+### Week 10 Achievements:
 
-- **Amazon Bedrock API and pricing.** Distinguished structured chat with `Converse`, streamed responses with `ConverseStream`, and model-specific invocation with `InvokeModel`. Identified the model ID, Region, IAM permissions, and supported inputs as integration checks. Worked through an illustrative estimate for 1,000 calls using separate input and output token rates. This was an API and pricing research exercise.
-- **OTP and testing.** Fixed the account-status error during OTP registration, updated Gmail SMTP delivery and SpeedSMS configuration, and added `pytest-cov` to the test dependencies.
-- **Prescription OCR.** Updated vision requests to include both a full image for layout context and a readable crop for drug names and strengths. Corrected the Banitase OCR case and added cleanup for temporary crops.
-- **Meal recommendations.** Adjusted three-dish meal sets, separated standalone savory dishes from desserts, and refined gout and fat filters. Added a default model configuration for the nutrition flow in CI.
-- **Backend and AI configuration.** Split routes out of `app.py` into five feature modules while preserving existing URLs and endpoint names. Added Groq for text tasks and kept a separate vision configuration for image OCR.
-- **Healthcare facilities and booking.** Moved My Appointments into the facilities view, labeled booking fields for accessibility, and updated the Content Security Policy to allow resources from ArcGIS and the map tile CDN.
-- **AWS Student Community Day.** Recorded lessons on network segmentation, limiting traffic to required connections, and checking connectivity after configuration changes. [Event 6 report](../../4-eventparticipated/4.6-event6/)
+- The chatbot uses Groq for text tasks, and OCR has a separate vision model configuration. Reviewed OpenRouter and Bedrock Runtime operations and prepared a sample token estimate.
+- The OCR workflow sends the full prescription with a readable crop, extracts date of birth and age, addresses a medication-name recognition error, and removes temporary crops.
+- Integrated registration OTP delivery through Gmail SMTP and SpeedSMS, including updated account-status handling during registration.
+- Completed the healthcare facilities map CSP configuration for ArcGIS and the CDN. Booking carries the pre-visit summary and includes My Appointments and accessible form labels.
+- Updated three-dish meal assembly, nutrition filtering rules, and the fallback configuration for offline tests.
+- Synced the team's five Flask route modules and pytest-cov dependency. Aligned FastAPI and Starlette in CI with the lockfile.
+- Recorded network segmentation and connectivity checks after AWS Student Community Day. [Event 6 report](../../4-eventparticipated/4.6-event6/)

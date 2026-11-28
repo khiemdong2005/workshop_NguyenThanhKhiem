@@ -99,6 +99,8 @@ Buổi meeting giúp tôi có thêm định hướng học tập, đồng thời
 
 ## Hình ảnh tham gia sự kiện
 
+![Check-in tham dự buổi FCAJ Mini Meeting ngày 24/10/2026 cùng các bạn trong nhóm](/images/4-EventParticipated/4.3-Event3/mini-meeting-checkin.jpg?v=2)
+
 ![Phần mở đầu Hear, Think, Speak của anh Kiệt Trần](/images/4-EventParticipated/4.3-Event3/hear-think-speak.png)
 
 ![Phần chia sẻ AWS Resource Access Manager của anh Long Huỳnh](/images/4-EventParticipated/4.3-Event3/aws-ram.png)

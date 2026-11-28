@@ -1,34 +1,36 @@
 ---
-title: "Worklog Tuần 9"
+title: "Nhật ký công việc tuần 9"
 date: 2026-11-09
 weight: 9
 chapter: false
-pre: " <b> 1.9. </b> "
+pre: "<b>1.9.</b> "
 ---
 
 ### Mục tiêu tuần 9:
 
-- Tìm hiểu cách chia một chức năng mới thành phần giao diện, API, xử lý nghiệp vụ và dữ liệu.
-- Thực hành kiểm tra dữ liệu đầu vào, xử lý trường hợp lỗi và hiển thị trạng thái phù hợp trên Front-end.
-- Tìm hiểu cách tổ chức kho tài liệu và đánh giá kết quả tìm kiếm trong phần Back-end.
-- Tìm hiểu cách Amazon Bedrock Evaluations tách việc đánh giá truy xuất tài liệu và đánh giá câu trả lời của hệ thống RAG.
-- Tiếp tục cải thiện giao diện cơ sở y tế và cách đồng bộ danh sách với bản đồ.
+- Chạy thử ứng dụng bằng Flask và Docker Compose, kiểm tra lỗi truy cập trên môi trường cục bộ.
+- Xây dựng mục Dinh dưỡng và dùng pytest để kiểm tra bộ lọc món ăn khi chọn nhiều bệnh nền.
+- Chuẩn hóa công thức từ ViFoodRec và Wikibooks bằng Python, xuất danh mục JSON và kiểm tra ảnh món ăn.
+- Đánh giá khả năng tìm tài liệu tiếng Anh trong ChromaDB từ câu hỏi tiếng Việt và kiểm tra câu trả lời của Gemini.
+- Rà soát luồng đọc đơn thuốc và cải thiện giao diện bản đồ Cơ sở y tế dùng Google Maps.
 
 ### Các công việc cần triển khai trong tuần này:
 
 | Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
 | --- | --- | --- | --- | --- |
-| 3 | - Phác thảo giao diện cho phần gợi ý món ăn và theo dõi thói quen.<br>- Tìm hiểu cách chia chức năng thành dữ liệu công thức, quy tắc xử lý ở Back-end, API và phần hiển thị ở Front-end.<br>- Kết nối giao diện với dữ liệu trả về, đồng thời kiểm tra một số trường hợp nhập thông tin chưa đầy đủ. | 10/11/2026 | 10/11/2026 | Dự án |
-| 4 | - Tổ chức lại dữ liệu công thức để có thể tìm kiếm và lọc theo yêu cầu.<br>- Viết các điều kiện xử lý trường hợp có nhiều yêu cầu cùng lúc hoặc cần tránh một thành phần.<br>- Tìm hiểu cách trả kết quả dự phòng từ dữ liệu có sẵn khi dịch vụ bên ngoài không phản hồi, thay vì để giao diện không có kết quả. | 11/11/2026 | 11/11/2026 | Dự án |
-| 5 | - Tìm hiểu cách kiểm tra chất lượng câu trả lời của hệ thống bằng bộ câu hỏi mẫu và nguồn tài liệu đi kèm.<br>- Xem lại các bước tìm kiếm tài liệu trong Back-end: nhận câu hỏi, tìm đoạn liên quan và chuyển kết quả cho phần tạo câu trả lời.<br>- Thử tìm tài liệu tiếng Anh bằng câu hỏi tiếng Việt và ghi nhận những trường hợp kết quả chưa sát nội dung hỏi.<br>- Đọc tài liệu Amazon Bedrock Evaluations để phân biệt đánh giá chỉ truy xuất tài liệu với đánh giá cả truy xuất và tạo câu trả lời; so sánh các tiêu chí này với bộ câu hỏi mẫu đang dùng. | 12/11/2026 | 12/11/2026 | Dự án; [AWS Bedrock RAG Evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-evaluation-metrics.html) |
-| 6 | - Kiểm tra lại giao diện cơ sở y tế ở chế độ sáng và tối.<br>- Chỉnh cách hiển thị danh sách, bản đồ và khung thông tin chi tiết khi người dùng chọn một địa điểm.<br>- Rà soát trạng thái giao diện để bản đồ và danh sách cùng hiển thị đúng cơ sở đang được chọn. | 13/11/2026 | 13/11/2026 | Dự án |
+| 2 | <ul><li>Khởi chạy bản web tuần trước bằng Flask trên môi trường local và kiểm tra khả năng truy cập qua trình duyệt. Máy chủ Flask báo đã khởi động, nhưng trình duyệt không tải được giao diện.</li><li>Thay đổi cổng lắng nghe của Flask và thử truy cập lại để kiểm tra khả năng xung đột cổng. Lỗi truy cập vẫn xảy ra trên cổng mới.</li></ul> | 09/11/2026 | 09/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical) |
+| 3 | <ul><li>Phương án ban đầu chưa triển khai được, nên tôi bổ sung ý tưởng Dinh dưỡng và đưa mục này lên giao diện thay cho màn hình hồ sơ cũ.</li><li>Dựng phần nhập bệnh nền, gợi ý món và theo dõi thói quen. Rà lại để bỏ các nút và phần hiển thị còn sót của màn hình cũ.</li></ul> | 10/11/2026 | 10/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical) |
+| 4 | <ul><li>Nhập bảng công thức ViFoodRec và dùng script Python để thu thập thêm dữ liệu từ Wikibooks. Lọc các dòng không phù hợp, tách nguyên liệu và cách nấu, rồi xuất dữ liệu JSON cho danh mục món.</li><li>Rà soát các ảnh món ăn hiển thị lỗi, thay thế tệp ảnh trong kho mã nguồn và cập nhật đường dẫn để giao diện tải ảnh từ thư mục tài nguyên tĩnh.</li><li>Điều chỉnh quy tắc lọc món ăn theo bệnh nền bằng Python và bổ sung ca kiểm thử bằng pytest để xác nhận bộ lọc áp dụng đồng thời các ràng buộc khi người dùng chọn nhiều bệnh nền.</li></ul> | 11/11/2026 | 11/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical) |
+| 5 | <ul><li>Rà mã nguồn và thử mở đơn thuốc ở màn hình điền sẵn thông tin. Ghi lại trường hợp hệ thống đọc sai tên thuốc để sửa tiếp.</li><li>Thử mở rộng câu hỏi tiếng Việt để tìm tài liệu tiếng Anh trong ChromaDB. Dùng bộ câu hỏi mẫu để so sánh kết quả và tham khảo cách Amazon Bedrock Evaluations tách phần tìm tài liệu khỏi phần trả lời.</li><li>Xử lý lỗi xác thực Gemini và chạy bộ đánh giá câu trả lời, sau đó đồng bộ trang Cơ sở y tế vào bản đang làm.</li></ul> | 12/11/2026 | 12/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical/commit/3361426ea733e4d1b9de3ac85419200c8c366670)<br>[AWS Bedrock RAG Evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-evaluation-metrics.html) |
+| 6 | <ul><li>Dùng Docker Compose để thử build và chạy ứng dụng. Bổ sung thời gian chờ, cách thử lại và phản hồi dự phòng khi dịch vụ ngoài gặp lỗi.</li><li>Chỉnh màu ở trang Cơ sở y tế, khôi phục Google Maps và sửa khung thông tin khi bấm chọn một địa điểm.</li><li>Rà lại giao diện, ghi các lỗi còn gặp ở cảnh báo, kết quả đọc đơn thuốc và phần hiển thị tóm tắt. Sắp xếp lại thư mục tài liệu trong repo.</li><li>Tìm hiểu cách đặt điểm cơ sở y tế theo tọa độ bằng Google Maps Platform API và giới hạn khóa API của trình duyệt theo tên miền.</li></ul> | 13/11/2026 | 13/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical) |
 
 ### Kết quả đạt được tuần 9:
 
-- Hiểu rõ hơn cách tổ chức một chức năng theo các lớp: giao diện, API, xử lý nghiệp vụ và dữ liệu. Cách chia này giúp xác định lỗi nằm ở phần nào khi kết quả hiển thị chưa đúng.
-- Thực hành kiểm tra dữ liệu đầu vào và chuẩn bị kết quả dự phòng khi một dịch vụ bên ngoài gặp lỗi.
-- Biết cách sắp xếp dữ liệu công thức và áp dụng các điều kiện lọc trước khi trả kết quả cho giao diện.
-- Bước đầu biết cách dùng câu hỏi mẫu để kiểm tra phần tìm kiếm tài liệu và đối chiếu nguồn đi kèm với câu trả lời.
-- Hiểu thêm cách tách hai câu hỏi khi đánh giá RAG: hệ thống có tìm đúng tài liệu không và câu trả lời có dựa đúng vào tài liệu đó không. Tôi chỉ tham khảo phương pháp trong Amazon Bedrock Evaluations, chưa chạy một evaluation job trên AWS.
-- Nhận thấy việc tìm tài liệu cho câu hỏi tiếng Việt cần được kiểm tra riêng khi kho tài liệu có nhiều nội dung tiếng Anh.
-- Cải thiện phần giao diện cơ sở y tế, nhất là cách đồng bộ danh sách kết quả, vị trí trên bản đồ và khung thông tin chi tiết.
+- Tái hiện được lỗi truy cập bản web cục bộ. Flask báo đã khởi động, nhưng trình duyệt vẫn không tải được trang sau khi đổi cổng.
+- Tích hợp mục Dinh dưỡng vào giao diện với phần nhập bệnh nền, gợi ý món ăn và theo dõi thói quen. Đã dọn các thành phần còn sót của màn hình Hồ sơ cũ.
+- Xuất danh mục công thức ViFoodRec và Wikibooks thành JSON, với nguyên liệu và cách nấu được tách riêng. Đã thay ảnh lỗi và cập nhật đường dẫn ảnh cục bộ.
+- Cập nhật quy tắc lọc món ăn bằng Python và bổ sung ca kiểm thử pytest cho trường hợp áp dụng đồng thời các ràng buộc của nhiều bệnh nền.
+- Có bộ câu hỏi mẫu và báo cáo so sánh kết quả truy xuất tài liệu tiếng Anh trong ChromaDB từ câu hỏi tiếng Việt. Đã xử lý lỗi xác thực Gemini và chạy bộ đánh giá câu trả lời.
+- Ghi nhận trường hợp đọc sai tên thuốc khi điền sẵn thông tin đơn thuốc, cùng các lỗi còn gặp ở phần hiển thị cảnh báo, kết quả đọc đơn và bản tóm tắt.
+- Chạy thử quy trình dựng và khởi động ứng dụng bằng Docker Compose. Bổ sung thời gian chờ, cơ chế thử lại và phản hồi dự phòng khi dịch vụ bên ngoài gặp lỗi.
+- Khôi phục Google Maps trên trang Cơ sở y tế, chỉnh màu và khung chi tiết khi chọn địa điểm. Đã sắp xếp lại thư mục tài liệu trong kho mã nguồn.

@@ -71,6 +71,8 @@ Chi phí phụ thuộc vào mô hình giám khảo, lượng token xử lý và 
 - [AWS – Evaluator prompts used in a RAG evaluation job](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-eval-prompt.html)
 - [AWS – Amazon Bedrock pricing](https://aws.amazon.com/bedrock/pricing/)
 
-## Ảnh bài đăng
+## Bài đăng & Ảnh minh họa
+
+- **Link bài đăng trên Facebook (AWS Study Group VN):** [Xem bài viết](https://www.facebook.com/share/p/1EVQch9qX5/)
 
 ![Bài đăng Amazon Bedrock Evaluations trên AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/bedrock-evaluations-post.png)

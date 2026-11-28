@@ -1,12 +1,12 @@
 ---
-title: Week 3 Worklog
+title: "Week 3 Worklog"
 date: 2026-09-28
 weight: 3
 chapter: false
-pre: "<b> 1.3. </b>"
+pre: "<b>1.3.</b> "
 ---
 
-## Week 3 Objectives:
+### Week 3 Objectives:
 
 - Become familiar with the learning environment and the First Cloud AI Journey community.
 - Connect with admins and other members in the community.
@@ -19,25 +19,22 @@ pre: "<b> 1.3. </b>"
 - Understand how Amazon S3 can be used to store datasets and models.
 - Learn the basic concept of allowing Amazon EC2 to access resources stored in Amazon S3.
 
-## Tasks to be carried out this week:
+### Tasks to be carried out this week:
 
 | Day | Task | Start Date | Completion Date | Reference Material |
-|---|---|---|---|---|
-| 2 | - Become familiar with the worklog format and project rules.<br>- Create a learning plan for the week.<br>- Learn **Amazon S3 Fundamentals**. | 09/28/2026 | 09/28/2026 |  https://cloudjourney.awsstudygroup.com/ |
-| 3 | - Participate in a cloud-related community activity.<br>- Connect and interact with members of the First Cloud AI Journey community. | 09/29/2026 | 09/29/2026 |  |
-| 4 | - Learn how to get started with **AWS CloudShell**.<br>- Practice an **Amazon S3 lab**. | 09/30/2026 | 09/30/2026 | https://cloudjourney.awsstudygroup.com/ |
-| 5 | - Learn the basic concepts of **Amazon Relational Database Service (Amazon RDS)**. | 10/01/2026 | 10/01/2026 | https://cloudjourney.awsstudygroup.com/ |
-| 6 | - Learn about deploying containers with **Amazon Lightsail Containers**. | 10/02/2026 | 10/02/2026 | https://cloudjourney.awsstudygroup.com/ |
+| --- | --- | --- | --- | --- |
+| 2 | <ul><li>Become familiar with the worklog format and project rules.</li><li>Create a learning plan for the week.</li><li>Learn **Amazon S3 Fundamentals**.</li></ul> | 28/09/2026 | 28/09/2026 | https://cloudjourney.awsfcaj.com/ |
+| 3 | <ul><li>Connect and interact with members of the First Cloud AI Journey community.</li></ul> | 29/09/2026 | 29/09/2026 |  |
+| 4 | <ul><li>Learn how to get started with **AWS CloudShell**.</li><li>Practice an **Amazon S3 lab**.</li><li>Reviewed how a VPC route table can direct traffic from private subnets to S3 through an S3 gateway endpoint without a NAT gateway.</li></ul> | 30/09/2026 | 30/09/2026 | https://cloudjourney.awsfcaj.com/ |
+| 5 | <ul><li>Learn the basic concepts of **Amazon Relational Database Service (Amazon RDS)**.</li><li>Compared Single-AZ and Multi-AZ options for Amazon RDS for PostgreSQL, focusing on the role of a standby and failover when the primary database becomes unavailable.</li></ul> | 01/10/2026 | 01/10/2026 | https://cloudjourney.awsfcaj.com/ |
+| 6 | <ul><li>Learn about deploying containers with **Amazon Lightsail Containers**.</li><li>Reviewed possible final project topics and noted what to clarify in the proposal.</li></ul> | 02/10/2026 | 02/10/2026 | https://cloudjourney.awsfcaj.com/ |
 
-## Week 3 Achievements:
+### Week 3 Achievements:
 
-- Became familiar with the worklog format and basic project rules.
-- Created a learning plan for the week.
-- Learned the fundamental concepts of Amazon S3.
-- Practiced using Amazon S3 through a hands-on lab.
-- Became familiar with AWS CloudShell.
-- Participated in community activities and interacted with members of the First Cloud AI Journey community.
-- Started exploring possible topics for the final project.
-- Learned the basic concepts of Amazon RDS.
-- Learned about Amazon Lightsail Containers and the basic concept of deploying containers on AWS.
-- Improved my understanding of several AWS services that can be used in future cloud and AI projects.
+- The S3 lab helped me understand how data is stored as objects on AWS.
+- I started looking at possible topics for the final project.
+- I got used to writing the worklog and made a study plan for the week.
+- I became familiar with AWS CloudShell as a starting point for working from the command line.
+- I learned where Amazon RDS fits in a system that needs a relational database.
+- I explored how Amazon Lightsail Containers supports deploying a containerized application.
+- I spoke with other members of the FCAJ community.

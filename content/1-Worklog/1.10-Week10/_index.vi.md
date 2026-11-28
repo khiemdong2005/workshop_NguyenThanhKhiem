@@ -3,32 +3,34 @@ title: "Nhật ký công việc tuần 10"
 date: 2026-11-16
 weight: 10
 chapter: false
-pre: "<b>1.10.</b>"
+pre: "<b>1.10.</b> "
 ---
 
-**Thời gian** — 16–21/11/2026.
+### Mục tiêu tuần 10:
 
-## Mục tiêu
+- Chuyển chatbot từ Gemini sang Groq cho tác vụ văn bản và khảo sát OpenRouter cùng Amazon Bedrock.
+- Làm lại luồng OCR đơn thuốc để mô hình thị giác xử lý ảnh toàn đơn và vùng chữ rõ.
+- Tích hợp OTP đăng ký qua Gmail SMTP và SpeedSMS.
+- Hoàn thiện bản đồ Cơ sở y tế và kết nối tóm tắt tiền khám với tính năng đặt lịch.
+- Cập nhật bộ lọc thực đơn và củng cố kiểm thử ngoại tuyến trên CI.
 
-Tiếp nối tuần 9, tuần này tập trung sửa các luồng OCR, gợi ý bữa ăn và bản đồ cơ sở y tế, đồng thời hoàn thiện xác thực OTP và tích hợp tóm tắt tiền khám vào quy trình đặt lịch.
-
-## Công việc theo ngày
+### Các công việc cần triển khai trong tuần này:
 
 | Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
 | --- | --- | --- | --- | --- |
-| Thứ Hai | - **Gọi mô hình cho chatbot.** Tìm hiểu `Converse` để gửi hội thoại theo cấu trúc `messages`, `ConverseStream` để nhận phản hồi từng phần và `InvokeModel` cho trường hợp cần định dạng đầu vào riêng của mô hình. Khi đánh giá phương án tích hợp, các thông tin cần kiểm tra gồm `modelId`, Region, quyền IAM và loại dữ liệu mà mô hình hỗ trợ. | 16/11/2026 | 16/11/2026 | [Bedrock Runtime API](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html) |
-| Thứ Ba | - Sửa lỗi đăng ký OTP liên quan đến trạng thái tài khoản, cập nhật luồng gửi mã qua Gmail SMTP và chuyển cấu hình SMS sang SpeedSMS.<br>- Thêm `pytest-cov` vào bộ phụ thuộc kiểm thử.<br>- Đưa các mô hình OpenRouter vào cấu hình dự phòng cho các tính năng AI (`015ffc0`). | 17/11/2026 | 17/11/2026 | `8b4fd5a`, `015ffc0`, `a76d732` |
-| Thứ Tư | - Cập nhật luồng OCR để mô hình thị giác nhận cả ảnh toàn đơn và vùng chữ rõ.<br>- Ảnh toàn đơn giữ ngữ cảnh bố cục, còn ảnh cắt hỗ trợ đọc tên thuốc và hàm lượng.<br>- **Đọc bảng giá suy luận.** Đối với mô hình văn bản tính tiền theo token, cần tra riêng đơn giá token đầu vào và đầu ra theo mô hình, Region và chế độ sử dụng. Với luồng RAG, đầu vào còn có thể gồm lịch sử hội thoại và các đoạn tài liệu truy xuất được. Với OCR, cần xem cách tính riêng cho ảnh của mô hình được chọn. | 18/11/2026 | 18/11/2026 | `d239a92` · [Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
-| Thứ Năm | - Chỉnh thực đơn ba món, tách món mặn dùng riêng khỏi món tráng miệng và cập nhật bộ lọc liên quan đến gout và chất béo.<br>- Sửa trường hợp OCR đọc sai Banitase và bổ sung dọn ảnh cắt tạm.<br>- Thêm mô hình mặc định cho luồng dinh dưỡng để môi trường CI có cấu hình dự phòng (`fd6b991`). | 19/11/2026 | 19/11/2026 | `8a4cd9d`, `03bd37a` |
-| Thứ Sáu | - Tách các route từ `app.py` thành năm mô-đun theo chức năng, giữ URL và tên endpoint hiện có.<br>- Tích hợp Groq cho tác vụ văn bản và giữ cấu hình mô hình thị giác riêng cho OCR.<br>- Đưa nút Lịch hẹn của tôi vào giao diện cơ sở y tế và thêm nhãn trợ năng cho các trường của biểu mẫu đặt lịch (`14abf71`, `731e869`).<br>- **Lập cách ước tính cho dự án.** Ví dụ, 1.000 lượt gọi với trung bình 1.200 token đầu vào và 300 token đầu ra tương ứng 1,2 triệu token đầu vào và 0,3 triệu token đầu ra. Nhân mỗi phần với đơn giá tương ứng rồi cộng lại để ước tính chi phí văn bản. Nếu dùng thêm Knowledge Bases hoặc Guardrails, cần dự toán riêng theo cách tính của từng tính năng. Các con số trên là giả định minh họa. | 20/11/2026 | 20/11/2026 | `61bdac6`, `00c06b6`, `4b09a1b` · [Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
-| Thứ Bảy | - Cập nhật chính sách CSP để bản đồ tải được tài nguyên từ ArcGIS và CDN bản đồ.<br>- Tham dự AWS Student Community Day và ghi lại các ý chính về bảo mật mạng nhiều lớp. | 21/11/2026 | 21/11/2026 | `3a5f359` · [Báo cáo Event 6](../../4-eventparticipated/4.6-event6/) |
+| 2 | <ul><li>Đồng bộ màn hình đo lại OCR, trích xuất ngày sinh và tuổi rồi đưa vào dữ liệu số hóa đơn thuốc.</li><li>Rà soát kiểm thử ngoại tuyến và đồng bộ phiên bản FastAPI, Starlette theo tệp khóa phụ thuộc trong CI.</li><li>Đọc tài liệu Amazon Bedrock Runtime và so sánh ba cách gọi mô hình. Converse nhận dữ liệu hội thoại, ConverseStream trả kết quả theo luồng và InvokeModel nhận định dạng đầu vào riêng của mô hình.</li></ul> | 16/11/2026 | 16/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical)<br>[Amazon Bedrock Runtime](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html) |
+| 3 | <ul><li>Tích hợp cập nhật OTP đăng ký từ nhánh nhóm, gồm sửa lỗi trạng thái tài khoản, gửi mã qua Gmail SMTP và chuyển cấu hình SMS sang SpeedSMS.</li><li>Đồng bộ cấu hình các mô hình OpenRouter và bổ sung pytest-cov vào bộ phụ thuộc kiểm thử từ các thay đổi của nhóm.</li><li>Chỉnh giao diện đăng nhập và cập nhật quy tắc tránh trùng nguyên liệu ở món phụ.</li><li>Tìm hiểu luồng Google OAuth 2.0, gồm bước chuyển sang Google và nhận phản hồi qua địa chỉ callback. Xem cách backend gửi mã OTP qua Gmail SMTP.</li></ul> | 17/11/2026 | 17/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical) |
+| 4 | <ul><li>Làm lại bước chuẩn bị ảnh OCR để gửi đồng thời ảnh toàn đơn và vùng chữ rõ cho mô hình thị giác. Ảnh toàn đơn giữ bố cục, ảnh cắt giúp đọc tên thuốc và hàm lượng.</li><li>Tham khảo cách tính chi phí Bedrock, tách token của chatbot (gồm lịch sử hội thoại và đoạn tài liệu RAG) khỏi chi phí xử lý ảnh đơn thuốc.</li></ul> | 18/11/2026 | 18/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical)<br>[Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
+| 5 | <ul><li>Hiệu chỉnh ca OCR đọc sai tên thuốc và bổ sung bước xóa ảnh cắt tạm sau khi xử lý.</li><li>Chỉnh cách ghép thực đơn ba món, tách món mặn dùng riêng khỏi món tráng miệng và cập nhật quy tắc lọc dinh dưỡng.</li><li>Thêm cấu hình mô hình mặc định cho luồng dinh dưỡng khi chạy kiểm thử ngoại tuyến trên CI.</li></ul> | 19/11/2026 | 19/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical) |
+| 6 | <ul><li>Chuyển tác vụ văn bản của chatbot từ Gemini sang Groq trên bản tích hợp của nhóm. Giữ cấu hình mô hình thị giác riêng cho luồng đọc ảnh đơn thuốc.</li><li>Đồng bộ thay đổi tách route Flask từ app.py thành năm mô-đun, giữ nguyên URL và tên endpoint hiện có.</li><li>Tích hợp luồng đặt lịch vào trang Cơ sở y tế, đưa nút <strong>Lịch hẹn của tôi</strong> vào giao diện, bổ sung nhãn trợ năng cho biểu mẫu và chuyển bản tóm tắt tiền khám sang bước đặt hẹn.</li><li>Tính thử lượng token cho 1.000 lượt gọi chatbot. Với giả định mỗi lượt dùng 1.200 token đầu vào và 300 token đầu ra, tổng lần lượt là 1,2 triệu và 300.000 token.</li><li>Tham khảo các tiêu chí chọn mô hình qua Groq API, gồm loại đầu vào hỗ trợ, giới hạn lượt gọi và cấu hình cho chatbot văn bản hoặc OCR ảnh.</li></ul> | 20/11/2026 | 20/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical)<br>[Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) |
+| 7 | <ul><li>Hoàn thiện cấu hình tải bản đồ Cơ sở y tế bằng cách cập nhật Content Security Policy (CSP) để cho phép nguồn tài nguyên ArcGIS và CDN ô bản đồ.</li><li>Bổ sung chế độ hỏi đáp nhanh cho các câu hỏi thông tin.</li><li>Tham dự AWS Student Community Day và ghi lại các nội dung về phân vùng mạng, kiểm tra kết nối và bảo mật nhiều lớp.</li></ul> | 21/11/2026 | 21/11/2026 | [Dự án](https://github.com/khiemdong2005/chatbot_medical)<br>[Báo cáo Event 6](../../4-eventparticipated/4.6-event6/) |
 
-## Kết quả đạt được tuần 10
+### Kết quả đạt được tuần 10:
 
-- **Amazon Bedrock API và chi phí.** Phân biệt cách gửi hội thoại với `Converse`, nhận phản hồi từng phần với `ConverseStream` và gọi mô hình theo định dạng riêng với `InvokeModel`. Xác định các thông tin cần kiểm tra khi tích hợp gồm mã mô hình, Region, quyền IAM và loại đầu vào. Lập ví dụ dự toán 1.000 lượt gọi từ đơn giá token đầu vào và đầu ra. Đây là kết quả khảo sát tài liệu và bảng giá.
-- **Xác thực OTP và kiểm thử.** Sửa lỗi trạng thái tài khoản khi đăng ký bằng OTP, cập nhật gửi mã qua Gmail SMTP và cấu hình SpeedSMS. Bổ sung `pytest-cov` vào bộ phụ thuộc kiểm thử.
-- **OCR đơn thuốc.** Cập nhật yêu cầu gửi cho mô hình thị giác để có cả ảnh toàn đơn và vùng chữ rõ. Ảnh toàn đơn giữ ngữ cảnh bố cục, còn ảnh cắt hỗ trợ đọc tên thuốc và hàm lượng. Sửa trường hợp đọc sai Banitase và dọn ảnh cắt tạm sau xử lý.
-- **Gợi ý bữa ăn.** Chỉnh cách tạo thực đơn ba món, phân biệt món mặn dùng riêng với món tráng miệng, cập nhật bộ lọc liên quan đến gout và chất béo. Bổ sung cấu hình mô hình mặc định cho luồng dinh dưỡng trong CI.
-- **Tổ chức backend và cấu hình AI.** Tách các route từ `app.py` thành năm mô-đun theo chức năng, giữ URL và tên endpoint hiện có. Thêm Groq cho tác vụ văn bản và dùng cấu hình mô hình thị giác riêng cho OCR ảnh.
-- **Cơ sở y tế và đặt lịch.** Đưa nút Lịch hẹn của tôi vào trang cơ sở y tế, thêm nhãn trợ năng cho các trường đặt lịch và cập nhật CSP để bản đồ tải được tài nguyên từ ArcGIS và CDN bản đồ.
-- **Bài học từ AWS Student Community Day.** Ghi lại cách phân vùng hệ thống, giới hạn luồng kết nối cần thiết và kiểm tra lại kết nối sau khi thay đổi cấu hình. [Báo cáo Event 6](../../4-eventparticipated/4.6-event6/)
+- Chatbot dùng Groq cho tác vụ văn bản và luồng OCR có cấu hình mô hình thị giác riêng. Đã khảo sát OpenRouter, các cách gọi Bedrock Runtime và lập ví dụ ước tính token.
+- Luồng OCR gửi được ảnh toàn đơn cùng vùng chữ rõ, trích xuất thêm ngày sinh và tuổi, xử lý một ca đọc sai tên thuốc và dọn ảnh cắt tạm.
+- Tích hợp OTP đăng ký với Gmail SMTP và SpeedSMS. Bản tích hợp có cập nhật xử lý trạng thái tài khoản khi đăng ký.
+- Hoàn thiện bản đồ Cơ sở y tế với cấu hình CSP cho ArcGIS và CDN. Luồng đặt lịch nhận bản tóm tắt tiền khám, có mục Lịch hẹn của tôi và nhãn trợ năng trên biểu mẫu.
+- Cập nhật cách ghép thực đơn ba món, quy tắc lọc dinh dưỡng và cấu hình dự phòng cho kiểm thử ngoại tuyến.
+- Đồng bộ các cập nhật của nhóm gồm năm mô-đun route Flask và pytest-cov. Cập nhật FastAPI và Starlette trong CI theo tệp khóa phụ thuộc.
+- Ghi lại nội dung về phân vùng mạng và kiểm tra kết nối sau AWS Student Community Day. [Báo cáo Event 6](../../4-eventparticipated/4.6-event6/)

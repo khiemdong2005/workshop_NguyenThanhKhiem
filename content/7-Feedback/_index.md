@@ -1,47 +1,41 @@
 ---
 title: "Sharing and Feedback"
-date: 2024-01-01
+date: 2026-11-28
 weight: 7
 chapter: false
 pre: " <b> 7. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
+### 1. Impressions of the FCAJ Internship Program
 
-> Here, you can freely share your personal opinions about your experience participating in the First Cloud AI Journey program. This will help the FCAJ team improve any shortcomings based on the following aspects:
+Joining the **Workforce Bootcamp - First Cloud AI Journey (FCAJ)** program from **14/09/2026** to **28/11/2026** gave me a clear view of how an AI application goes from an initial outline to running live on AWS.
 
-### Overall Evaluation
-
-**1. Working Environment**  
-The working environment is very friendly and open. FCAJ members are always willing to help whenever I encounter difficulties, even outside working hours. The workspace is tidy and comfortable, helping me focus better. However, I think it would be nice to have more social gatherings or team bonding activities to strengthen relationships.
-
-**2. Support from Mentor / Team Admin**  
-The mentor provides very detailed guidance, explains clearly when I don’t understand, and always encourages me to ask questions. The admin team supports administrative tasks, provides necessary documents, and creates favorable conditions for me to work effectively. I especially appreciate that the mentor allows me to try and solve problems myself instead of just giving the answer.
-
-**3. Relevance of Work to Academic Major**  
-The tasks I was assigned align well with the knowledge I learned at university, while also introducing me to new areas I had never encountered before. This allowed me to both strengthen my foundational knowledge and gain practical skills.
-
-**4. Learning & Skill Development Opportunities**  
-During the internship, I learned many new skills such as using project management tools, teamwork skills, and professional communication in a corporate environment. The mentor also shared valuable real-world experiences that helped me better plan my career path.
-
-**5. Company Culture & Team Spirit**  
-The company culture is very positive: everyone respects each other, works seriously but still keeps things enjoyable. When there are urgent projects, everyone works together and supports one another regardless of their position. This made me feel like a real part of the team, even as an intern.
-
-**6. Internship Policies / Benefits**  
-The company provides an internship allowance and offers flexible working hours when needed. In addition, having the opportunity to join internal training sessions is a big plus.
+* **Working Environment:** The working environment at the AWS Vietnam office is professional, modern, and spacious, keeping a real company schedule from work hours and team discussions to lunch breaks. Being there helped me shift from student habits to workplace routines.
+* **Mentor & Admin Support:** Whenever I asked questions, mentors helped out enthusiastically and walked through the details—from AWS architecture decisions to topics tied directly to my AI major—while suggesting practical directions to broaden our outlook. The coordinators also stayed on top of schedules and report milestones.
+* **Alignment with Academic Major & Skill Growth:** Before FCAJ, I mainly ran models and web apps locally. By the end of the program, I had filled in my missing Cloud fundamentals—learning how to package an application, deploy it on AWS, and verify it in a live environment—opening up a Cloud + AI direction in my CV. Expert talks during the workshops also gave me clearer career perspective beyond just training models.
+* **Program Organization:** The 11-week pacing felt well balanced: the first half focused on building fundamentals through hands-on labs before moving into a full team project. The lab-aligned workshops helped reinforce what I practiced, alongside clear guidance on billing checks and resource cleanup.
 
 ---
 
-### Additional Questions
-- What did you find **most satisfying** during your internship?  
-- What do you think the company **should improve** for future interns?  
-- If recommending to a friend, would you **suggest they intern here**? Why or why not?  
+### 2. Level of Satisfaction
+
+* **Level:** **Very Satisfied.**
+* **Why:** The internship matched what I hoped for in a practical program: instead of stopping at slides or isolated exercises, I got to follow the whole path from initial ideation and architecture design to deploying **MediMind Clinical AI** on AWS and testing a working product. Beyond technical skills, keeping regular office hours—from daily work sessions and lunch breaks to talking with mentors and peers—helped me adjust smoothly to a real company pace before graduation.
 
 ---
 
-### Suggestions & Expectations
-- Do you have any suggestions to improve the internship experience?  
-- Would you like to continue this program in the future?  
-- Any other comments (free sharing):
+### 3. Areas for Improvement
+
+* **Assign mentors per team alongside current program management:** In parallel with the existing overall management structure, pairing mentors with individual teams would encourage closer communication, more frequent sharing, and timely project feedback.
+* **Include simulated real-world enterprise project cases:** Adding case studies and simulated scenarios modeled after actual enterprise projects would give interns stronger hands-on practice in tackling realistic business and technical problems.
+* **Increase on-site office sessions:** Offering more opportunities to work directly at the office would help interns experience corporate routines more deeply and interact face to face with mentors and fellow teams.
+
+---
+
+### 4. Would I Recommend the Program to Friends? Why?
+
+* **Answer:** **Yes, I would recommend** the First Cloud AI Journey program to friends studying Artificial Intelligence or IT who want hands-on Cloud experience.
+* **Why:**
+  1. **From fundamentals to a live project:** You get time to solidify basics through labs before proposing and deploying a team project on AWS.
+  2. **Grounded mentor feedback:** When you hit architectural or deployment snags, mentors break down why it happened and point toward practical fixes.
+  3. **Early workplace exposure:** Keeping real office hours and joining AWS community workshops helps students adjust smoothly before taking a full-time engineering role.

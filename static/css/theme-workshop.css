@@ -226,3 +226,68 @@ div.notices.info p {
   border-top: 30px solid #fd9827;
   background: #fff2db;
 }
+
+/* Weekly worklog tables */
+body[data-url*="/1-worklog/"] #body-inner {
+  container-type: inline-size;
+}
+
+body[data-url*="/1-worklog/"] #body-inner table {
+  table-layout: fixed;
+}
+
+body[data-url*="/1-worklog/"] #body-inner :is(th, td) {
+  padding: 0.65rem 0.75rem;
+  vertical-align: top;
+}
+
+body[data-url*="/1-worklog/"] #body-inner th:first-child {
+  width: 3.25rem;
+}
+
+body[data-url*="/1-worklog/"] #body-inner th:is(:nth-child(3), :nth-child(4)) {
+  width: 8rem;
+}
+
+body[data-url*="/1-worklog/"] #body-inner th:last-child {
+  width: 21%;
+}
+
+body[data-url*="/1-worklog/"] #body-inner :is(th, td):is(:first-child, :nth-child(3), :nth-child(4)) {
+  text-align: center;
+}
+
+body[data-url*="/1-worklog/"] #body-inner td:is(:nth-child(3), :nth-child(4)) {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+body[data-url*="/1-worklog/"] #body-inner td ul {
+  margin: 0;
+  padding-inline-start: 1.15em;
+}
+
+body[data-url*="/1-worklog/"] #body-inner td li + li {
+  margin-block-start: 0.3rem;
+}
+
+body[data-url*="/1-worklog/"] #body-inner td a {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+@container (max-width: 48rem) {
+  body[data-url*="/1-worklog/"] #body-inner table {
+    display: block;
+    overflow-x: auto;
+    table-layout: auto;
+  }
+
+  body[data-url*="/1-worklog/"] #body-inner th:nth-child(2) {
+    min-width: 20rem;
+  }
+
+  body[data-url*="/1-worklog/"] #body-inner th:last-child {
+    min-width: 10rem;
+  }
+}

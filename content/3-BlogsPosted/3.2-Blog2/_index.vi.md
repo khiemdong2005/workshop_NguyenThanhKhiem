@@ -53,6 +53,8 @@ Amazon Transcribe Medical tính phí theo thời lượng âm thanh được phi
 - [AWS – Medical custom vocabularies](https://docs.aws.amazon.com/transcribe/latest/dg/vocabulary-med.html)
 - [AWS – Amazon Transcribe pricing](https://aws.amazon.com/transcribe/pricing/)
 
-## Ảnh bài đăng
+## Bài đăng & Ảnh minh họa
+
+- **Link bài đăng trên Facebook (AWS Study Group VN):** [Xem bài viết](https://www.facebook.com/share/p/1DyfF49vW6/)
 
 ![Bài đăng Amazon Transcribe Medical trên AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/transcribe-medical-post.png)

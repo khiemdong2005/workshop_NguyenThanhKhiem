@@ -47,4 +47,6 @@ Audio and transcripts may contain sensitive health data. Access and storage need
 
 ## Published post
 
+- **Facebook Post (AWS Study Group VN):** [View post](https://www.facebook.com/share/p/1DyfF49vW6/)
+
 ![Amazon Transcribe Medical post in AWS Study Group VN](https://raw.githubusercontent.com/khiemdong2005/workshop_NguyenThanhKhiem/main/static/images/3-BlogsPosted/transcribe-medical-post.png)

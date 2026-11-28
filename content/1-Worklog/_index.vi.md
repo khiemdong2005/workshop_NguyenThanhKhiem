@@ -1,6 +1,6 @@
 ---
 title: "Nhật ký công việc"
-date: 2024-01-01
+date: 2026-09-14
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
@@ -8,7 +8,7 @@ pre: " <b> 1. </b> "
 
 Nhật ký này ghi lại quá trình thực tập trong chương trình First Cloud AI Journey từ ngày 14/09 đến 28/11/2026. Mỗi tuần, tôi ghi lại mục tiêu, công việc theo ngày và kết quả đạt được. Tôi bắt đầu bằng kiến thức nền tảng và các bài thực hành AWS, sau đó áp dụng vào việc viết đề xuất dự án AI và phát triển ứng dụng hỗ trợ y tế.
 
-Nhật ký có 12 mục theo tuần. Tuần 1–10 đã có nhật ký công việc. Tuần 11–12 hiện còn nội dung mẫu và đang chờ cập nhật.
+## Nhật ký theo tuần
 
 **Tuần 1** — [Tìm hiểu AWS cơ bản và thực hành IAM, MFA, AWS Budgets](1.1-week1/)
 
@@ -30,6 +30,4 @@ Nhật ký có 12 mục theo tuần. Tuần 1–10 đã có nhật ký công vi�
 
 **Tuần 10** — [Cập nhật OCR, gợi ý bữa ăn, xác thực OTP và quy trình đặt lịch](1.10-week10/)
 
-**Tuần 11** — [Chờ cập nhật](1.11-week11/)
-
-**Tuần 12** — [Chờ cập nhật](1.12-week12/)
+**Tuần 11** — [Hoàn thiện OCR và Dinh dưỡng, triển khai AWS và hoàn tất tài liệu dự án](1.11-week11/)

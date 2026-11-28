@@ -99,6 +99,8 @@ The meeting gave me further direction for learning and an opportunity to meet co
 
 ## Event Photos
 
+![Attending the FCAJ Mini Meeting on October 24, 2026 with teammates](/images/4-EventParticipated/4.3-Event3/mini-meeting-checkin.jpg?v=2)
+
 ![Opening slide of Kiet Tran's Hear, Think, Speak session](/images/4-EventParticipated/4.3-Event3/hear-think-speak.png)
 
 ![Long Huynh's AWS Resource Access Manager session](/images/4-EventParticipated/4.3-Event3/aws-ram.png)
