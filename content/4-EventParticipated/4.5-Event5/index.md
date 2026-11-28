@@ -1,6 +1,6 @@
 ---
 title: "Event 5 - From Prototype to Production"
-date: 2026-10-14
+date: 2026-11-14
 weight: 5
 chapter: false
 pre: "<b>4.5.</b>"
@@ -11,7 +11,7 @@ pre: "<b>4.5.</b>"
 ## Event Information
 
 - **Session:** From Prototype to Production — Secure, Reliable, Scalable Enterprise AI on the Cloud.
-- **Date:** Wednesday, October 14, 2026.
+- **Date:** Saturday, November 14, 2026.
 - **My role:** Attendee.
 
 The session used a restaurant example to explain how a working AI prototype becomes a service that can handle real users. The model is one part of the product. The surrounding system has to protect data, handle changes in demand, and recover when a dependency fails.

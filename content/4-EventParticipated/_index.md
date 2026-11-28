@@ -37,7 +37,7 @@ During my participation in First Cloud AI Journey, I have documented the followi
 
 ### [Event 5 — From Prototype to Production](4.5-event5/)
 
-- **Date:** October 14, 2026.
+- **Date:** November 14, 2026.
 - **Role:** Attendee.
 - **Topics:** Production AI on AWS, Amazon Bedrock AgentCore, RAG, Strands, and human approval for agent actions.
 

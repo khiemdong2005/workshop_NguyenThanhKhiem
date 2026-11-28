@@ -37,7 +37,7 @@ Trong quá trình tham gia First Cloud AI Journey, tôi đã ghi lại 4 sự ki
 
 ### [Event 5 — From Prototype to Production](4.5-event5/)
 
-- **Thời gian:** 14/10/2026.
+- **Thời gian:** 14/11/2026.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Vận hành AI trên AWS, Amazon Bedrock AgentCore, RAG, Strands và phê duyệt hành động của agent.
 

@@ -1,6 +1,6 @@
 ---
 title: "Event 5 - From Prototype to Production"
-date: 2026-10-14
+date: 2026-11-14
 weight: 5
 chapter: false
 pre: "<b>4.5.</b>"
@@ -11,7 +11,7 @@ pre: "<b>4.5.</b>"
 ## Thông tin sự kiện
 
 - **Chủ đề:** From Prototype to Production — Xây dựng AI doanh nghiệp an toàn, tin cậy và có khả năng mở rộng trên cloud.
-- **Thời gian:** Thứ Tư, ngày 14/10/2026.
+- **Thời gian:** Thứ Bảy, ngày 14/11/2026.
 - **Vai trò của tôi:** Người tham dự.
 
 Buổi chia sẻ dùng ví dụ nhà hàng để giải thích quá trình đưa một nguyên mẫu AI vào vận hành thực tế. Mô hình chỉ là một phần của sản phẩm. Hệ thống còn phải bảo vệ dữ liệu, đáp ứng lưu lượng thay đổi và phục hồi khi dịch vụ phụ thuộc gặp lỗi.
