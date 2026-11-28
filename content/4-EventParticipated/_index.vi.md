@@ -1,17 +1,17 @@
 ---
 title: "Các events đã tham gia"
-date: 2026-10-31
+date: 2026-11-21
 weight: 4
 chapter: false
 pre: " <b> 4. </b> "
 ---
 
-Trong quá trình tham gia First Cloud AI Journey, tôi đã ghi lại 4 sự kiện dưới đây. Mỗi sự kiện mang đến những kiến thức và góc nhìn thực tế để tôi tiếp tục học tập và phát triển dự án.
+Trong quá trình tham gia First Cloud AI Journey, tôi đã ghi lại 6 sự kiện dưới đây. Mỗi sự kiện mang đến những kiến thức và góc nhìn thực tế để tôi tiếp tục học tập và phát triển dự án.
 
 ### [Event 1 — FCAJ Buildrathon Kickoff](4.1-event1/)
 
 - **Thời gian:** 26/09/2026.
-- **Địa điểm:** Văn phòng AWS Hồ Chí Minh.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Giới thiệu FCAJ và Buildrathon, giao lưu với CMC Global, chia sẻ về Triage Bot và kiến trúc Market Slack Bot.
 
@@ -20,29 +20,34 @@ Trong quá trình tham gia First Cloud AI Journey, tôi đã ghi lại 4 sự ki
 - **Thời gian:** 29/09/2026.
 - **Sự kiện chính:** Hà Nội, Việt Nam.
 - **Hình thức tham gia:** Viewing party tại TP. Hồ Chí Minh.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Kiến trúc cloud, AI Agent, phát triển phần mềm với AI, bảo mật và vận hành hệ thống.
 
 ### [Event 3 — FCAJ Mini Meeting](4.3-event3/)
 
 - **Thời gian:** 24/10/2026.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Hear, Think, Speak và Voice AI tiếng Việt; AWS Resource Access Manager; AWS Security Agent; Amazon Bedrock AgentCore Runtime và Memory.
 
 ### [Event 4 — AWS First Cloud AI Journey Community Day](4.4-event4/)
 
 - **Thời gian:** 31/10/2026.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Lộ trình học AWS; kinh nghiệm xây dựng Software Factories; dự án game và kiến trúc Serverless; giới thiệu Lambda Web Functions và AWS SQS.
 
 ### [Event 5 — From Prototype to Production](4.5-event5/)
 
 - **Thời gian:** 14/11/2026.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Vận hành AI trên AWS, Amazon Bedrock AgentCore, RAG, Strands và phê duyệt hành động của agent.
 
 ### [Event 6 — AWS Student Community Day Vietnam 2026](4.6-event6/)
 
 - **Thời gian:** 21/11/2026.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò:** Người tham dự.
 - **Nội dung:** Cộng đồng sinh viên AWS, bảo mật mạng nhiều lớp, kinh nghiệm thi Prove It và thử thách kiến thức cloud.

@@ -16,7 +16,7 @@ pre: "<b> 4.2 </b>"
 
 **Main event location:** Hanoi, Vietnam
 
-**My participation location:** Ho Chi Minh City, at a viewing party.
+**My participation location:** 26th floor, AWS office in Ho Chi Minh City, at a viewing party.
 
 **My Role:** Viewing party attendee in Ho Chi Minh City.
 

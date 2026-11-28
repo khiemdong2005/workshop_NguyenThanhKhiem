@@ -10,7 +10,7 @@ pre: "<b>4.1.</b>"
 
 ## Event Introduction
 
-On September 26, 2026, I attended the First Cloud AI Journey kickoff event at the AWS office in Ho Chi Minh City.
+On September 26, 2026, I attended the First Cloud AI Journey kickoff event at the AWS office on the 26th floor in Ho Chi Minh City.
 
 The event included the following main activities:
 

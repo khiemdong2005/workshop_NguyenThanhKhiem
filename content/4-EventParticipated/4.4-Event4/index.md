@@ -12,6 +12,7 @@ pre: "<b>4.4.</b>"
 
 - **Event:** AWS First Cloud AI Journey Community Day.
 - **Date:** Saturday, October 31, 2026.
+- **Location:** 26th floor, AWS office in Ho Chi Minh City.
 - **My role:** Attendee.
 
 On October 31, 2026, I attended First Cloud AI Journey Community Day. The sessions offered perspectives on learning AWS, organizing software development with AI, and building applications using Serverless services.

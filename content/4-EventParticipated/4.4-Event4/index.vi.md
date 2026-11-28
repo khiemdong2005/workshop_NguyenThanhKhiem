@@ -12,6 +12,7 @@ pre: "<b>4.4.</b>"
 
 - **Tên sự kiện:** AWS First Cloud AI Journey Community Day.
 - **Thời gian:** Thứ Bảy, ngày 31/10/2026.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò của tôi:** Người tham dự.
 
 Ngày 31/10/2026, tôi tham gia Community Day của cộng đồng First Cloud AI Journey. Các phần chia sẻ giúp tôi có thêm góc nhìn về cách học AWS, tổ chức quy trình phát triển phần mềm với AI và xây dựng ứng dụng trên nền tảng Serverless.

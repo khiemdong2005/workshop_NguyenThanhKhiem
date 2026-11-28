@@ -8,28 +8,40 @@ pre: " <b> 6. </b> "
 
 ### Tổng kết quá trình thực tập
 
-Trong thời gian thực tập ở vị trí **Workforce Bootcamp - First Cloud AI Journey** tại **Công ty TNHH Amazon Web Services Viet Nam** từ **14/09/2026** đến **28/11/2026**, tôi đã có cơ hội kết nối nền tảng ngành **Trí tuệ nhân tạo** tại **Trường Đại học FPT** (lớp cbt_team) với thực tiễn thiết kế, xây dựng và vận hành ứng dụng AI trên hạ tầng đám mây AWS.
+Tôi tham gia chương trình **Workforce Bootcamp - First Cloud AI Journey (FCAJ)** tại Amazon Web Services Việt Nam từ **14/09/2026 đến 28/11/2026**. Trong 11 tuần, tôi học các kiến thức nền tảng về AWS và thực hành qua các bài lab. Tôi dần quen với cách đọc tài liệu kỹ thuật, sử dụng AWS Console và AWS CLI, rồi tự kiểm tra kết quả sau mỗi bài.
 
-Xuyên suốt 11 tuần của chương trình, tôi bắt đầu từ các nội dung nền tảng như bảo mật tài khoản (IAM, MFA, AWS Budgets), thiết kế mạng Amazon VPC nhiều tầng, lưu trữ (S3, DynamoDB, Data Lake) và kiến trúc sẵn sàng cao, sau đó áp dụng trực tiếp vào dự án **MediMind Clinical AI**. Trong dự án, tôi tham gia từ khâu khảo sát bài toán, viết đề xuất ([Mục 2](../2-proposal/)), phát triển các phân hệ cốt lõi như sàng lọc triệu chứng, xử lý và tinh chỉnh luồng OCR đọc đơn thuốc (xử lý các ca nhận diện sai tên thuốc bằng cách đối chiếu toàn đơn và vùng chữ rõ), tìm kiếm RAG, dinh dưỡng song ngữ, đặt lịch – nhắc lịch, cho đến khâu triển khai và ghi nhận kết quả thực tế trên AWS tại vùng ap-southeast-1 trong phần Workshop ([Mục 5](../5-workshop/) gồm VPC 3 tầng Multi-AZ, RDS PostgreSQL Private, Secrets Manager, ECR/CodeBuild, EC2 + EBS, SSM Session Manager, ALB đạt 2/2 Healthy, AWS WAF, CloudFront, EFS, Auto Scaling Group, CloudWatch và AWS Budgets).
+Tôi hoàn thành **3 bài blog chuyên môn** và tham gia **6 sự kiện** của chương trình. Viết blog giúp tôi tập giải thích nội dung kỹ thuật bằng lời của mình. Những buổi chia sẻ cũng cho tôi dịp nghe cách người khác đặt câu hỏi và tiếp cận vấn đề.
 
-Song song với dự án và bài lab, tôi đã hoàn thành **03 bài blog chuyên môn** tìm hiểu các dịch vụ AI y tế và đánh giá RAG của AWS (**Amazon Comprehend Medical**, **Amazon Transcribe Medical**, **Amazon Bedrock Evaluations**) cùng **06 sự kiện** thuộc chuỗi First Cloud AI Journey. Quá trình này giúp tôi cải thiện rõ rệt kỹ năng lập trình tích hợp AI, phân tích lỗi từ dữ liệu thực tế, làm việc với AWS CLI/Console và viết tài liệu kỹ thuật song ngữ.
+Tôi học ngành Trí tuệ nhân tạo tại Trường Đại học FPT. Trong kỳ thực tập, tôi dành thêm thời gian cho những nội dung ít được thực hành ở trường, như cách phân quyền với IAM và theo dõi chi phí AWS. Khi gặp một khái niệm mới, tôi thường đọc tài liệu trước rồi làm thử trong bài lab để hiểu nó được dùng ở đâu.
 
-Về tác phong làm việc, tôi luôn giữ tinh thần chủ động học hỏi, trách nhiệm với các đầu việc được giao, sẵn sàng tiếp nhận góp ý để sửa lỗi và hoàn thiện sản phẩm cùng tập thể. Để nhìn nhận khách quan quá trình thực tập của bản thân, tôi xin tự đánh giá theo các tiêu chí sau:
+Qua các bài lab, tôi thực hành tạo VPC, phân biệt subnet công khai và subnet riêng, rồi làm quen với cách lưu trữ dữ liệu trên Amazon S3. Khi tìm hiểu về RAG, tôi học cách đánh giá riêng kết quả truy xuất tài liệu và chất lượng câu trả lời.
+
+Theo cổng điểm danh FCAJ, tôi đã hoàn thành **10 buổi làm việc tại văn phòng**.
+
+Dưới đây là phần tự đánh giá của tôi về kiến thức, kỹ năng và tác phong trong kỳ thực tập.
 
 | STT | Tiêu chí | Mô tả | Tốt | Khá | Trung bình |
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Kiến thức và kỹ năng chuyên môn** | Hiểu biết về ngành, áp dụng kiến thức AI & Cloud vào thực tế, kỹ năng sử dụng công cụ | ☐ | ✅ | ☐ |
 | 2 | **Khả năng học hỏi** | Tiếp thu kiến thức AWS và công nghệ AI mới nhanh, chủ động tự tìm hiểu | ✅ | ☐ | ☐ |
-| 3 | **Chủ động** | Tự giác tìm hiểu tài liệu, thử nghiệm và xử lý lỗi phát sinh không chờ nhắc nhở | ☐ | ✅ | ☐ |
+| 3 | **Chủ động** | Tự giác tìm hiểu tài liệu, thử nghiệm và xử lý lỗi phát sinh không chờ nhắc nhở | ✅ | ☐ | ☐ |
 | 4 | **Tinh thần trách nhiệm** | Cố gắng hoàn thành nhiệm vụ đúng hạn và bảo đảm chất lượng sản phẩm | ✅ | ☐ | ☐ |
 | 5 | **Kỷ luật** | Tuân thủ giờ giấc, nội quy chương trình và quy trình ghi nhận công việc | ☐ | ✅ | ☐ |
 | 6 | **Tính cầu tiến** | Sẵn sàng tiếp nhận nhận xét từ mentor/đồng đội để cải thiện bài làm | ✅ | ☐ | ☐ |
 | 7 | **Giao tiếp** | Trình bày ý tưởng kỹ thuật, viết báo cáo và cập nhật tiến độ rõ ràng | ☐ | ✅ | ☐ |
 | 8 | **Hợp tác nhóm** | Phối hợp với các thành viên trong nhóm để đồng bộ code, đề xuất và tài liệu | ✅ | ☐ | ☐ |
 | 9 | **Ứng xử chuyên nghiệp** | Tôn trọng mentor, đồng đội, diễn giả và môi trường làm việc | ✅ | ☐ | ☐ |
-| 10 | **Tư duy giải quyết vấn đề** | Nhận diện lỗi thực tế (OCR, cấu hình hạ tầng, kiểm thử) và tìm cách khắc phục | ✅ | ☐ | ☐ |
-| 11 | **Đóng góp vào dự án/tổ chức** | Đóng góp trực tiếp vào mã nguồn, đề xuất, blog, workshop và các buổi sinh hoạt | ✅ | ☐ | ☐ |
+| 10 | **Tư duy giải quyết vấn đề** | Nhận diện vấn đề, đề xuất giải pháp, sáng tạo | ☐ | ✅ | ☐ |
+| 11 | **Đóng góp vào dự án/tổ chức** | Đóng góp trực tiếp vào mã nguồn, đề xuất, blog, workshop và các buổi sinh hoạt | ☐ | ✅ | ☐ |
 | 12 | **Tổng thể** | Đánh giá chung về toàn bộ quá trình thực tập | ✅ | ☐ | ☐ |
+
+### Nhận xét bản thân
+
+Nhìn lại kỳ thực tập, tôi thấy mình chủ động hơn trong việc tìm tài liệu, thử lại khi gặp vướng mắc và ghi lại những gì đã học. Tôi cũng quen hơn với việc trao đổi, lắng nghe góp ý và điều chỉnh cách làm.
+
+Một thay đổi tôi thấy rõ là cách xử lý khi bài lab cho kết quả khác dự kiến. Tôi tập đối chiếu cấu hình với tài liệu và kiểm tra từng bước để xác định chỗ mình còn vướng. Khi cần góp ý, tôi cũng trình bày được cụ thể hơn mình đã thử gì và kết quả ra sao.
+
+Tôi vẫn cần đặt câu hỏi sớm hơn khi chưa rõ yêu cầu và chia thời gian đều hơn giữa học, thực hành và cập nhật nhật ký. Đây là hai thói quen tôi muốn cải thiện trong thời gian tới.
 
 ### Cần cải thiện
 

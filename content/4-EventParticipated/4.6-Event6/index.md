@@ -11,7 +11,7 @@ pre: "<b>4.6.</b>"
 ## Event information
 
 - **Date** — Saturday, November 21, 2026, 09:00–11:30.
-- **Venue** — 26th floor, Bitexco Tower, Ho Chi Minh City.
+- **Venue** — 26th floor, AWS office in Ho Chi Minh City.
 - **My role** — Attendee.
 
 I attended AWS Student Community Day to learn how student groups turn cloud training into projects and to see how a speaker approaches network security on AWS. The event brought together representatives from four AWS Student Builder Groups, with technical talks, student presentations, and short cloud knowledge challenges.

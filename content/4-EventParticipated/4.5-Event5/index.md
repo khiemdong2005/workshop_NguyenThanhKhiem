@@ -12,6 +12,7 @@ pre: "<b>4.5.</b>"
 
 - **Session:** From Prototype to Production — Secure, Reliable, Scalable Enterprise AI on the Cloud.
 - **Date:** Saturday, November 14, 2026.
+- **Location:** 26th floor, AWS office in Ho Chi Minh City.
 - **My role:** Attendee.
 
 The session used a restaurant example to explain how a working AI prototype becomes a service that can handle real users. The model is one part of the product. The surrounding system has to protect data, handle changes in demand, and recover when a dependency fails.

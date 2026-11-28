@@ -16,7 +16,7 @@ pre: "<b> 4.2 </b>"
 
 **Địa điểm sự kiện chính:** Hà Nội, Việt Nam
 
-**Địa điểm tôi tham gia:** TP. Hồ Chí Minh, theo hình thức xem chung (viewing party).
+**Địa điểm tôi tham gia:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh, theo hình thức xem chung (viewing party).
 
 **Vai trò của tôi:** Người tham dự viewing party tại TP. Hồ Chí Minh.
 

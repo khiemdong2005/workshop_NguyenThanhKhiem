@@ -12,6 +12,7 @@ pre: "<b>4.3.</b>"
 
 - **Event:** FCAJ Mini Meeting.
 - **Date:** Saturday, October 24, 2026.
+- **Location:** 26th floor, AWS office in Ho Chi Minh City.
 - **My role:** Attendee.
 
 On October 24, 2026, I attended a mini meeting organized by the First Cloud AI Journey community. The sessions covered Vietnamese Voice AI, resource sharing across AWS accounts, web application security, and AI Agent architecture.

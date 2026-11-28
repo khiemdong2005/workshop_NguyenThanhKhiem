@@ -10,7 +10,7 @@ pre: "<b>4.1.</b>"
 
 ## Giới thiệu sự kiện
 
-Ngày 26/09/2026, tôi tham gia buổi kickoff của First Cloud AI Journey tại văn phòng AWS Hồ Chí Minh.
+Ngày 26/09/2026, tôi tham gia buổi kickoff của First Cloud AI Journey tại tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 
 Buổi event gồm các phần chính:
 

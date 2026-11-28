@@ -12,6 +12,7 @@ pre: "<b>4.3.</b>"
 
 - **Tên sự kiện:** FCAJ Mini Meeting.
 - **Thời gian:** Thứ Bảy, ngày 24/10/2026.
+- **Địa điểm:** Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò của tôi:** Người tham dự.
 
 Ngày 24/10/2026, tôi tham gia buổi mini meeting của cộng đồng First Cloud AI Journey. Buổi chia sẻ có nhiều chủ đề, từ xây dựng Voice AI cho tiếng Việt đến chia sẻ tài nguyên giữa các tài khoản AWS, bảo mật ứng dụng web và kiến trúc AI Agent.

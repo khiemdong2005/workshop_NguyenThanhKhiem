@@ -11,7 +11,7 @@ pre: "<b>4.6.</b>"
 ## Thông tin sự kiện
 
 - **Thời gian** — Thứ Bảy, ngày 21/11/2026, từ 09:00 đến 11:30.
-- **Địa điểm** — Tầng 26, Bitexco Tower, TP. Hồ Chí Minh.
+- **Địa điểm** — Tầng 26, văn phòng AWS tại TP. Hồ Chí Minh.
 - **Vai trò của tôi** — Người tham dự.
 
 Tôi tham gia AWS Student Community Day để tìm hiểu cách các câu lạc bộ đưa kiến thức cloud vào dự án sinh viên và cách tiếp cận bài toán bảo mật mạng trên AWS. Sự kiện có đại diện từ bốn AWS Student Builder Groups, với các phần chia sẻ kỹ thuật, câu chuyện từ sinh viên và thử thách kiến thức cloud.
