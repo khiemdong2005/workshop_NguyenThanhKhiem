@@ -11,7 +11,7 @@ pre: " <b> 5. </b> "
 Step-by-step hands-on guide to deploying **MediMind Clinical AI** on a **3-tier AWS VPC (`10.0.0.0/16`)** in **`ap-southeast-1` (Singapore)**.
 
 - **Live HTTPS Application:** https://d2typ9pphzk4as.cloudfront.net
-- **Live Demo Video (YouTube):** https://www.youtube.com/watch?v=kbFEEDeEY2I
+- **Live Demo Video (YouTube):** https://www.youtube.com/watch?v=vF3kyvuShqo
 - **Source Repository (`main`):** https://github.com/MediMind-Clinical-AI/chatbot_medical
 
 ## Workshop Roadmap (7 Chapters — FCAJ Standard)

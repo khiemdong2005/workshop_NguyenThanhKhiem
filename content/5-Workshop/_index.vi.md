@@ -11,7 +11,7 @@ pre: " <b> 5. </b> "
 Hướng dẫn thực hành theo từng bước (`Step-by-Step`) triển khai nền tảng trợ lý y tế lâm sàng **MediMind Clinical AI** trên kiến trúc **AWS VPC 3 tầng (`10.0.0.0/16`)** tại khu vực **`ap-southeast-1` (Singapore)**.
 
 - **Ứng dụng đang chạy Live HTTPS:** https://d2typ9pphzk4as.cloudfront.net
-- **Video Demo Live (YouTube):** https://www.youtube.com/watch?v=kbFEEDeEY2I
+- **Video Demo Live (YouTube):** https://www.youtube.com/watch?v=vF3kyvuShqo
 - **Mã nguồn triển khai (`main`):** https://github.com/MediMind-Clinical-AI/chatbot_medical
 
 ## Lộ trình thực hành (7 chương chuẩn FCAJ)
